@@ -1,0 +1,24 @@
+#!/usr/bi/env php
+<?php
+
+require_once __DIR__ . '/commands/CriarModeloCommand.php';
+
+$comando = $args[1] ?? null;
+
+
+var_dump($comando);
+
+switch ($comando) {
+    case 'criar:modelo':
+        $nomeModelo = $argv[2] ?? null;
+        if (!$nomeModelo) {
+            echo "Informe o nome do modelo. Ex: php tls criar:modelo Usuario\n";
+            exit;
+        }
+        $cmd = new CriarModeloCommand();
+        $cmd->executar($nomeModelo);
+        break;
+
+    default:
+        echo "Comando não reconhecido: $comando\n";
+}
