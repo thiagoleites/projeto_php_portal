@@ -26,29 +26,18 @@ class Router
             $params = array_slice($segments, 2);
 
             $controllerClass = "\\App\Controllers\\Admin\\$controller";
-            // if (class_exists($controllerClass)) {
-            //     $controllerInstance = new $controllerClass();
-            //     if (method_exists($controllerInstance, $method)) {
-            //         call_user_func_array([$controllerInstance, $method], $params);
-            //     } else {
-            //         http_response_code(404);
-            //         echo "Método não encontrado.";
-            //     }
-            // } else {
-            //     http_response_code(404);
-            //     echo "Controlador não encontrado.";
-            // }
+
         } else {
             // Load the web routes
             $controller = !empty($segments[0]) ? ucfirst($segments[0]) . 'Controller' : 'HomeController';
             $method = $segments[1] ?? 'index';
             $params = array_slice($segments, 2);
-            $controllerClass = "\\App\Controllers\\$controller";
+            $controllerClass = "\\App\Controllers\\Site\\$controller";
         }
 
         if (class_exists($controllerClass)) {
             $controllerInstance = new $controllerClass();
-            if (method_exists($controllerInstance, $$method)) {
+            if (method_exists($controllerInstance, $method)) {
                 call_user_func_array([$controllerInstance, $method], $params);
                 return;
             }
