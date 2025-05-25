@@ -82,32 +82,4 @@ abstract class Model
         $result = $stmt->get_result();
         return $result->fetch_all(MYSQLI_ASSOC);
     }
-
-
-    // protected $table;
-    // protected $connection;
-
-    // public function __construct()
-    // {
-    //     $this->connection = Connection::getInstance()->getConnection();
-    // }
-
-    // public function all(): array
-    // {
-    //     $query = "SELECT * FROM {$this->table}";
-    //     $result = $this->connection->query($query);
-
-    //     return $result->fetch_all(MYSQLI_ASSOC);
-    // }
-
-    // public function find(int $id): ?array
-    // {
-    //     $query = "SELECT * FROM {$this->table} WHERE id = ?";
-    //     $stmt = $this->connection->prepare($query);
-    //     $stmt->bind_param('i', $id);
-    //     $stmt->execute();
-    //     $result = $stmt->get_result();
-
-    //     return $result->fetch_assoc() ?: null;
-    // }
 }
