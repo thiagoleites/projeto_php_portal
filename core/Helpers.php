@@ -11,13 +11,17 @@
  * Thiago Leite <tls@devt.emp.br>
  * ---------------------------------------------------------------------
  */
+declare(strict_types=1);
 
-// Configurações do banco de dados
-define('DB_HOST', 'localhost');
-define('DB_USER', 'root');
-define('DB_PASS', '');
-define('DB_NAME', 'projeto');
-define('DB_CHARSET', 'utf8mb4');
-define('DB_PORT', 3306);
-define('DB_COLLATE', 'utf8mb4_unicode_ci');
-define('DB_PREFIX', 'wp_');
+namespace Core;
+
+class Helpers
+{
+    public const DB_HOST = 'localhost';
+    public const DB_USER = 'root';
+    public const DB_PASS = '';
+    public const DB_NAME = 'projeto_php_portal';
+    public const DB_CHARSET = 'utf8mb4';
+    public const DB_PORT = '3306';
+    public const DB_COLLATE = 'utf8mb4_general_ci';
+}

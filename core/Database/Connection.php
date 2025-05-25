@@ -15,6 +15,9 @@ declare(strict_types=1);
 
 namespace Core\Database;
 
+use Core\Config;
+use Core\Config\Config as ConfigConfig;
+use Core\Helpers;
 use Exception;
 use mysqli;
 
@@ -29,10 +32,10 @@ class Connection
     private function __construct()
     {
         $this->connection = new mysqli(
-            DB_HOST,
-            DB_USER,
-            DB_PASS,
-            DB_NAME
+            Helpers::DB_HOST,
+            Helpers::DB_USER,
+            Helpers::DB_PASS,
+            Helpers::DB_NAME
         );
 
         if ($this->connection->connect_error) {
