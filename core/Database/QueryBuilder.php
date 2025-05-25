@@ -29,6 +29,9 @@ class QueryBuilder
     private $bindings = [];
     private $table;
 
+
+    // TODO documentar todas as funções
+    
     public function __construct(mysqli $connection, string $table) {
         $this->connection = $connection;
         $this->table = $table;

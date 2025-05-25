@@ -31,6 +31,11 @@ abstract class Model
         $this->conexao = $db->getConnection();
     }
 
+    public function query(): QueryBuilder
+    {
+        return new QueryBuilder($this->conexao, $this->tabela);
+    }
+
     // Métodos Genericos para manipulação de dados
     // Aqui você pode adicionar métodos genéricos para manipulação de dados, como:
     // - all(): Retorna todos os registros da tabela
@@ -47,15 +52,22 @@ abstract class Model
      * 
      * @return array
      */
-    public function find(int $id): ?array
-    {
-        $query = "SELECT * FROM {$this->tabela} WHERE {$this->primaryKey} = ?";
-        $stmt = $this->conexao->prepare($query);
-        $stmt->bind_param('i', $id);
-        $stmt->execute();
-        $result = $stmt->get_result();
+    // public function find(int $id): ?array
+    // {
+    //     $query = "SELECT * FROM {$this->tabela} WHERE {$this->primaryKey} = ?";
+    //     $stmt = $this->conexao->prepare($query);
+    //     $stmt->bind_param('i', $id);
+    //     $stmt->execute();
+    //     $result = $stmt->get_result();
 
-        return $result->fetch_assoc() ?: null;
+    //     return $result->fetch_assoc() ?: null;
+    // }
+    public function find(int $id)
+    {
+        return $this->query()
+            ->select()
+            ->where($this->primaryKey, '=', $id)
+            ->first();
     }
 
     /**
