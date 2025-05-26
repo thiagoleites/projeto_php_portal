@@ -19,8 +19,11 @@ use Throwable;
 
 class ConnectionException extends DatabaseException
 {
-   public function __construct(string $message = "", array $context = [], ?Throwable $previous = null)
-   {
+   public function __construct(
+        string $message = "", 
+        array $context = [], 
+        ?Throwable $previous = null
+    ){
         parent::__construct(
             $message ?: "Falha na conexão com o banco de dados",
             500,
