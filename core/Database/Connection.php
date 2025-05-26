@@ -18,6 +18,7 @@ namespace Core\Database;
 use Core\Helpers;
 use Exception;
 use mysqli;
+use RuntimeException;
 
 class Connection
 {
@@ -37,7 +38,7 @@ class Connection
         );
 
         if ($this->connection->connect_error) {
-            throw new Exception("Falha na conexão: " . $this->connection->connect_error);
+            throw new RuntimeException("Falha na conexão: " . $this->connection->connect_error);
         }
 
         $this->connection->set_charset(Helpers::DB_CHARSET);
@@ -52,10 +53,9 @@ class Connection
      */
     public static function getInstance(): self
     {
-        if (!self::$instance) {
+        if (self::$instance === null) {
             self::$instance = new self();
         }
-
         return self::$instance;
     }
 
@@ -67,6 +67,9 @@ class Connection
      */
     public function getConnection(): mysqli
     {
+        if ($this->connection === null) {
+            throw new RuntimeException("Conexão com o banco de dados não estabelecida.");
+        }
         return $this->connection;
     }
 
@@ -77,7 +80,7 @@ class Connection
      * @return void
      * @throws Exception
      */
-    public function close()
+    public function close(): void
     {
         if ($this->connection) {
             $this->connection->close();
