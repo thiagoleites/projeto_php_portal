@@ -16,9 +16,14 @@ declare(strict_types=1);
 
 namespace Core\Database;
 
+use Core\Exceptions\ConnectionException;
+use Core\Exceptions\DatabaseException;
+use Core\Exceptions\QueryException;
 use Exception;
 use RuntimeException;
 use mysqli;
+use mysqli_sql_exception;
+use Throwable;
 
 abstract class Model {
     protected $table;
@@ -26,33 +31,43 @@ abstract class Model {
     protected  ?mysqli $connection = null;
     
     public function __construct() {
-        // $db = Connection::getInstance();
-        // $this->connection = $db->getConnection();
-        $this->initializeConnection();
-    }
+        // $this->initializeConnection();
+        try {
+            $db = Connection::getInstance();
+            $this->connection = $db->getConnection();
 
-    protected function initializeConnection()
-    {
-        if ($this->connection === null) {
-            try {
-                $db = Connection::getInstance();
-                $this->connection = $db->getConnection();
-
-                if ($this->connection->connect_errno) {
-                    throw new RuntimeException(
-                        "Falha na conexão: " . $this->connection->connect_error
-                    );
-                }
-            } catch (Exception $e) {
-                $this->handleException($e);
-                throw new RuntimeException("Falha ao inicializar conexão com o banco de dados.");
-            }
+            // if ($this->connection->connect_errno) {
+            //     throw new RuntimeException(
+            //         "Falha na conexão: " . $this->connection->connect_error
+            //     );
+            // }
+        } catch (Throwable $e) {
+            throw new ConnectionException("Falha ao conectar ao banco de dados.", [], $e);
         }
     }
+
+    // protected function initializeConnection()
+    // {
+    //     if ($this->connection === null) {
+    //         try {
+    //             $db = Connection::getInstance();
+    //             $this->connection = $db->getConnection();
+
+    //             if ($this->connection->connect_errno) {
+    //                 throw new RuntimeException(
+    //                     "Falha na conexão: " . $this->connection->connect_error
+    //                 );
+    //             }
+    //         } catch (Exception $e) {
+    //             $this->handleException($e);
+    //             throw new RuntimeException("Falha ao inicializar conexão com o banco de dados.");
+    //         }
+    //     }
+    // }
     
     public function query(): QueryBuilder {
         if ($this->connection === null) {
-            throw new Exception('Conexão não iniciada.');
+            throw new ConnectionException('Conexão com o banco de dados não disponível.');
         }
         return new QueryBuilder($this->connection, $this->table);
     }
@@ -196,11 +211,30 @@ abstract class Model {
         return $types;
     }
 
-    protected function handleException(Exception $e): void {
+    protected function handleException(Throwable $e): void {
         // Log do erro
-        error_log("Model error: " . $e->getMessage() . "\n" . $e->getTraceAsString());
+        // error_log("Model error: " . $e->getMessage() . "\n" . $e->getTraceAsString());
         
         // Lança exceção personalizada ou trata conforme sua necessidade
-        throw new RuntimeException("Erro na operação do modelo: " . $e->getMessage(), 0, $e);
+        // throw new RuntimeException("Erro na operação do modelo: " . $e->getMessage(), 0, $e);
+        
+        if ($e instanceof mysqli_sql_exception) {
+            $e = new QueryException($e->getMessage(), '', [
+                'errno' => $e->getCode(),
+                'sqlstate' => $e->getSqlState() ?? 'UNKNOWN'
+            ], $e);
+        }
+
+        error_log(json_encode([
+            'timestamp' => date('Y-m-d H:i:s'),
+            'exception' => get_class($e),
+            'message' => $e->getMessage(),
+            'code' => $e->getCode(),
+            'trace' => $e->getTraceAsString(),
+            'context' => $e instanceof DatabaseException ? $e->getContext() : []
+        ]));
+
+        throw $e;
+
     }
 }
