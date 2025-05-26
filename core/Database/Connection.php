@@ -15,8 +15,6 @@ declare(strict_types=1);
 
 namespace Core\Database;
 
-use Core\Config;
-use Core\Config\Config as ConfigConfig;
 use Core\Helpers;
 use Exception;
 use mysqli;
@@ -24,7 +22,7 @@ use mysqli;
 class Connection
 {
     private static $instance = null;
-    private $connection;
+    private ?mysqli $connection = null;
 
     
     // TODO Verificar a possibilidade de adicionar com PDO, usando switch para varios banco de dados
@@ -41,6 +39,8 @@ class Connection
         if ($this->connection->connect_error) {
             throw new Exception("Falha na conexão: " . $this->connection->connect_error);
         }
+
+        $this->connection->set_charset(Helpers::DB_CHARSET);
     }
 
     /**

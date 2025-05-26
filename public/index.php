@@ -3,10 +3,12 @@
 require_once '../core/Autoloader.php';
 require_once '../core/Router.php';
 
+use App\Models\User;
 use Core\Router;
 
 Router::dispatch();
 
+/*
 use Core\Database\Connection;
 
 try {
@@ -44,3 +46,11 @@ try {
 } catch (Exception $e) {
     echo "ERRO: " . $e->getMessage() . "<br>";
 }
+
+*/
+
+$user = (new User())->query()
+    ->select(['name'])
+    ->first();
+
+var_dump($user);
