@@ -31,39 +31,19 @@ abstract class Model {
     protected  ?mysqli $connection = null;
     
     public function __construct() {
-        // $this->initializeConnection();
         try {
             $db = Connection::getInstance();
             $this->connection = $db->getConnection();
-
-            // if ($this->connection->connect_errno) {
-            //     throw new RuntimeException(
-            //         "Falha na conexão: " . $this->connection->connect_error
-            //     );
-            // }
         } catch (Throwable $e) {
             throw new ConnectionException("Falha ao conectar ao banco de dados.", [], $e);
         }
     }
-
-    // protected function initializeConnection()
-    // {
-    //     if ($this->connection === null) {
-    //         try {
-    //             $db = Connection::getInstance();
-    //             $this->connection = $db->getConnection();
-
-    //             if ($this->connection->connect_errno) {
-    //                 throw new RuntimeException(
-    //                     "Falha na conexão: " . $this->connection->connect_error
-    //                 );
-    //             }
-    //         } catch (Exception $e) {
-    //             $this->handleException($e);
-    //             throw new RuntimeException("Falha ao inicializar conexão com o banco de dados.");
-    //         }
-    //     }
-    // }
+    /**
+     * Retorna uma instância de QueryBuilder para construir consultas SQL
+     * 
+     * @return QueryBuilder
+     * @throws ConnectionException
+     */
     
     public function query(): QueryBuilder {
         if ($this->connection === null) {
@@ -212,12 +192,7 @@ abstract class Model {
     }
 
     protected function handleException(Throwable $e): void {
-        // Log do erro
-        // error_log("Model error: " . $e->getMessage() . "\n" . $e->getTraceAsString());
-        
-        // Lança exceção personalizada ou trata conforme sua necessidade
-        // throw new RuntimeException("Erro na operação do modelo: " . $e->getMessage(), 0, $e);
-        
+
         if ($e instanceof mysqli_sql_exception) {
             $e = new QueryException($e->getMessage(), '', [
                 'errno' => $e->getCode(),
