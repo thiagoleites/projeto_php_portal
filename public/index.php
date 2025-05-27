@@ -5,6 +5,7 @@ require_once '../core/Router.php';
 
 use App\Models\User;
 use Core\Router;
+use Core\View;
 
 Router::dispatch();
 
@@ -51,8 +52,9 @@ try {
 */
 
 
-$user = (new User())->query()
-    ->select(['name'])
-    ->first();
 
-var_dump($user);
+// $user = (new User())->query()
+//     ->select(['name'])
+//     ->first();
+
+// var_dump($user);

@@ -23,9 +23,14 @@ class DashboardController
     public function index()
     {
         
-        View::render('admin/dashboard', [
+        // View::render('admin/dashboard', [
+        //     'titulo'    => 'Dashboard - Painel de controle',
+        //     'conteudo'  => 'Bem-vindo ao painel de controle!',
+        // ]);
+
+        View::setArea('admin');
+        View::render('pages/dashboard', [
             'titulo'    => 'Dashboard - Painel de controle',
-            'conteudo'  => 'Bem-vindo ao painel de controle!',
         ]);
     }
 }
