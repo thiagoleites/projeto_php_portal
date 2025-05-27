@@ -37,17 +37,19 @@ try {
     }
     
     // Teste 6: Executar query simples
-    $result = $newConnection->getConnection()->query("SELECT 1");
+    $result = $newConnection->getConnection()->query("SELECT * FROM temp_users LIMIT 1");
     if ($result) {
         echo "Query teste executada com sucesso<br>";
+        $user = $result->fetch_all();
+        var_dump($user);
         $result->free();
     }
     
 } catch (Exception $e) {
     echo "ERRO: " . $e->getMessage() . "<br>";
 }
-
 */
+
 
 $user = (new User())->query()
     ->select(['name'])

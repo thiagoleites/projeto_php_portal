@@ -22,8 +22,12 @@ use RuntimeException;
 
 class Connection
 {
-    private static $instance = null;
-    private ?mysqli $connection = null;
+    private static ?self $instance = null;
+    // private static ?Connection $instance = null;
+    /**
+     * @var mysqli
+     */
+    private mysqli $connection;
 
     
     // TODO Verificar a possibilidade de adicionar com PDO, usando switch para varios banco de dados

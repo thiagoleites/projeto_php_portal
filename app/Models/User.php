@@ -19,7 +19,7 @@ use Core\Database\Model;
 
 class User extends Model
 {
-    protected $table = 'users';
+    protected $table = 'temp_users';
     protected $primaryKey = 'id';
 
     public function __construct()

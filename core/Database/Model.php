@@ -47,7 +47,7 @@ abstract class Model {
     
     public function query(): QueryBuilder {
         if ($this->connection === null) {
-            throw new ConnectionException('Conexão com o banco de dados não disponível.');
+            throw new ConnectionException('Conexão com o banco de dados não disponível Model.php');
         }
         return new QueryBuilder($this->connection, $this->table);
     }
