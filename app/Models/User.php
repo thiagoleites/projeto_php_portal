@@ -24,7 +24,7 @@ class User extends Model
 
     public function __construct()
     {
-        // Construtor model
+        parent::__construct();
     }
 
     public function getActiveUsers()
