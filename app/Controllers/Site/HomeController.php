@@ -24,12 +24,6 @@ class HomeController
      */
     public function index()
     {
-        // Aqui você pode adicionar a lógica para a página inicial
-        // echo "Bem-vindo à página inicial!";
-        // View::render('site/home', [
-        //     'titulo' => 'Página Inicial - Projeto Frontend',
-        //     // 'content' => 'Bem-vindo à página inicial!'
-        // ]);
 
         View::render('pages/home', [
             'titulo' => 'Página Inicial - Projeto Frontend',

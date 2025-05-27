@@ -144,13 +144,17 @@ class View
      */
     public static function scripts(): void
     {
-        $scriptToRender = self::$scripts;
+        // $scriptToRender = self::$scripts;
 
-        self::$scripts = []; // Limpa os scripts após renderizar
+        // self::$scripts = []; // Limpa os scripts após renderizar
 
-        foreach ($scriptToRender as $script) {
+        // foreach ($scriptToRender as $script) {
+        //     echo $script . "\n";
+        // }
+        foreach (self::$scripts as $script) {
             echo $script . "\n";
         }
+        self::$scripts = []; // Limpa os scripts após renderizar
     }
     
     /**
@@ -215,28 +219,28 @@ class View
     //     // Retorna caminho público com versão
     //     return "/public/{$path}?v={$version}";
     // }
-    // public static function asset(string $path): string
-    // {
-    //     $path = ltrim($path, '/');
-    //     return "/projeto/public/{$path}?v=" . time(); // Usa timestamp atual
-    // }
-
     public static function asset(string $path): string
     {
         $path = ltrim($path, '/');
-
-        $baseUri = Helpers::getBaseUri();
-
-        if ($_ENV('APP_ENV') === 'development') {
-            return "{$baseUri}/public/{$path}?v=" . time(); // Usa timestamp atual para desenvolvimento	
-        }
-
-        $absolutePath = $_SERVER['DOCUMENT_ROOT'] . "{$baseUri}/public/{$path}";
-
-        if (file_exists($absolutePath)) {
-            return "{$baseUri}/public/{$path}?v=" . filemtime($absolutePath);
-        }
-
-        return "{$baseUri}/public/{$path}"; // Retorna sem versão se o arquivo não existir
+        return "/projeto/public/{$path}?v=" . time(); // Usa timestamp atual
     }
+
+    // public static function asset(string $path): string
+    // {
+    //     $path = ltrim($path, '/');
+
+    //     $baseUri = Helpers::getBaseUri();
+
+    //     if ($_ENV('APP_ENV') === 'development') {
+    //         return "{$baseUri}/public/{$path}?v=" . time(); // Usa timestamp atual para desenvolvimento	
+    //     }
+
+    //     $absolutePath = $_SERVER['DOCUMENT_ROOT'] . "{$baseUri}/public/{$path}";
+
+    //     if (file_exists($absolutePath)) {
+    //         return "{$baseUri}/public/{$path}?v=" . filemtime($absolutePath);
+    //     }
+
+    //     return "{$baseUri}/public/{$path}"; // Retorna sem versão se o arquivo não existir
+    // }
 }

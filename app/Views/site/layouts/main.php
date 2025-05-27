@@ -24,9 +24,7 @@ use Core\View;
     <?php View::partial('site/partials/footer'); ?>
     
     <!-- JS Site -->
-    <!-- <script src="/assets/site/js/bootstrap.bundle.min.js"></script>
-    <script src="/assets/site/js/main.js"></script> -->
-    
+    <script src="/projeto/js/jquery.js"></script>
     <?php View::scripts(); ?>
 </body>
 </html>
