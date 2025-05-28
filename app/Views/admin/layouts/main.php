@@ -1,3 +1,6 @@
+<?php
+use Core\View;
+?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>

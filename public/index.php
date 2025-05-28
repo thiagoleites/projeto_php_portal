@@ -1,13 +1,14 @@
 <?php
+// public/index.php ou bootstrap.php
+require_once __DIR__ .'../core/Autoloader.php'; // Se estiver usando Composer
+require_once __DIR__ . '../Core/Router.php'; // Inclua a classe Router
 
-require_once '../core/Autoloader.php';
-require_once '../core/Router.php';
-
+// Inclua seus arquivos de rotas
+require_once __DIR__ . '../routes/web.php';
+require_once __DIR__ . '../routes/admin.php'; // Inclua as rotas do admin
 use App\Models\User;
-use Core\Router;
-use Core\View;
-
-Router::dispatch();
+// Despacha a requisição
+Core\Router::dispatch();
 
 /*
 use Core\Database\Connection;
@@ -51,10 +52,8 @@ try {
 }
 */
 
+$user = (new User())->query()
+    ->select(['name'])
+    ->first();
 
-
-// $user = (new User())->query()
-//     ->select(['name'])
-//     ->first();
-
-// var_dump($user);
+var_dump($user);

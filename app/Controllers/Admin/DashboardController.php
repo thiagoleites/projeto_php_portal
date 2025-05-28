@@ -20,7 +20,7 @@ use Core\View;
 
 class DashboardController
 {
-    public function index()
+    public function index(): void
     {
         View::setArea('admin');
         View::render('pages/dashboard', [
