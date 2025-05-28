@@ -4,35 +4,22 @@
  * Project:     Sistema personalizado em PHP
  * Author:      Thiago Leite - Devt Digital
  * License:     Proprietary - Todos os direitos reservados
- * File:        DashboardController.php
+ * File:        AdminUsersController.php
  * Description: Classe responsável pela construção de queries SQL
  * ---------------------------------------------------------------------
  * Copyright (c) 2025 Devt Digital
  * Thiago Leite <tls@devt.emp.br>
  * ---------------------------------------------------------------------
  */
-
 declare(strict_types=1);
 
 namespace App\Controllers\Admin;
 
-use Core\View;
 
-class DashboardController
+class AdminUsersController
 {
     public function index()
     {
-        View::setArea('admin');
-        View::render('pages/dashboard', [
-            'titulo'    => 'Dashboard - Painel de controle',
-        ]);
-    }
-
-    public function login()
-    {
-        View::setArea('admin');
-        View::render('pages/login', [
-            'titulo' => 'Login - Acesso ao Painel',
-        ]);
+        // Lógica para listar os itens
     }
 }

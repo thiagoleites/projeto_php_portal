@@ -36,10 +36,9 @@ class CreateAdmCommand {
 
         class $modelName
         {
-            public function __construct()
+            public function index()
             {
-                parant::__construct();
-                // Construtor do modelo
+                // Lógica para listar os itens
             }
         }
 
