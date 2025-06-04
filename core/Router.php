@@ -21,7 +21,7 @@ class Router
     protected static array $routes = [];
 
     // Prefixo base para a aplicação (ex: '/projeto')
-    protected static string $basePath = '/projeto';
+    protected static string $basePath = '/basephp';
 
     /**
      * Registra uma rota GET.
@@ -86,14 +86,15 @@ class Router
      */
     public static function dispatch(): void
     {
+        // echo dirname($_SERVER['PHP_SELF']); die;
         // Obtém a URI da requisição e o método HTTP
         $requestUri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
         $requestMethod = $_SERVER['REQUEST_METHOD'];
 
-        //echo "DEBUG: Request URI: " . $_SERVER['REQUEST_URI'] . "<br>"; // remover debug
-        //echo "DEBUG: Request URI parse_url: " . $requestUri . "<br>"; // remover debug
-        //echo "DEBUG: Request Method: " . $requestMethod . "<br>"; // remover debug
-        //echo "DEBUG: Base Path: " . self::$basePath . "<br>"; // remover debug
+        // echo "DEBUG: Request URI: " . $_SERVER['REQUEST_URI'] . "<br>"; // remover debug
+        // echo "DEBUG: Request URI parse_url: " . $requestUri . "<br>"; // remover debug
+        // echo "DEBUG: Request Method: " . $requestMethod . "<br>"; // remover debug
+        // echo "DEBUG: Base Path: " . self::$basePath . "<br>"; // remover debug
 
         // Remove o prefixo base da URI, se existir
         if (str_starts_with($requestUri, self::$basePath)) {

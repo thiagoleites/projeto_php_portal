@@ -1,7 +1,9 @@
 <?php
 // public/index.php ou bootstrap.php
-require_once __DIR__ .'/../core/Autoloader.php'; // Se estiver usando Composer
-require_once __DIR__ . '/../Core/Router.php'; // Inclua a classe Router
+
+require_once __DIR__ . '/../core/Autoloader.php';
+require_once __DIR__ . '/../core/Router.php';
+// require_once __DIR__ . '/../Core/Router.php'; // Inclua a classe Router
 
 // Inclua seus arquivos de rotas
 require_once __DIR__ . '/../routes/web.php';
@@ -9,12 +11,8 @@ require_once __DIR__ . '/../routes/admin.php'; // Inclua as rotas do admin
 use App\Models\User;
 use Core\Router;
 
-// Router::setBasePath('');
-// Despacha a requisição
+Router::setBasePath('/basephp');
 
-// Router::get('/', function() {
-//     echo "Bem-vindo à página inicial via projeto.local!";
-// });
 Core\Router::dispatch();
 
 

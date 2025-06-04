@@ -1,0 +1,1 @@
+<?php echo "Teste de autoloading e rotas funcionando!<br>";

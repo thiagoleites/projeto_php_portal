@@ -9,7 +9,7 @@ use App\Controllers\Admin\DashboardController;
 use App\Controllers\Admin\AdminUsersController;
 
 // Defina o caminho base da sua aplicação (se ela estiver em um subdiretório)
-Router::setBasePath('/');
+Router::setBasePath('/basephp');
 
 // Rotas GET
 Router::get('/', 'HomeController@index'); // Página inicial
@@ -24,3 +24,5 @@ Router::get('/users/{id}/profile', 'UserController@profile');
 Router::get('/hello/{name}', function($name) {
     echo "Olá, " . htmlspecialchars($name) . "!";
 });
+
+// echo "carregado as rotas do site<br>";
