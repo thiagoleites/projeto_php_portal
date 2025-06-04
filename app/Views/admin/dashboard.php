@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<?php use<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-UTF-8">

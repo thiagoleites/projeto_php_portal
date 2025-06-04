@@ -1,4 +1,8 @@
-<?php View::extend('layouts/main'); ?>
+<?php 
+use Core\View;
+View::extend('layouts/main'); 
+
+?>
 
 <?php View::start('content'); ?>
 <div class="container">

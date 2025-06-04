@@ -8,13 +8,13 @@ use App\Controllers\Site\UserController;
 use App\Controllers\Admin\DashboardController;
 use App\Controllers\Admin\AdminUsersController;
 
-Router::setBasePath('/'); 
+Router::setBasePath('/basephp'); 
 
 // Rotas GET para o Admin
-Router::get('/admin', 'DashboardController@login'); // Dashboard padrão
-Router::get('/admin/dashboard', 'DashboardController@index');
-Router::get('/admin/users', 'AdminUsersController@index');
-Router::get('/admin/users/{id}/edit', 'AdminUsersController@edit');
+Router::get('/admin', 'Admin\\DashboardController@login'); // Dashboard padrão
+Router::get('/admin/dashboard', 'Admin\\DashboardController@index');
+Router::get('/admin/users', 'Admin\\AdminUsersController@index');
+Router::get('/admin/users/{id}/edit', 'Admin\\AdminUsersController@edit');
 
 // Rotas POST para o Admin
-Router::post('/admin/users/{id}/update', 'AdminUsersController@update');
+Router::post('/admin/users/{id}/update', 'Admin\\AdminUsersController@update');
