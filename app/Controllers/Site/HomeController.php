@@ -24,10 +24,6 @@ class HomeController
      */
     public function index()
     {
-
-        echo "Método index da HomeController";
-        die;
-
         View::render('pages/home', [
             'titulo' => 'Página Inicial - Projeto Frontend',
         ]);
