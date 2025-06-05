@@ -11,7 +11,7 @@ use App\Controllers\Admin\AdminUsersController;
 Router::setBasePath('/'); 
 
 // Rotas GET para o Admin
-Router::get('/admin', 'DashboardController@login'); // Dashboard padrão
+Router::get('/admin', 'Admin\\DashboardController@login'); // Dashboard padrão
 Router::get('/admin/dashboard', 'DashboardController@index');
 Router::get('/admin/users', 'AdminUsersController@index');
 Router::get('/admin/users/{id}/edit', 'AdminUsersController@edit');

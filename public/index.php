@@ -1,7 +1,7 @@
 <?php
 // public/index.php ou bootstrap.php
 require_once __DIR__ .'/../core/Autoloader.php'; // Se estiver usando Composer
-require_once __DIR__ . '/../Core/Router.php'; // Inclua a classe Router
+require_once __DIR__ . '/../core/Router.php'; // Inclua a classe Router
 
 // Inclua seus arquivos de rotas
 require_once __DIR__ . '/../routes/web.php';
@@ -10,6 +10,7 @@ use App\Models\User;
 use Core\Router;
 
 // Router::setBasePath('');
+Core\Router::setBasePath('/projeto'); // Define o prefixo base para as rotas
 // Despacha a requisição
 
 // Router::get('/', function() {
