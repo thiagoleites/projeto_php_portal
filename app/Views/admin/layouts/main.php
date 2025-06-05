@@ -37,8 +37,9 @@ use Core\View;
 </head>
 <body class="bg-slate-100 text-slate-800">
     <div class="flex min-h-screen">
-            <?php View::partial('admin/partials/sidebar'); ?>
-                <?php View::section('content'); ?>
+        <?php View::partial('admin/partials/sidebar'); ?>
+        <?php View::section('content'); ?>
+    </div>
     <!-- JS Admin --> 
     <?php View::scripts(); ?>
 </body>

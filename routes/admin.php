@@ -13,8 +13,13 @@ Router::setBasePath('/');
 // Rotas GET para o Admin
 Router::get('/admin', 'Admin\\DashboardController@login'); // Dashboard padrão
 Router::get('/admin/dashboard', 'Admin\\DashboardController@index');
-Router::get('/admin/users', 'Admin\\AdminUsersController@index');
-Router::get('/admin/users/{id}/edit', 'Admin\\AdminUsersController@edit');
+
+// Rotas Artigos
+Router::get('/admin/artigos', 'Admin\\PostController@index');
+Router::get('/admin/artigos/criar', 'Admin\\PostController@create');
+
+Router::get('/admin/usuarios', 'Admin\\AdminUsersController@index');
+Router::get('/admin/usuarios/{id}/editar', 'Admin\\AdminUsersController@edit');
 
 // Rotas POST para o Admin
-Router::post('/admin/users/{id}/update', 'Admin\\AdminUsersController@update');
+Router::post('/admin/usuarios/{id}/atualizar', 'Admin\\AdminUsersController@update');

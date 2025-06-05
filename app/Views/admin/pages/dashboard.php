@@ -2,7 +2,7 @@
 use Core\View;
 
 View::extend('layouts/main'); 
-View::start('content'); ?>
+View::start('content');
 ?>
 
 <!-- Conteúdo Principal -->
@@ -189,7 +189,6 @@ View::start('content'); ?>
                     </ul>
                 </div>
             </section>
-
         </main>
 
 <?php View::end(); ?>
