@@ -19,7 +19,7 @@ View::start('content');
             </header>
 
             <form class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <!-- Coluna Principal (Campos) -->
+                <!-- Coluna Principal  -->
                 <div class="lg:col-span-2 bg-white p-6 md:p-8 rounded-xl border border-slate-200/80">
                     <div class="space-y-6">
                         <div>
@@ -35,7 +35,7 @@ View::start('content');
 
                         <div>
                             <label for="resumo" class="block text-sm font-medium text-slate-700 mb-1">Resumo (Opcional)</label>
-                            <textarea name="resumo" id="resumo" rows="3" class="w-full px-4 py-3 border-slate-300 border rounded-lg focus:ring-indigo-500 focus:border-indigo-500 placeholder:text-slate-400" placeholder="Um breve resumo para SEO e listagens."></textarea>
+                            <textarea name="resumo" id="resumo" rows="3" class="w-full px-4 py-3 border border-slate-300 border rounded-lg focus:ring-indigo-500 focus:border-indigo-500 placeholder:text-slate-400" placeholder="Um breve resumo para SEO e listagens."></textarea>
                         </div>
                     </div>
                 </div>
