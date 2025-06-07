@@ -24,4 +24,7 @@ Router::get('/admin/usuarios/{id}/editar', 'Admin\\AdminUsersController@edit');
 // Rotas POST para o Admin
 Router::post('/admin/usuarios/{id}/atualizar', 'Admin\\AdminUsersController@update');
 
+Router::get('/admin/categorias', 'Admin\\CategoriaController@index');
+Router::get('/admin/categorias/criar', 'Admin\\CategoriaController@create');
+
 Router::get('/admin/comentarios', 'Admin\\ComentarioController@index');

@@ -4,7 +4,7 @@
  * Project:     Sistema personalizado em PHP
  * Author:      Thiago Leite - Devt Digital
  * License:     Proprietary - Todos os direitos reservados
- * File:        PostController.php
+ * File:        CategoriaController.php
  * Description: Classe responsável pela construção de queries SQL
  * ---------------------------------------------------------------------
  * Copyright (c) 2025 Devt Digital
@@ -17,22 +17,22 @@ namespace App\Controllers\Admin;
 
 use Core\View;
 
-class PostController
+class CategoriaController
 {
     public function index()
     {
         View::setArea('admin');
-        View::render('pages/artigos/index', [
-            'titulo' => 'Listagem de Artigos',
-            'subtitulo' => 'Gerencie todos os seus artigos publicados e rascunhos.'
+        View::render('pages/categorias/index', [
+            'titulo' => 'Listagem de categorias',
+            'subtitulo' => 'Gerencie as categorias listadas'
         ]);
     }
 
     public function create()
     {
         View::setArea('admin');
-        View::render('pages/artigos/criar', [
-            'titulo' => 'Criar novo Artigo',
+        View::render('pages/categorias/criar', [
+            'titulo' => 'Criar nova Categoria',
             'subtitulo' => 'Preencha os campos abaixo para publicar ou salvar um rascunho.'
         ]);
     }
