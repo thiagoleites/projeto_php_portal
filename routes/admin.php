@@ -2,11 +2,6 @@
 // routes/admin.php
 // routes/web.php ou routes/admin.php
 use Core\Router;
-// E suas classes de Controller
-use App\Controllers\Site\HomeController;
-use App\Controllers\Site\UserController;
-use App\Controllers\Admin\DashboardController;
-use App\Controllers\Admin\AdminUsersController;
 
 Router::setBasePath('/basephp'); 
 
