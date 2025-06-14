@@ -29,9 +29,6 @@ class Connection
      */
     private mysqli $connection;
 
-    
-    // TODO Verificar a possibilidade de adicionar com PDO, usando switch para varios banco de dados
-
     private function __construct()
     {
         $this->connection = new mysqli(

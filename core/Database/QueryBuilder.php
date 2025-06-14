@@ -138,6 +138,6 @@ class QueryBuilder
         error_log("Database error: " . $e->getMessage());
         
         // Você pode lançar uma exceção personalizada aqui se desejar
-        throw new RuntimeException("Erro ao executar consulta no banco de dados");
+        throw new DatabaseOperationException("Erro ao executar consulta no banco de dados");
     }
 }
