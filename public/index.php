@@ -62,8 +62,8 @@ try {
 }
 */
 
-// $user = (new User())->query()
-//     ->select(['name'])
+// $usuario = (new User())->query()
+//     ->select(['name', 'email'])
 //     ->first();
 
-// var_dump($user);
+// var_dump($usuario);
