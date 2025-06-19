@@ -122,7 +122,7 @@ class Router
         // echo "DEBUG: Verificando rotas para o método " . $requestMethod . "<br>";
 
         // Itera sobre as rotas registradas para o método atual
-        foreach (self::$routes[$requestMethod] as $routeUri => $action) {
+        foreach (self::$routes[$requestMethod] as $routeUri => $routeData) {
             // Converte o padrão da rota em uma expressão regular para capturar parâmetros
             // Ex: '/users/{id}' se torna '#^/users/(\d+)$#'
             $pattern = preg_replace('/\{([a-zA-Z0-9_]+)\}/', '([a-zA-Z0-9_]+)', $routeUri);
