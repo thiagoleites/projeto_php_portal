@@ -149,6 +149,14 @@ class Router
                     $controllerClass = str_starts_with($controllerName, 'Admin\\')
                         ? "\\App\\Controllers\\Admin\\" . str_replace('Admin\\', '', $controllerName)
                         : "\\App\\Controllers\\Site\\" . $controllerName;
+                    
+                    if (class_exists($controllerClass)) {
+                        $controllerInstance = new $controllerClass();
+                        if (method_exists($controllerInstance, $methodName)) {
+                            call_user_func_array([$controllerInstance, $methodName], $params);
+                            return;
+                        }
+                    }
                     /*
                     $controllerClass = '';
                     if (str_starts_with($controllerName, 'Admin\\')) {

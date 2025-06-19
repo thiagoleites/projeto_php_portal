@@ -4,7 +4,7 @@
  * Project:     Sistema personalizado em PHP
  * Author:      Thiago Leite - Devt Digital
  * License:     Proprietary - Todos os direitos reservados
- * File:        Helpers.php
+ * File:        AdminMiddleware.php
  * Description: Classe responsável pela construção de queries SQL
  * ---------------------------------------------------------------------
  * Copyright (c) 2025 Devt Digital
