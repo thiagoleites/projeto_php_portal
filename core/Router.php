@@ -159,23 +159,7 @@ class Router
                             return;
                         }
                     }
-                    /*
-                    $controllerClass = '';
-                    if (str_starts_with($controllerName, 'Admin\\')) {
-                        $controllerClass = "\\App\\Controllers\\Admin\\" . str_replace('Admin\\', '', $controllerName);
-                    } else {
-                        $controllerClass = "\\App\\Controllers\\Site\\" . $controllerName;
-                    }
 
-                    if (class_exists($controllerClass)) {
-                        $controllerInstance = new $controllerClass();
-                        if (method_exists($controllerInstance, $methodName)) {
-                            // Chama o método do controlador com os parâmetros
-                            call_user_func_array([$controllerInstance, $methodName], $params);
-                            return; // Rota encontrada e despachada
-                        }
-                    }
-                    */
                 } elseif (is_callable($action)) {
                     // Se a ação for um callback (função anônima)
                     call_user_func_array($action, $params);
