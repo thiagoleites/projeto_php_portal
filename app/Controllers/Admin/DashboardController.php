@@ -16,9 +16,10 @@ declare(strict_types=1);
 
 namespace App\Controllers\Admin;
 
+use Core\Controller;
 use Core\View;
 
-class DashboardController
+class DashboardController extends Controller
 {
     public function index(): void
     {
@@ -67,7 +68,14 @@ class DashboardController
         $selectDescricao = $msgDescricoes[array_rand($msgDescricoes)];
 
         View::setArea('admin');
-        View::render('pages/login', [
+        // View::render('pages/login', [
+        //     'titulo' => 'Login - Acesso ao Painel',
+        //     'backgroundImage' => $selectImages,
+        //     'msgTitulo' => $selectTitulo,
+        //     'msgDescricao' => $selectDescricao,
+        // ]);
+
+        $this->render('pages/login', [
             'titulo' => 'Login - Acesso ao Painel',
             'backgroundImage' => $selectImages,
             'msgTitulo' => $selectTitulo,

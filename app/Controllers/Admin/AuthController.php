@@ -32,7 +32,7 @@ class AuthController
                 'id' => $user['id'],
                 'name' => $user['name'],
                 'email' => $user['email'],
-                'is_admin' => (bool)$user['is_admin'];
+                'is_admin' => (bool)$user['is_admin'],
             ]);
 
             header('Location: /projeto/dashboard');

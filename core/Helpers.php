@@ -42,14 +42,6 @@ class Helpers
         'collate' => self::DB_COLLATE,
     ];
 
-
-    // public static function getBaseUrl(): string
-    // {
-    //     $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https://' : 'http://';
-    //     $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
-    //     return $protocol . $host . '/';
-    // }
-
     public static function getBaseUri(): string
     {
         if (isset($_SERVER['CONTEXT_PREFIX'])) {
