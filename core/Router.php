@@ -23,15 +23,17 @@ class Router
     // Prefixo base para a aplicação (ex: '/projeto')
     protected static string $basePath = '/projeto';
 
+    protected static array $middlewares = [];
+
     /**
      * Registra uma rota GET.
      *
      * @param string $uri O padrão da URI (ex: '/users/{id}/profile')
      * @param callable|string $action A ação a ser executada (callback ou 'Controller@method')
      */
-    public static function get(string $uri, $action): void
+    public static function get(string $uri, $action, array $middlewares = []): void
     {
-        self::addRoute('GET', $uri, $action);
+        self::addRoute('GET', $uri, $action, $middlewares);
     }
 
     /**
@@ -40,9 +42,9 @@ class Router
      * @param string $uri O padrão da URI
      * @param callable|string $action A ação a ser executada
      */
-    public static function post(string $uri, $action): void
+    public static function post(string $uri, $action, array $middlewares = []): void
     {
-        self::addRoute('POST', $uri, $action);
+        self::addRoute('POST', $uri, $action, $middlewares);
     }
 
     /**
@@ -51,9 +53,9 @@ class Router
      * @param string $uri O padrão da URI
      * @param callable|string $action A ação a ser executada
      */
-    public static function put(string $uri, $action): void
+    public static function put(string $uri, $action, array $middlewares = []): void
     {
-        self::addRoute('PUT', $uri, $action);
+        self::addRoute('PUT', $uri, $action, $middlewares);
     }
 
     /**
@@ -62,9 +64,9 @@ class Router
      * @param string $uri O padrão da URI
      * @param callable|string $action A ação a ser executada
      */
-    public static function delete(string $uri, $action): void
+    public static function delete(string $uri, $action, array $middlewares = []): void
     {
-        self::addRoute('DELETE', $uri, $action);
+        self::addRoute('DELETE', $uri, $action, $middlewares);
     }
 
     /**
@@ -74,11 +76,15 @@ class Router
      * @param string $uri O padrão da URI
      * @param callable|string $action A ação a ser executada
      */
-    protected static function addRoute(string $method, string $uri, $action): void
+    protected static function addRoute(string $method, string $uri, $action, array $middlewares = []): void
     {
         // Garante que a URI comece com '/'
         $uri = '/' . trim($uri, '/');
-        self::$routes[$method][$uri] = $action;
+        // self::$routes[$method][$uri] = $action;
+        self::$routes[$method][$uri] = [
+            'action' => $action,
+            'middlewares' => $middlewares,
+        ];
     }
 
     /**
@@ -126,11 +132,24 @@ class Router
                 array_shift($matches);
                 $params = $matches; // Os parâmetros capturados
 
+                // Executa middleware antes da ação
+                foreach ($routeData['middlewares'] as $middleware) {
+                    $middlewareInstance = new $middleware();
+                    $middlewareInstance->handle();
+                }
+                
+                $action = $routeData['action'];
+
                 // Se a ação for uma string 'Controller@method'
                 if (is_string($action)) {
                     [$controllerName, $methodName] = explode('@', $action);
 
                     // Determina o namespace do controlador (Admin ou Site)
+                    
+                    $controllerClass = str_starts_with($controllerName, 'Admin\\')
+                        ? "\\App\\Controllers\\Admin\\" . str_replace('Admin\\', '', $controllerName)
+                        : "\\App\\Controllers\\Site\\" . $controllerName;
+                    /*
                     $controllerClass = '';
                     if (str_starts_with($controllerName, 'Admin\\')) {
                         $controllerClass = "\\App\\Controllers\\Admin\\" . str_replace('Admin\\', '', $controllerName);
@@ -146,6 +165,7 @@ class Router
                             return; // Rota encontrada e despachada
                         }
                     }
+                    */
                 } elseif (is_callable($action)) {
                     // Se a ação for um callback (função anônima)
                     call_user_func_array($action, $params);

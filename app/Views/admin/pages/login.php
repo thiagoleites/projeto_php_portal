@@ -52,11 +52,11 @@
 
             <!-- Seção do Formulário (Direita) -->
             <div class="w-full lg:w-1/2 flex justify-center">
-                <div class="w-full max-w-md bg-white dark:bg-slate-800/50 backdrop-blur-lg rounded-2xl shadow-2xl p-8 space-y-6">
+                <div class="w-full max-w-md bg-white dark:bg-slate-800/50 backdrop-blur-lg rounded-2xl shadow-2xl p-8 space-y-6  border border-slate-600">
                     
                     <div class="text-center">
                         <!-- **Substitua pelo seu logo** -->
-                        <img src="../images/inicial-logo.png" alt="Logo do Projeto" class="mx-auto h-20 w-auto">
+                        <img src="./images/inicial-logo.png" alt="Logo do Projeto" class="mx-auto h-20 w-auto">
                         <h2 class="mt-6 text-2xl font-bold text-gray-900 dark:text-white">
                             Acesse sua conta
                         </h2>
