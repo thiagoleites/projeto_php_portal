@@ -10,7 +10,7 @@
         <aside class="w-64 bg-slate-800 text-slate-100 p-6 space-y-6 fixed top-0 left-0 h-full shadow-lg z-20 transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out">
             <div class="text-center">
                 <a href="#" class="text-2xl font-semibold text-white hover:text-indigo-400 transition-colors">
-                    <img src="./logo.png" alt="">
+                    <img src="../images/admin-panel-logo.png" alt="" class="h-14 w-auto">
                 </a>
             </div>
             <!-- bg-slate-700  -->
