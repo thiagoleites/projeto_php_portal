@@ -21,7 +21,8 @@ class Router
     protected static array $routes = [];
 
     // Prefixo base para a aplicação (ex: '/projeto')
-    protected static string $basePath = '/projeto';
+//    protected static string $basePath = '/basephp';
+    protected static string $basePath = '/' . Helpers::BASE_PATH;
 
     protected static array $middlewares = [];
 

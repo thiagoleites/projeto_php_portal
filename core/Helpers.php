@@ -25,6 +25,9 @@ class Helpers
     public const DB_PORT = '3306';
     public const DB_COLLATE = 'utf8mb4_general_ci';
 
+    // Path diretório do projeto
+    public const BASE_PATH = 'basephp';
+
 
     public const DB_DSN = 'mysql:host=' . self::DB_HOST . ';dbname=' . self::DB_NAME . ';charset=' . self::DB_CHARSET . ';port=' . self::DB_PORT;
     public const DB_OPTIONS = [

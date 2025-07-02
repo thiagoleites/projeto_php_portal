@@ -196,6 +196,6 @@ class View
     public static function asset(string $path): string
     {
         $path = ltrim($path, '/');
-        return "/projeto/public/{$path}?v=" . time(); // Usa timestamp atual
+        return "/basephp/public/{$path}?v=" . time(); // Usa timestamp atual
     }
 }

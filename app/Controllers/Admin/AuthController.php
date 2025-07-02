@@ -15,6 +15,7 @@ declare(strict_types=1);
 
 namespace App\Controllers\Admin;
 
+use Core\Helpers;
 use Core\View;
 use App\Models\User;
 use Core\Auth;
@@ -35,7 +36,7 @@ class AuthController
                 'is_admin' => (bool)$user['is_admin'],
             ]);
 
-            header('Location: /projeto/dashboard');
+            header('Location: /'. Helpers::BASE_PATH.'/dashboard');
             exit();
         }
         

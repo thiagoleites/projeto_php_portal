@@ -1,9 +1,17 @@
 <!DOCTYPE html>
-<html lang="pt-BR" class=""> <!-- A classe 'dark' será adicionada aqui via JS -->
+<html lang="pt-BR" class="">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login | Seu Projeto</title>
+    <script>
+        // Script para tema escuro/claro
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark')
+        } else {
+            document.documentElement.classList.remove('dark')
+        }
+    </script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://rsms.me/">
     <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
@@ -11,20 +19,13 @@
         body { font-family: 'Inter', sans-serif; }
         .bg-image { transition: background-image 0.5s ease-in-out; }
     </style>
-    <script>
-        // Script para tema escuro/claro
-        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-          document.documentElement.classList.add('dark')
-        } else {
-          document.documentElement.classList.remove('dark')
-        }
-    </script>
+
 </head>
 <body class="bg-gray-200 dark:bg-gray-900">
 
     <!-- Container principal -->
     <div class="relative min-h-screen w-full flex items-center justify-center">
-        
+
         <!-- Imagem de Fundo e Overlay -->
         <div class="absolute inset-0 z-0">
             <div class="bg-image w-full h-full bg-cover bg-center" style="background-image: url('<?php echo htmlspecialchars($backgroundImage); ?>');"></div>
@@ -39,7 +40,7 @@
 
         <!-- Conteúdo central (Branding + Formulário) -->
         <main class="relative z-10 container mx-auto p-4 flex flex-col lg:flex-row items-center gap-12">
-            
+
             <!-- Seção de Branding (Esquerda) -->
             <div class="w-full lg:w-1/2 text-center lg:text-left">
                 <h1 class="text-white font-bold text-4xl md:text-5xl lg:text-6xl leading-tight">
@@ -52,12 +53,12 @@
 
             <!-- Seção do Formulário (Direita) -->
             <div class="w-full lg:w-1/2 flex justify-center">
-                <div class="w-full max-w-md bg-white dark:bg-slate-800/50 backdrop-blur-lg rounded-2xl shadow-2xl p-8 space-y-6  border border-slate-600">
-                    
+                <div class="w-full max-w-md bg-blue-800/50 dark:bg-slate-800/50 backdrop-blur-lg rounded-2xl shadow-2xl p-8 space-y-6  border border-slate-600">
+
                     <div class="text-center">
                         <!-- **Substitua pelo seu logo** -->
                         <img src="./images/inicial-logo.png" alt="Logo do Projeto" class="mx-auto h-20 w-auto">
-                        <h2 class="mt-6 text-2xl font-bold text-gray-900 dark:text-white">
+                        <h2 class="mt-6 text-2xl font-bold text-gray-200 dark:text-white">
                             Acesse sua conta
                         </h2>
                     </div>
@@ -72,18 +73,18 @@
                     <form action="/login" method="POST" class="space-y-6">
                         <!-- **Campo de E-mail** -->
                         <div>
-                            <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Endereço de e-mail</label>
+                            <label for="email" class="block text-sm font-medium text-gray-300 dark:text-gray-300">Endereço de e-mail</label>
                             <input id="email" name="email" type="email" autocomplete="email" required placeholder="seu@email.com"
                                 class="mt-1 w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 dark:text-white">
                         </div>
 
                         <!-- **Campo de Senha (com botão de visibilidade)** -->
                         <div>
-                            <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Senha</label>
+                            <label for="password" class="block text-sm font-medium text-gray-300 dark:text-gray-300">Senha</label>
                             <div class="mt-1 relative">
                                 <input id="password" name="password" type="password" autocomplete="current-password" required
                                     class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 dark:text-white">
-                                
+
                                 <button type="button" id="togglePassword" class="absolute inset-y-0 right-0 px-3 flex items-center text-gray-500 dark:text-gray-400">
                                     <svg id="eye-icon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M10 12a2 2 0 100-4 2 2 0 000 4z" /><path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.022 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd" /></svg>
                                     <svg id="eye-slash-icon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 hidden" viewBox="0 0 20 20" fill="currentColor"><path d="M3.707 2.293a1 1 0 00-1.414 1.414l14 14a1 1 0 001.414-1.414l-1.473-1.473A10.014 10.014 0 0019.542 10C18.268 5.943 14.478 3 10 3a9.958 9.958 0 00-4.512 1.074L3.707 2.293zM10 12a2 2 0 110-4 2 2 0 010 4z" /><path d="M2 10a9.959 9.959 0 012.066-5.814l-.151.151a1 1 0 001.414 1.414l.151-.151A6.01 6.01 0 0110 8c.98 0 1.894.225 2.714.618l.158-.158a1 1 0 00-1.414-1.414l-.158.158A8.003 8.003 0 0010 6c-3.955 0-7.444 2.582-8.941 6.331A.999.999 0 001 13.331V10a1 1 0 00-1-1h-.5a1 1 0 00-1 1v.001a10.01 10.01 0 001.542 4.999l1.415-1.415A7.962 7.962 0 012 10z" /></svg>

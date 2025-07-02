@@ -10,7 +10,7 @@ use App\Models\User;
 use Core\Router;
 
 // Router::setBasePath('');
-Core\Router::setBasePath('/projeto'); // Define o prefixo base para as rotas
+Core\Router::setBasePath('/' . \Core\Helpers::BASE_PATH); // Define o prefixo base para as rotas
 // Despacha a requisição
 
 // Router::get('/', function() {

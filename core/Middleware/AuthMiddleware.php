@@ -16,13 +16,14 @@ declare(strict_types = 1);
 namespace Core\Middleware; 
 
 use Core\Auth;
+use Core\Helpers;
 
 class AuthMiddleware
 {
     public function handle(): void
     {
         if (!Auth::check()) {
-            header('Location: /login');
+            header('Location: /'. Helpers::BASE_PATH.'/admin');
             exit;
         }
     }
