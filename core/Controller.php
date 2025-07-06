@@ -56,7 +56,7 @@ abstract class Controller
     protected function requireAuth(): void
     {
         if (!Auth::check()) {
-            $this->redirect('/projeto/login');
+            $this->redirect('/basephp/login');
         }
     }
 
@@ -69,7 +69,7 @@ abstract class Controller
         $this->requireAuth();
         
         if (!Auth::isAdmin()) {
-            $this->redirect('/projeto/acesso-negado');
+            $this->redirect('/basephp/acesso-negado');
         }
     }
 
@@ -91,3 +91,10 @@ abstract class Controller
         View::script($script);
     }
 }
+// $this->requireAuth();
+        
+// if (!Auth::isAdmin()) {
+//     $msg = 'Você não tem permissão para acessar esta página';
+//     $this->render('acesso-negado', ['msg' => $msg]);
+//     exit();
+// }
