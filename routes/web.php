@@ -1,6 +1,5 @@
 <?php
-// routes/web.php
-// routes/web.php ou routes/admin.php
+
 use Core\Router;
 use Core\Middleware\{AuthMiddleware, AdminMiddleware};
 // E suas classes de Controller
@@ -14,7 +13,7 @@ Router::setBasePath('/');
 
 // Rotas GET
 Router::get('/', 'HomeController@index'); // Página inicial
-Router::get('/about', 'HomeController@about'); // Exemplo de rota 'sobre'
+Router::get('/about', 'HomeController@about'); // Exemplo de rota 'sobre' para uar como base para adição de novas rotas
 
 // Rotas de Usuários (Site)
 Router::get('/users', 'UserController@index'); // Lista de usuários

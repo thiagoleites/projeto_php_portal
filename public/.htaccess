@@ -1,6 +1,6 @@
 <IfModule mod_rewrite.c>
     RewriteEngine On
-    RewriteBase /projeto/
+    RewriteBase /base/
 
     # URLs amigáveis
     RewriteCond %{REQUEST_FILENAME} !-f

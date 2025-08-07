@@ -1,9 +1,8 @@
 <?php
-// routes/admin.php
-// routes/web.php ou routes/admin.php
+
 use Core\Router;
 use Core\Middleware\{AuthMiddleware, AdminMiddleware};
-// E suas classes de Controller
+
 use App\Controllers\Site\HomeController;
 use App\Controllers\Site\UserController;
 use App\Controllers\Admin\DashboardController;
