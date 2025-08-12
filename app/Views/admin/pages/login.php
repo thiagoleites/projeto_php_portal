@@ -12,12 +12,18 @@
         .bg-image { transition: background-image 0.5s ease-in-out; }
     </style>
     <script>
-        // Script para tema escuro/claro
-        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-          document.documentElement.classList.add('dark')
-        } else {
-          document.documentElement.classList.remove('dark')
-        }
+        // carregamento da pagina ou quando mudar o tema
+        document.documentElement.classList.toggle(
+            "dark",
+            localStorage.theme === "dark" ||
+            (!("theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches),
+        );
+        // Whenever the user explicitly chooses light mode
+        localStorage.theme = "light";
+        // Whenever the user explicitly chooses dark mode
+        localStorage.theme = "dark";
+        // Whenever the user explicitly chooses to respect the OS preference
+        localStorage.removeItem("theme");
     </script>
 </head>
 <body class="bg-gray-200 dark:bg-gray-900">
@@ -52,7 +58,7 @@
 
             <!-- Seção do Formulário (Direita) -->
             <div class="w-full lg:w-1/2 flex justify-center">
-                <div class="w-full max-w-md bg-white dark:bg-slate-800/50 backdrop-blur-lg rounded-2xl shadow-2xl p-8 space-y-6  border border-slate-600">
+                <div class="w-full max-w-md bg-zinc-300/30 dark:bg-slate-800/50 backdrop-blur-lg rounded-2xl shadow-2xl p-8 space-y-6  border border-slate-600">
                     
                     <div class="text-center">
                         <!-- **Substitua pelo seu logo** -->
@@ -72,16 +78,16 @@
                     <form action="/login" method="POST" class="space-y-6">
                         <!-- **Campo de E-mail** -->
                         <div>
-                            <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Endereço de e-mail</label>
+                            <label for="email" class="block text-sm font-medium text-gray-800 dark:text-gray-300">Endereço de e-mail</label>
                             <input id="email" name="email" type="email" autocomplete="email" required placeholder="seu@email.com"
                                 class="mt-1 w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 dark:text-white">
                         </div>
 
                         <!-- **Campo de Senha (com botão de visibilidade)** -->
                         <div>
-                            <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Senha</label>
+                            <label for="password" class="block text-sm font-medium text-gray-800 dark:text-gray-300">Senha</label>
                             <div class="mt-1 relative">
-                                <input id="password" name="password" type="password" autocomplete="current-password" required
+                                <input id="password" name="password" type="password" autocomplete="current-password" placeholder="******" required
                                     class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 dark:text-white">
                                 
                                 <button type="button" id="togglePassword" class="absolute inset-y-0 right-0 px-3 flex items-center text-gray-500 dark:text-gray-400">
