@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR" class=""> <!-- A classe 'dark' será adicionada aqui via JS -->
+<html lang="pt-BR"> <!-- A classe 'dark' será adicionada aqui via JS -->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,24 +7,15 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://rsms.me/">
     <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class', // Habilita o dark mode baseado na classe 'dark'
+        }
+    </script>
     <style>
         body { font-family: 'Inter', sans-serif; }
         .bg-image { transition: background-image 0.5s ease-in-out; }
     </style>
-    <script>
-        // carregamento da pagina ou quando mudar o tema
-        document.documentElement.classList.toggle(
-            "dark",
-            localStorage.theme === "dark" ||
-            (!("theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches),
-        );
-        // Whenever the user explicitly chooses light mode
-        localStorage.theme = "light";
-        // Whenever the user explicitly chooses dark mode
-        localStorage.theme = "dark";
-        // Whenever the user explicitly chooses to respect the OS preference
-        localStorage.removeItem("theme");
-    </script>
 </head>
 <body class="bg-gray-200 dark:bg-gray-900">
 
@@ -114,16 +105,32 @@
         const themeToggleBtn = document.getElementById('theme-toggle');
         const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
         const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
-        function toggleThemeIcons() { if (document.documentElement.classList.contains('dark')) { themeToggleLightIcon.classList.remove('hidden'); themeToggleDarkIcon.classList.add('hidden'); } else { themeToggleLightIcon.classList.add('hidden'); themeToggleDarkIcon.classList.remove('hidden'); } }
+        function toggleThemeIcons() { 
+            if (document.documentElement.classList.contains('dark')) { 
+                themeToggleLightIcon.classList.remove('hidden'); 
+                themeToggleDarkIcon.classList.add('hidden'); 
+            } else { 
+                themeToggleLightIcon.classList.add('hidden'); 
+                themeToggleDarkIcon.classList.remove('hidden'); 
+            } 
+        }
         toggleThemeIcons();
-        themeToggleBtn.addEventListener('click', () => { document.documentElement.classList.toggle('dark'); localStorage.theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light'; toggleThemeIcons(); });
+        themeToggleBtn.addEventListener('click', () => { 
+            document.documentElement.classList.toggle('dark'); 
+            localStorage.theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light'; toggleThemeIcons(); 
+        });
 
         // --- Script para Exibir/Ocultar Senha ---
         const togglePassword = document.getElementById('togglePassword');
         const passwordInput = document.getElementById('password');
         const eyeIcon = document.getElementById('eye-icon');
         const eyeSlashIcon = document.getElementById('eye-slash-icon');
-        togglePassword.addEventListener('click', function () { const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password'; passwordInput.setAttribute('type', type); eyeIcon.classList.toggle('hidden'); eyeSlashIcon.classList.toggle('hidden'); });
+        togglePassword.addEventListener('click', function () { 
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password'; 
+            passwordInput.setAttribute('type', type); 
+            eyeIcon.classList.toggle('hidden'); 
+            eyeSlashIcon.classList.toggle('hidden'); 
+        });
     </script>
 
 </body>
