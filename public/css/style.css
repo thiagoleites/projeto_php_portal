@@ -24,6 +24,23 @@ main {
   padding: 2rem;
 }
 
+.home {
+    width: 100%;
+    padding-inline: 5%;
+
+    h1 {
+        font-size: 4rem;
+        text-align: center;
+    }
+}
+
+.rodape {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+
+
 /* debug vardump */
 .xdebug-var-dump {
   background-color: #f8f8f8 !important;

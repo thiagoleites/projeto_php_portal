@@ -24,6 +24,15 @@ main {
   padding: 2rem;
 }
 
+.home {
+    width: 100%;
+    padding-inline: 5%;
+
+    h1 {
+        font-size: 4rem;
+    }
+}
+
 /* debug vardump */
 .xdebug-var-dump {
   background-color: #f8f8f8 !important;

@@ -4,7 +4,10 @@ use Core\View;
 View::extend('layouts/main');
 
 View::start('content'); ?>
-    <h1>Bem-vindo ao nosso site</h1>
+
+    <div class="home">
+        <h1>Bem-vindo ao nosso site</h1>
+    </div>
 
     <?php View::script('
         <script>
