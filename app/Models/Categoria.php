@@ -19,7 +19,7 @@ use Core\Database\Model;
 
 class Categoria extends Model
 {
-    protected string $table = 'categorias';
+    protected $table = 'categories';
     protected $primaryKey = 'id';
 
     public function __construct()
@@ -28,11 +28,16 @@ class Categoria extends Model
         parent::__construct();
     }
 
-    public function storeCategory(array $data)
+    public function storeCategory(array $data): array
     {
         return $this->query()
             ->create($data)
             ->into($this->table)
             ->execute();
+    }
+
+    public static function contarCategorias(): int
+    {
+        return (new static())->query()->select()->count('*');
     }
 }

@@ -16,10 +16,11 @@ declare(strict_types=1);
 namespace App\Models;
 
 use Core\Database\Model;
+use Core\Database\QueryBuilder;
 
 class User extends Model
 {
-    protected $table = 'temp_users';
+    protected $table = 'users';
     protected $primaryKey = 'id';
 
     public function __construct()
@@ -36,4 +37,21 @@ class User extends Model
             ->get();
 
     }
+
+    public static function contarUsuarios()
+    {
+        $instance = new static();
+        return $instance->query()->select()->count('*');
+
+        /**
+         * mensagem para exibir se nao houver dados
+         */
+        /* $total = $instance->query()->select()->count('*');
+         if ($total === 0){
+             return "Sem registros";
+         }
+        */
+
+    }
+
 }

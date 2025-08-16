@@ -31,18 +31,42 @@ class QueryBuilder
 
 
     // TODO documentar todas as funções
-    
-    public function __construct(mysqli $connection, string $table) {
+
+    public function __construct(mysqli $connection, string $table)
+    {
         $this->connection = $connection;
         $this->table = $table;
     }
 
-    public function select(array $columns = ['*']): self {
+    public function select(array $columns = ['*']): self
+    {
         $this->query = 'SELECT ' . implode(', ', $columns) . ' FROM ' . $this->table;
         return $this;
     }
 
-    public function where(string $column, string $operator, $value): self {
+    public function count(string $column = '*'): int
+    {
+        // Se não tiver query, cria a base
+        if ($this->query === null) {
+            $this->query = "SELECT COUNT({$column}) as total FROM {$this->table}";
+        } else {
+            $this->query = "SELECT COUNT({$column}) as total FROM {$this->table}" . $this->extractWherePart();
+        }
+
+        try {
+            $stmt = $this->prepareStatement();
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $row = $result->fetch_assoc();
+            return (int)($row['total'] ?? 0);
+        } catch (mysqli_sql_exception $e) {
+            $this->handleException($e);
+            return 0;
+        }
+    }
+
+    public function where(string $column, string $operator, $value): self
+    {
         if (!in_array(strtoupper($operator), ['=', '!=', '<', '>', '<=', '>=', 'LIKE', 'NOT LIKE', 'IN', 'NOT IN'])) {
             throw new InvalidArgumentException("Operador inválido: {$operator}");
         }
@@ -51,23 +75,27 @@ class QueryBuilder
         return $this;
     }
 
-    public function andWhere(string $column, string $operator, $value): self {
+    public function andWhere(string $column, string $operator, $value): self
+    {
         $this->addCondition('AND', $column, $operator, $value);
         return $this;
     }
 
-    public function orWhere(string $column, string $operator, $value): self {
+    public function orWhere(string $column, string $operator, $value): self
+    {
         $this->addCondition('OR', $column, $operator, $value);
         return $this;
     }
 
-    public function orderBy(string $column, string $direction = 'ASC'): self {
+    public function orderBy(string $column, string $direction = 'ASC'): self
+    {
         $direction = strtoupper($direction) === 'DESC' ? 'DESC' : 'ASC';
         $this->query .= " ORDER BY {$column} {$direction}";
         return $this;
     }
 
-    public function limit(int $limit, ?int $offset = null): self {
+    public function limit(int $limit, ?int $offset = null): self
+    {
         $this->query .= " LIMIT {$limit}";
         if ($offset !== null) {
             $this->query .= " OFFSET {$offset}";
@@ -75,9 +103,10 @@ class QueryBuilder
         return $this;
     }
 
-    private function addCondition(string $type, string $column, string $operator, $value): void {
+    private function addCondition(string $type, string $column, string $operator, $value): void
+    {
         $placeholder = '?';
-        
+
         if (is_array($value) && in_array($operator, ['IN', 'NOT IN'])) {
             $placeholders = implode(', ', array_fill(0, count($value), '?'));
             $this->query .= " {$type} {$column} {$operator} ({$placeholders})";
@@ -88,7 +117,8 @@ class QueryBuilder
         }
     }
 
-    public function get(): array {
+    public function get(): array
+    {
         try {
             $stmt = $this->prepareStatement();
             $stmt->execute();
@@ -100,12 +130,14 @@ class QueryBuilder
         }
     }
 
-    public function first(): ?array {
+    public function first(): ?array
+    {
         $results = $this->limit(1)->get();
         return $results[0] ?? null;
     }
 
-    private function prepareStatement(): mysqli_stmt {
+    private function prepareStatement(): mysqli_stmt
+    {
         $stmt = $this->connection->prepare($this->query);
         if (!$stmt) {
             throw new RuntimeException("Erro ao preparar query: " . $this->connection->error);
@@ -119,7 +151,8 @@ class QueryBuilder
         return $stmt;
     }
 
-    private function determineBindTypes(array $values): string {
+    private function determineBindTypes(array $values): string
+    {
         $types = '';
         foreach ($values as $value) {
             if (is_int($value)) {
@@ -133,11 +166,21 @@ class QueryBuilder
         return $types;
     }
 
-    private function handleException(mysqli_sql_exception $e): void {
+    private function handleException(mysqli_sql_exception $e): void
+    {
         // Log do erro (implemente seu sistema de log)
         error_log("Database error: " . $e->getMessage());
-        
+
         // Você pode lançar uma exceção personalizada aqui se desejar
         throw new DatabaseOperationException("Erro ao executar consulta no banco de dados");
+    }
+
+    private function extractWherePart(): string
+    {
+        if (stripos($this->query, 'WHERE') !== false) {
+            return ' ' . substr($this->query, stripos($this->query, 'WHERE'));
+        }
+
+        return '';
     }
 }

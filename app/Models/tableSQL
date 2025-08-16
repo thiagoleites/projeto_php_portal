@@ -1,0 +1,76 @@
+-- ===========================
+-- Tabela usuarios
+-- ===========================
+CREATE TABLE usuarios (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    senha VARCHAR(255) NOT NULL,
+    is_active TINYINT(1) DEFAULT 1,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    deleted_at TIMESTAMP NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ===========================
+-- Tabela categorias
+-- ===========================
+CREATE TABLE categorias (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(255) NOT NULL,
+    descricao TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    deleted_at TIMESTAMP NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ===========================
+-- Tabela artigos
+-- ===========================
+CREATE TABLE artigos (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    categoria_id INT UNSIGNED NOT NULL,
+    usuario_id INT UNSIGNED NOT NULL,
+    slug VARCHAR(255) NOT NULL UNIQUE,
+    titulo VARCHAR(255) NOT NULL,
+    conteudo LONGTEXT NOT NULL,
+    imagem_capa VARCHAR(255) DEFAULT NULL,
+    status ENUM('rascunho', 'publicado', 'inativo') DEFAULT 'rascunho',
+    visualizacoes INT UNSIGNED DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    deleted_at TIMESTAMP NULL DEFAULT NULL,
+
+    -- Chaves estrangeiras
+    CONSTRAINT fk_artigos_categoria FOREIGN KEY (categoria_id) REFERENCES categorias(id) ON DELETE CASCADE,
+    CONSTRAINT fk_artigos_usuario FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ===========================
+-- Inserir usuarios
+-- ===========================
+INSERT INTO usuarios (nome, email, senha, is_active) VALUES
+('Alice Silva', 'alice@example.com', 'senha123', 1),
+('Bruno Costa', 'bruno@example.com', 'senha123', 1),
+('Carla Santos', 'carla@example.com', 'senha123', 1),
+('Daniel Oliveira', 'daniel@example.com', 'senha123', 1);
+
+-- ===========================
+-- Inserir categorias
+-- ===========================
+INSERT INTO categorias (nome, descricao) VALUES
+('Tecnologia', 'Produtos e serviços relacionados a tecnologia e inovação.'),
+('Esportes', 'Tudo sobre esportes, atividades físicas e equipamentos.'),
+('Moda', 'Vestuário, calçados e tendências de moda.'),
+('Alimentação', 'Comidas, bebidas e gastronomia em geral.'),
+('Viagens', 'Pacotes, destinos turísticos e experiências de viagem.');
+
+-- ===========================
+-- Inserir artigos
+-- ===========================
+INSERT INTO artigos (categoria_id, usuario_id, slug, titulo, conteudo, status) VALUES
+(1, 1, 'novo-smartphone-2025', 'Novo Smartphone 2025', 'Conheça o novo smartphone que chegou em 2025 com recursos incríveis.', 'publicado'),
+(2, 2, 'treino-para-maratonistas', 'Treino para Maratonistas', 'Dicas de treino para quem deseja correr maratonas de forma eficiente.', 'rascunho'),
+(3, 3, 'tendencias-moda-verao', 'Tendências de Moda para o Verão', 'O que estará em alta nesta estação de moda e estilo.', 'publicado'),
+(4, 4, 'receitas-faceis', 'Receitas Fáceis para o Dia a Dia', 'Ideias de receitas rápidas e deliciosas para a rotina.', 'inativo'),
+(5, 1, 'destinos-turisticos-brasil', 'Destinos Turísticos no Brasil', 'Conheça os principais destinos turísticos para visitar no Brasil.', 'publicado');

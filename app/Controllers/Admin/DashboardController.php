@@ -16,6 +16,8 @@ declare(strict_types=1);
 
 namespace App\Controllers\Admin;
 
+use App\Models\Categoria;
+use App\Models\User;
 use Core\Controller;
 use Core\View;
 
@@ -23,9 +25,14 @@ class DashboardController extends Controller
 {
     public function index(): void
     {
+        $totalUsers         = User::contarUsuarios();
+        $totalCategorias    = Categoria::contarCategorias();
+
         View::setArea('admin');
         View::render('pages/dashboard', [
-            'titulo'    => 'Dashboard - Painel de controle',
+            'titulo'            => 'Dashboard - Painel de controle',
+            'totalUsuarios'     => $totalUsers,
+            'totalCategorias'   => $totalCategorias,
         ]);
     }
 

@@ -3,6 +3,7 @@ use Core\View;
 
 View::extend('layouts/main'); 
 View::start('content');
+
 ?>
 
 <!-- Conteúdo Principal -->
@@ -17,6 +18,7 @@ View::start('content');
             <header class="mb-8 bg-white py-5 px-6 rounded-lg shadow-sm">
                 <h1 class="text-3xl font-semibold text-slate-800">Dashboard</h1>
                 <p class="text-slate-600 mt-1">Visão geral das suas atividades e estatísticas.</p>
+<!--                <p class="text-slate-600 mt-1"></p>-->
             </header>
 
             <!-- Cards de Estatísticas -->
@@ -44,9 +46,9 @@ View::start('content');
                                 <svg class="w-5 h-5 text-green-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg>
                             </div>
                         </div>
-                        <p class="text-3xl font-bold text-slate-800">356</p>
+                        <p class="text-3xl font-bold text-slate-800"><?= $totalUsuarios ?></p>
                     </div>
-                     <a href="#" class="text-sm text-green-600 hover:text-green-800 font-medium mt-4 inline-block">Gerenciar usuários →</a>
+                     <a href="<?= \Core\Helpers::URL_BASE['admin'] ?>usuarios" class="text-sm text-green-600 hover:text-green-800 font-medium mt-4 inline-block">Gerenciar usuários →</a>
                 </div>
 
                 <!-- Card Categorias -->
@@ -58,7 +60,7 @@ View::start('content');
                                 <svg class="w-5 h-5 text-amber-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z" /><path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z" /></svg>
                             </div>
                         </div>
-                        <p class="text-3xl font-bold text-slate-800">42</p>
+                        <p class="text-3xl font-bold text-slate-800"><?= $totalCategorias ?></p>
                     </div>
                     <a href="#" class="text-sm text-amber-600 hover:text-amber-800 font-medium mt-4 inline-block">Ver categorias →</a>
                 </div>
