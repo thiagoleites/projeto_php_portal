@@ -14,8 +14,8 @@ View::start('content');
             </div>
             <header class="mb-8 bg-white py-6 px-5 rounded-lg shadow-sm flex justify-between items-center">
                 <div>
-                    <h1 class="text-3xl font-semibold text-slate-800"><?= $titulo ?></h1>
-                    <p class="text-slate-600 mt-1"><?= $subtitulo ?></p>
+                    <h1 class="text-3xl font-semibold text-slate-800">{{ $titulo }}</h1>
+                    <p class="text-slate-600 mt-1">{{ $subtitulo }}</p>
                 </div>
                 <a href="usuario-form.html" class="bg-slate-700 hover:bg-slate-600 text-white font-semibold py-2.5 px-5 rounded-lg text-sm flex items-center space-x-2 transition-colors">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
@@ -27,22 +27,23 @@ View::start('content');
 
             <!-- Grid de Usuários -->
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                <!-- Exemplo de Card de Usuário 1 -->
 
-                <?php
-                foreach ($allUsers as $user) {
-                ?>
+                @php
+                foreach ($allUsers as $user):
+                        extract($user);
+                        $roleLabel = \Core\Enums\UserRole::From((int)$role)->label();
+                @endphp
                     <div class="bg-white p-6 rounded-xl border border-slate-200/80 text-center flex flex-col">
                         <img class="w-24 h-24 rounded-full mx-auto mb-4 object-cover border-2 border-slate-200" src="https://randomuser.me/api/portraits/men/32.jpg" alt="Avatar Rafael Martins">
-                        <h3 class="text-lg font-semibold text-slate-800"><?= $user['first_name'] ?> <?= $user['last_name']?></h3>
-                        <p class="text-sm text-slate-500 mb-2"><?= $user['email']?></p>
-                        <span class="inline-block bg-indigo-100 text-indigo-700 text-xs font-semibold px-2.5 py-1.5 rounded-full mb-4"><?= $user['role']?></span>
+                        <h3 class="text-lg font-semibold text-slate-800">{{ $first_name }} {{ $last_name }}</h3>
+                        <p class="text-sm text-slate-500 mb-2">{{ $email }}</p>
+                        <span class="inline-block bg-indigo-100 text-indigo-700 text-xs font-semibold px-2.5 py-1.5 rounded-full mb-4">{{ $roleLabel }}</span>
                         <div class="mt-auto flex justify-center space-x-2">
                             <a href="usuario-form.html?id=1" class="text-sm text-indigo-600 hover:text-indigo-800 font-medium py-1 px-3 border rounded-md hover:bg-indigo-50 transition-colors">Editar</a>
                             <button class="text-sm text-red-600 hover:text-red-800 font-medium py-1 px-3 rounded-md border hover:bg-red-50 transition-colors">Excluir</button>
                         </div>
                     </div>
-                <?php } ?>
+                @php endforeach; @endphp
                 <!-- Adicione mais cards aqui -->
             </div>
 
