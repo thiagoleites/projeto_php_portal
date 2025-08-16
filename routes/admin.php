@@ -3,15 +3,10 @@
 use Core\Router;
 use Core\Middleware\{AuthMiddleware, AdminMiddleware};
 
-use App\Controllers\Site\HomeController;
-use App\Controllers\Site\UserController;
-use App\Controllers\Admin\DashboardController;
-use App\Controllers\Admin\AdminUsersController;
-
 Router::setBasePath('/'); 
 
 // Rotas GET para o Admin
-Router::get('/admin', 'Admin\\DashboardController@login'); // Dashboard padrão
+Router::get('/admin', 'Admin\\LoginController@login'); // Dashboard padrão
 //Router::get('/admin/dashboard', 'Admin\\DashboardController@index', [AuthMiddleware::class]);
 Router::get('/admin/dashboard', 'Admin\\DashboardController@index');
 

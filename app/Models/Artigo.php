@@ -19,4 +19,14 @@ class Artigo extends Model
     {
         return (new static())->query()->select()->count('*');
     }
+
+    public static function getArtigos(int $limit = 10, int $offset = 0): array
+    {
+        return (new static())
+            ->query()
+            ->select()
+            ->orderBy('id', 'DESC')
+            ->limit($limit, $offset)
+            ->get();
+    }
 }

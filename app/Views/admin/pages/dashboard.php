@@ -1,7 +1,7 @@
-<?php 
+<?php
 use Core\View;
 
-View::extend('layouts/main'); 
+View::extend('layouts/main');
 View::start('content');
 
 ?>
@@ -18,7 +18,6 @@ View::start('content');
             <header class="mb-8 bg-white py-5 px-6 rounded-lg shadow-sm">
                 <h1 class="text-3xl font-semibold text-slate-800">Dashboard</h1>
                 <p class="text-slate-600 mt-1">Visão geral das suas atividades e estatísticas.</p>
-<!--                <p class="text-slate-600 mt-1"></p>-->
             </header>
 
             <!-- Cards de Estatísticas -->
@@ -37,7 +36,6 @@ View::start('content');
                     <a href="#" class="text-sm text-indigo-600 hover:text-indigo-800 font-medium mt-4 inline-block">Ver todos →</a>
                 </div>
 
-                <!-- Card Usuários -->
                 <div class="bg-white p-6 rounded-xl border border-slate-200/80 flex flex-col justify-between hover:border-green-300 transition-colors">
                     <div>
                         <div class="flex items-center justify-between mb-3">
@@ -51,7 +49,7 @@ View::start('content');
                      <a href="<?= \Core\Helpers::URL_BASE['admin'] ?>usuarios" class="text-sm text-green-600 hover:text-green-800 font-medium mt-4 inline-block">Gerenciar usuários →</a>
                 </div>
 
-                <!-- Card Categorias -->
+
                  <div class="bg-white p-6 rounded-xl border border-slate-200/80 flex flex-col justify-between hover:border-amber-300 transition-colors">
                     <div>
                         <div class="flex items-center justify-between mb-3">
@@ -65,7 +63,6 @@ View::start('content');
                     <a href="#" class="text-sm text-amber-600 hover:text-amber-800 font-medium mt-4 inline-block">Ver categorias →</a>
                 </div>
 
-                <!-- Card Visitas -->
                 <div class="bg-white p-6 rounded-xl border border-slate-200/80 flex flex-col justify-between hover:border-sky-300 transition-colors">
                      <div>
                         <div class="flex items-center justify-between mb-3">
@@ -79,7 +76,6 @@ View::start('content');
                     <a href="#" class="text-sm text-sky-600 hover:text-sky-800 font-medium mt-4 inline-block">Ver Analytics →</a>
                 </div>
 
-                <!-- Card Comentários -->
                 <div class="bg-white p-6 rounded-xl border border-slate-200/80 flex flex-col justify-between hover:border-rose-300 transition-colors">
                     <div>
                         <div class="flex items-center justify-between mb-3">
@@ -111,8 +107,10 @@ View::start('content');
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-slate-200/80">
+
+                            <?php  foreach($allArtigos as $artigo): extract($artigo); ?>
                                 <tr class="hover:bg-slate-50/30 transition-colors">
-                                    <td class="px-6 py-4 font-medium text-slate-800">O Futuro do Desenvolvimento Web com IA</td>
+                                    <td class="px-6 py-4 font-medium text-slate-800"><?= $titulo;?></td>
                                     <td class="px-6 py-4">Tecnologia</td>
                                     <td class="px-6 py-4">Ana Silva</td>
                                     <td class="px-6 py-4">15/07/2023</td>
@@ -120,33 +118,7 @@ View::start('content');
                                         <a href="#" class="text-indigo-600 hover:text-indigo-800 font-medium">Ver</a>
                                     </td>
                                 </tr>
-                                <tr class="hover:bg-slate-50/30 transition-colors">
-                                    <td class="px-6 py-4 font-medium text-slate-800">Design Minimalista: Menos é Mais</td>
-                                    <td class="px-6 py-4">Design</td>
-                                    <td class="px-6 py-4">Carlos Lima</td>
-                                    <td class="px-6 py-4">12/07/2023</td>
-                                    <td class="px-6 py-4 text-center">
-                                        <a href="#" class="text-indigo-600 hover:text-indigo-800 font-medium">Ver</a>
-                                    </td>
-                                </tr>
-                                <tr class="hover:bg-slate-50/30 transition-colors">
-                                    <td class="px-6 py-4 font-medium text-slate-800">Marketing de Conteúdo para Pequenas Empresas</td>
-                                    <td class="px-6 py-4">Marketing</td>
-                                    <td class="px-6 py-4">Beatriz Costa</td>
-                                    <td class="px-6 py-4">10/07/2023</td>
-                                    <td class="px-6 py-4 text-center">
-                                        <a href="#" class="text-indigo-600 hover:text-indigo-800 font-medium">Ver</a>
-                                    </td>
-                                </tr>
-                                 <tr class="hover:bg-slate-50/30 transition-colors">
-                                    <td class="px-6 py-4 font-medium text-slate-800">Explorando o Universo do Tailwind CSS</td>
-                                    <td class="px-6 py-4">Desenvolvimento</td>
-                                    <td class="px-6 py-4">João Pereira</td>
-                                    <td class="px-6 py-4">08/07/2023</td>
-                                    <td class="px-6 py-4 text-center">
-                                        <a href="#" class="text-indigo-600 hover:text-indigo-800 font-medium">Ver</a>
-                                    </td>
-                                </tr>
+                            <?php endforeach; ?>
                             </tbody>
                         </table>
                     </div>

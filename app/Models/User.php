@@ -21,11 +21,11 @@ use Core\Enums\UserRole;
 
 class User extends Model
 {
-    protected $table = 'usuarios';
+    protected $table = 'users';
     protected $primaryKey = 'id';
 
     public function __construct(
-        public UserRole $role
+
     )
     {
         parent::__construct();
