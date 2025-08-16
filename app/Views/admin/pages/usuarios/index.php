@@ -28,6 +28,23 @@ View::start('content');
             <!-- Grid de Usuários -->
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                 <!-- Exemplo de Card de Usuário 1 -->
+
+                <?php
+                foreach ($allUsers as $user) { ?>
+                    <div class="bg-white p-6 rounded-xl border border-slate-200/80 text-center flex flex-col">
+                        <img class="w-24 h-24 rounded-full mx-auto mb-4 object-cover border-2 border-slate-200" src="https://randomuser.me/api/portraits/men/32.jpg" alt="Avatar Rafael Martins">
+                        <h3 class="text-lg font-semibold text-slate-800"><?= $user['first_name'] ?> <?= $user['last_name']?></h3>
+                        <p class="text-sm text-slate-500 mb-2"><?= $user['email']?></p>
+                        <span class="inline-block bg-indigo-100 text-indigo-700 text-xs font-semibold px-2.5 py-1.5 rounded-full mb-4"><?= $user['role']?></span>
+                        <div class="mt-auto flex justify-center space-x-2">
+                            <a href="usuario-form.html?id=1" class="text-sm text-indigo-600 hover:text-indigo-800 font-medium py-1 px-3 border rounded-md hover:bg-indigo-50 transition-colors">Editar</a>
+                            <button class="text-sm text-red-600 hover:text-red-800 font-medium py-1 px-3 rounded-md border hover:bg-red-50 transition-colors">Excluir</button>
+                        </div>
+                    </div>
+                <?php
+                }
+                ?>
+                <!--
                 <div class="bg-white p-6 rounded-xl border border-slate-200/80 text-center flex flex-col">
                     <img class="w-24 h-24 rounded-full mx-auto mb-4 object-cover border-2 border-slate-200" src="https://randomuser.me/api/portraits/men/32.jpg" alt="Avatar Rafael Martins">
                     <h3 class="text-lg font-semibold text-slate-800">Rafael Martins</h3>
@@ -39,7 +56,7 @@ View::start('content');
                     </div>
                 </div>
 
-                <!-- Exemplo de Card de Usuário 2 -->
+
                 <div class="bg-white p-6 rounded-xl border border-slate-200/80 text-center flex flex-col">
                     <img class="w-24 h-24 rounded-full mx-auto mb-4 object-cover border-2 border-slate-200" src="https://randomuser.me/api/portraits/women/44.jpg" alt="Avatar Juliana Alves">
                     <h3 class="text-lg font-semibold text-slate-800">Juliana Alves</h3>
@@ -51,7 +68,7 @@ View::start('content');
                     </div>
                 </div>
 
-                 <!-- Exemplo de Card de Usuário 3 -->
+
                 <div class="bg-white p-6 rounded-xl border border-slate-200/80 text-center flex flex-col">
                     <img class="w-24 h-24 rounded-full mx-auto mb-4 object-cover border-2 border-slate-200" src="https://randomuser.me/api/portraits/men/36.jpg" alt="Avatar Fernando Gomes">
                     <h3 class="text-lg font-semibold text-slate-800">Fernando Gomes</h3>
@@ -62,6 +79,7 @@ View::start('content');
                         <button class="text-sm text-red-600 hover:text-red-800 font-medium py-1 px-3 border rounded-md hover:bg-red-50 transition-colors">Excluir</button>
                     </div>
                 </div>
+                -->
 
                 <!-- Adicione mais cards aqui -->
             </div>

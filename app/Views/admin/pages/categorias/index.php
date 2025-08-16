@@ -38,8 +38,9 @@ View::start('content');
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-slate-200/80">
+                        <?php foreach ($categorias as $categoria) : ?>
                             <tr class="hover:bg-slate-50/30 transition-colors">
-                                <td class="px-6 py-4 font-medium text-slate-800">Tecnologia</td>
+                                <td class="px-6 py-4 font-medium text-slate-800"><?= $categoria['name']?></td>
                                 <td class="px-6 py-4"><code>tecnologia</code></td>
                                 <td class="px-6 py-4 text-center">
                                     <a href="#" class="text-indigo-600 hover:underline">125</a>
@@ -49,40 +50,7 @@ View::start('content');
                                     <button class="text-red-600 hover:text-red-800 font-medium">Excluir</button>
                                 </td>
                             </tr>
-                            <tr class="hover:bg-slate-50/30 transition-colors">
-                                <td class="px-6 py-4 font-medium text-slate-800">Design Gráfico</td>
-                                <td class="px-6 py-4"><code>design-grafico</code></td>
-                                <td class="px-6 py-4 text-center">
-                                    <a href="#" class="text-indigo-600 hover:underline">78</a>
-                                </td>
-                                <td class="px-6 py-4 text-center space-x-2">
-                                    <a href="categoria-form.html?id=2" class="text-indigo-600 hover:text-indigo-800 font-medium">Editar</a>
-                                    <button class="text-red-600 hover:text-red-800 font-medium">Excluir</button>
-                                </td>
-                            </tr>
-                            <tr class="hover:bg-slate-50/30 transition-colors">
-                                <td class="px-6 py-4 font-medium text-slate-800">Marketing Digital</td>
-                                <td class="px-6 py-4"><code>marketing-digital</code></td>
-                                <td class="px-6 py-4 text-center">
-                                    <a href="#" class="text-indigo-600 hover:underline">92</a>
-                                </td>
-                                <td class="px-6 py-4 text-center space-x-2">
-                                    <a href="categoria-form.html?id=3" class="text-indigo-600 hover:text-indigo-800 font-medium">Editar</a>
-                                    <button class="text-red-600 hover:text-red-800 font-medium">Excluir</button>
-                                </td>
-                            </tr>
-                            <tr class="hover:bg-slate-50/30 transition-colors">
-                                <td class="px-6 py-4 font-medium text-slate-800">Desenvolvimento Web</td>
-                                <td class="px-6 py-4"><code>desenvolvimento-web</code></td>
-                                <td class="px-6 py-4 text-center">
-                                     <a href="#" class="text-indigo-600 hover:underline">150</a>
-                                </td>
-                                <td class="px-6 py-4 text-center space-x-2">
-                                    <a href="categoria-form.html?id=4" class="text-indigo-600 hover:text-indigo-800 font-medium">Editar</a>
-                                    <button class="text-red-600 hover:text-red-800 font-medium">Excluir</button>
-                                </td>
-                            </tr>
-                            <!-- Adicione mais linhas de categoria aqui -->
+                        <?php endforeach; ?>
                         </tbody>
                     </table>
                 </div>

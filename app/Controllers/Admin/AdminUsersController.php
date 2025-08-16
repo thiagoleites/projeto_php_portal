@@ -15,16 +15,24 @@ declare(strict_types=1);
 
 namespace App\Controllers\Admin;
 
+use App\Models\User;
 use Core\View;
 
 class AdminUsersController
 {
     public function index()
     {
+
+        $allUsers = User::getAllUsers();
+
+//        var_dump($allUsers);
+//        die;
+
         View::setArea('admin');
         View::render('pages/usuarios/index', [
             'titulo' => 'Listagem de Usuários',
-            'subtitulo' => 'Gerencie os usuários do sistema.'
+            'subtitulo' => 'Gerencie os usuários do sistema.',
+            'allUsers' => $allUsers,
         ]);
     }
 }

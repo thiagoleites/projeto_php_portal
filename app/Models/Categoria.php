@@ -40,4 +40,9 @@ class Categoria extends Model
     {
         return (new static())->query()->select()->count('*');
     }
+
+    public static function getCategorias()
+    {
+        return (new static)->findAll();
+    }
 }

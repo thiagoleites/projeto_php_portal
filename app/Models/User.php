@@ -17,13 +17,16 @@ namespace App\Models;
 
 use Core\Database\Model;
 use Core\Database\QueryBuilder;
+use Core\Enums\UserRole;
 
 class User extends Model
 {
-    protected $table = 'users';
+    protected $table = 'usuarios';
     protected $primaryKey = 'id';
 
-    public function __construct()
+    public function __construct(
+        public UserRole $role
+    )
     {
         parent::__construct();
     }
@@ -35,23 +38,17 @@ class User extends Model
             ->where('is_active', '=', 1)
             ->orderBy('name', 'ASC')
             ->get();
+    }
 
+    public static function getAllUsers()
+    {
+        return (new static)->findAll();
     }
 
     public static function contarUsuarios()
     {
         $instance = new static();
         return $instance->query()->select()->count('*');
-
-        /**
-         * mensagem para exibir se nao houver dados
-         */
-        /* $total = $instance->query()->select()->count('*');
-         if ($total === 0){
-             return "Sem registros";
-         }
-        */
-
     }
 
 }

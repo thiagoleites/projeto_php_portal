@@ -15,16 +15,20 @@ declare(strict_types=1);
 
 namespace App\Controllers\Admin;
 
+use App\Models\Categoria;
 use Core\View;
 
 class CategoriaController
 {
     public function index()
     {
+        $categorias = Categoria::getCategorias();
+
         View::setArea('admin');
         View::render('pages/categorias/index', [
             'titulo' => 'Listagem de categorias',
-            'subtitulo' => 'Gerencie as categorias listadas'
+            'subtitulo' => 'Gerencie as categorias listadas',
+            'categorias' => $categorias,
         ]);
     }
 
