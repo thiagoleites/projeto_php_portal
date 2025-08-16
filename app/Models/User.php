@@ -1,10 +1,10 @@
 <?php
 /**
  * ---------------------------------------------------------------------
- * Project:     Sistema personalizado em PHP
- * Author:      Thiago Leite - Devt Digital
- * License:     Proprietary - Todos os direitos reservados
- * File:        User.php
+ * Project: Sistema personalizado em PHP
+ * Author: Thiago Leite - Devt Digital
+ * License: Proprietary - Todos os direitos reservados
+ * File: User.php
  * Description: Classe responsável pela construção de queries SQL
  * ---------------------------------------------------------------------
  * Copyright (c) 2025 Devt Digital
@@ -31,7 +31,19 @@ class User extends Model
         parent::__construct();
     }
 
-    public function getActiveUsers()
+    public function getRoleLabel(): string
+    {
+        $roleValue = $this->role;
+
+        try {
+            $roleEnum = UserRole::from((int)$roleValue);
+            return $roleEnum->label();
+        } catch (\ValueError $e) {
+            return 'Desconhecido.';
+        }
+    }
+
+    public function getActiveUsers(): array
     {
         return $this->query()
             ->select()
@@ -40,12 +52,18 @@ class User extends Model
             ->get();
     }
 
-    public static function getAllUsers()
+    public static function getAllUsers(int $limit = 10, int $offset = 0): array
     {
-        return (new static)->findAll();
+//        return (new static)->findAll();
+        return (new static())
+            ->query()
+            ->select()
+            ->orderBy('id', 'DESC')
+            ->limit($limit, $offset)
+            ->get();
     }
 
-    public static function contarUsuarios()
+    public static function contarUsuarios(): int
     {
         $instance = new static();
         return $instance->query()->select()->count('*');

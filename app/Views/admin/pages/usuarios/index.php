@@ -30,7 +30,8 @@ View::start('content');
                 <!-- Exemplo de Card de Usuário 1 -->
 
                 <?php
-                foreach ($allUsers as $user) { ?>
+                foreach ($allUsers as $user) {
+                ?>
                     <div class="bg-white p-6 rounded-xl border border-slate-200/80 text-center flex flex-col">
                         <img class="w-24 h-24 rounded-full mx-auto mb-4 object-cover border-2 border-slate-200" src="https://randomuser.me/api/portraits/men/32.jpg" alt="Avatar Rafael Martins">
                         <h3 class="text-lg font-semibold text-slate-800"><?= $user['first_name'] ?> <?= $user['last_name']?></h3>
@@ -41,9 +42,7 @@ View::start('content');
                             <button class="text-sm text-red-600 hover:text-red-800 font-medium py-1 px-3 rounded-md border hover:bg-red-50 transition-colors">Excluir</button>
                         </div>
                     </div>
-                <?php
-                }
-                ?>
+                <?php } ?>
                 <!-- Adicione mais cards aqui -->
             </div>
 

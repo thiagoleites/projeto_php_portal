@@ -31,9 +31,9 @@ View::start('content');
                                 <svg class="w-5 h-5 text-indigo-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" /></svg>
                             </div>
                         </div>
-                        <p class="text-3xl font-bold text-slate-800"><?= $totalArtigos ?></p>
+                        <p class="text-3xl font-bold text-slate-800">{{ $totalArtigos }}</p>
                     </div>
-                    <a href="#" class="text-sm text-indigo-600 hover:text-indigo-800 font-medium mt-4 inline-block">Ver todos →</a>
+                    <a href="<?= \Core\Helpers::URL_BASE['admin'] ?>artigos" class="text-sm text-indigo-600 hover:text-indigo-800 font-medium mt-4 inline-block">Ver todos →</a>
                 </div>
 
                 <div class="bg-white p-6 rounded-xl border border-slate-200/80 flex flex-col justify-between hover:border-green-300 transition-colors">
@@ -44,7 +44,7 @@ View::start('content');
                                 <svg class="w-5 h-5 text-green-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg>
                             </div>
                         </div>
-                        <p class="text-3xl font-bold text-slate-800"><?= $totalUsuarios ?></p>
+                        <p class="text-3xl font-bold text-slate-800">{{ $totalUsuarios }}</p>
                     </div>
                      <a href="<?= \Core\Helpers::URL_BASE['admin'] ?>usuarios" class="text-sm text-green-600 hover:text-green-800 font-medium mt-4 inline-block">Gerenciar usuários →</a>
                 </div>
@@ -58,9 +58,9 @@ View::start('content');
                                 <svg class="w-5 h-5 text-amber-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z" /><path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z" /></svg>
                             </div>
                         </div>
-                        <p class="text-3xl font-bold text-slate-800"><?= $totalCategorias ?></p>
+                        <p class="text-3xl font-bold text-slate-800">{{ $totalCategorias }}</p>
                     </div>
-                    <a href="#" class="text-sm text-amber-600 hover:text-amber-800 font-medium mt-4 inline-block">Ver categorias →</a>
+                    <a href="<?= \Core\Helpers::URL_BASE['admin'] ?>categorias" class="text-sm text-amber-600 hover:text-amber-800 font-medium mt-4 inline-block">Ver categorias →</a>
                 </div>
 
                 <div class="bg-white p-6 rounded-xl border border-slate-200/80 flex flex-col justify-between hover:border-sky-300 transition-colors">
@@ -108,17 +108,22 @@ View::start('content');
                             </thead>
                             <tbody class="divide-y divide-slate-200/80">
 
-                            <?php  foreach($allArtigos as $artigo): extract($artigo); ?>
+                            @php
+                            foreach($allArtigos as $artigo):
+                                extract($artigo);
+                                $categoria = (new \App\Models\Categoria())->find($categoria_id);
+                                $usuario = (new \App\Models\User())->find($usuario_id);
+                            @endphp
                                 <tr class="hover:bg-slate-50/30 transition-colors">
-                                    <td class="px-6 py-4 font-medium text-slate-800"><?= $titulo;?></td>
-                                    <td class="px-6 py-4">Tecnologia</td>
-                                    <td class="px-6 py-4">Ana Silva</td>
-                                    <td class="px-6 py-4">15/07/2023</td>
+                                    <td class="px-6 py-4 font-medium text-slate-800">{{ $titulo }}</td>
+                                    <td class="px-6 py-4">{{ $categoria['name'] }}</td>
+                                    <td class="px-6 py-4">{{ $usuario['first_name'] }} {{ $usuario['last_name'] }}</td>
+                                    <td class="px-6 py-4">{{ $created_at }}</td>
                                     <td class="px-6 py-4 text-center">
                                         <a href="#" class="text-indigo-600 hover:text-indigo-800 font-medium">Ver</a>
                                     </td>
                                 </tr>
-                            <?php endforeach; ?>
+                            @php endforeach; @endphp
                             </tbody>
                         </table>
                     </div>
@@ -128,38 +133,21 @@ View::start('content');
                 <div class="bg-white p-6 rounded-xl border border-slate-200/80 shadow-sm">
                     <h2 class="text-xl font-semibold text-slate-700 mb-4">Últimos Usuários Registrados</h2>
                     <ul class="space-y-4">
+                        @php
+                            foreach($allUsers as $user):
+                            extract($user);
+                        @endphp
                         <li class="flex items-center space-x-3 p-3 rounded-lg hover:bg-slate-50/50 transition-colors">
                             <img class="w-10 h-10 rounded-full object-cover" src="https://randomuser.me/api/portraits/men/32.jpg" alt="Rafael Martins">
                             <div>
-                                <p class="font-medium text-slate-800">Rafael Martins</p>
-                                <p class="text-xs text-slate-500">rafa.martins@example.com</p>
+                                <p class="font-medium text-slate-800">{{ $first_name }} {{ $last_name }}</p>
+                                <p class="text-xs text-slate-500">{{ $email }}</p>
                             </div>
                             <span class="ml-auto text-xs text-slate-500">Hoje</span>
                         </li>
-                        <li class="flex items-center space-x-3 p-3 rounded-lg hover:bg-slate-50/50 transition-colors">
-                            <img class="w-10 h-10 rounded-full object-cover" src="https://randomuser.me/api/portraits/women/44.jpg" alt="Juliana Alves">
-                            <div>
-                                <p class="font-medium text-slate-800">Juliana Alves</p>
-                                <p class="text-xs text-slate-500">ju.alves@example.com</p>
-                            </div>
-                            <span class="ml-auto text-xs text-slate-500">Ontem</span>
-                        </li>
-                        <li class="flex items-center space-x-3 p-3 rounded-lg hover:bg-slate-50/50 transition-colors">
-                            <img class="w-10 h-10 rounded-full object-cover" src="https://randomuser.me/api/portraits/men/36.jpg" alt="Fernando Gomes">
-                            <div>
-                                <p class="font-medium text-slate-800">Fernando Gomes</p>
-                                <p class="text-xs text-slate-500">fer.gomes@example.com</p>
-                            </div>
-                             <span class="ml-auto text-xs text-slate-500">13/07/2023</span>
-                        </li>
-                         <li class="flex items-center space-x-3 p-3 rounded-lg hover:bg-slate-50/50 transition-colors">
-                            <img class="w-10 h-10 rounded-full object-cover" src="https://randomuser.me/api/portraits/women/68.jpg" alt="Carla Dias">
-                            <div>
-                                <p class="font-medium text-slate-800">Carla Dias</p>
-                                <p class="text-xs text-slate-500">carla.d@example.com</p>
-                            </div>
-                             <span class="ml-auto text-xs text-slate-500">12/07/2023</span>
-                        </li>
+                        @php
+                            endforeach;
+                        @endphp
                     </ul>
                 </div>
             </section>

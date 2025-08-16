@@ -30,6 +30,8 @@ class DashboardController extends Controller
         $totalCategorias    = Categoria::contarCategorias();
         $totalArtigos       = Artigo::contarArtigos();
         $allArtigos         = Artigo::getArtigos(5);
+        $allUsers           = User::getAllUsers(5);
+
 
         View::setArea('admin');
         View::render('pages/dashboard', [
@@ -37,7 +39,8 @@ class DashboardController extends Controller
             'totalUsuarios'     => $totalUsers,
             'totalCategorias'   => $totalCategorias,
             'totalArtigos'      => $totalArtigos,
-            'allArtigos'        => $allArtigos
+            'allArtigos'        => $allArtigos,
+            'allUsers'          => $allUsers,
         ]);
     }
 }

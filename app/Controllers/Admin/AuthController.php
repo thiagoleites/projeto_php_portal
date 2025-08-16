@@ -35,7 +35,7 @@ class AuthController
                 'is_admin' => (bool)$user['is_admin'],
             ]);
 
-            header('Location: /projeto/dashboard');
+            header('Location: /base/admin/dashboard');
             exit();
         }
         

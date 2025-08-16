@@ -60,9 +60,18 @@ class View
         extract(self::$data);
         
         ob_start();
-        require self::resolvePath($viewPath);
+//        require self::resolvePath($viewPath);
+//        $content = ob_get_clean();
+        $file = self::resolvePath($viewPath);
+        $content = file_get_contents($file);
+
+        $content = str_replace(['@php', '@endphp'], ['<?php', '?>'], $content); //teste
+        $content = preg_replace('/\{\{\s*(.+?)\s*\}\}/', '<?=  htmlspecialchars($1, ENT_QUOTES, "UTF-8") ?>', $content); //teste
+
+        eval('?>' . $content); //teste
+
         $content = ob_get_clean();
-        
+
         if (self::$layout) {
             ob_start();
             extract(self::$data);
@@ -169,7 +178,7 @@ class View
      */
     public function renderShared(string $viewPath, array $data = []): void
     {
-        // Método para renderizar views compartilhadas
+        //Método para renderizar views compartilhadas
         $oldArea = self::$currentArea;
         self::render($viewPath, $data);
         self::$currentArea = $oldArea;
