@@ -56,7 +56,7 @@ abstract class Controller
     protected function requireAuth(): void
     {
         if (!Auth::check()) {
-            $this->redirect('/projeto/login');
+            $this->redirect('/base/login');
         }
     }
 
@@ -69,7 +69,7 @@ abstract class Controller
         $this->requireAuth();
         
         if (!Auth::isAdmin()) {
-            $this->redirect('/projeto/acesso-negado');
+            $this->redirect('/base/acesso-negado');
         }
     }
 

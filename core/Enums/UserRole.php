@@ -31,14 +31,4 @@ enum UserRole: int
 
         return $result;
     }
-
-    /**
-     * Lista todos os valores em array (util para selects e exibição em formularios para cadastros e etc...)
-     *
-     * @return array
-     */
-//    public static function values(): array
-//    {
-//        return array_map(fn($role) => $role->value, self::cases());
-//    }
 }

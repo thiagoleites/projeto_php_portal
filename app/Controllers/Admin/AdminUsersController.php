@@ -35,4 +35,14 @@ class AdminUsersController
             'allUsers' => $allUsers,
         ]);
     }
+
+
+    public function create()
+    {
+        View::setArea('admin');
+        View::render('pages/usuarios/criar', [
+            'titulo' => 'Criar um novo usuário',
+            'subtitulo' => 'Preencha todos os campos'
+        ]);
+    }
 }

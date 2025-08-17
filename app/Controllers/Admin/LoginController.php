@@ -16,9 +16,10 @@ declare(strict_types=1);
 namespace App\Controllers\Admin;
 
 
+use Core\Controller;
 use Core\View;
 
-class LoginController
+class LoginController extends Controller
 {
     public function index()
     {
@@ -59,7 +60,6 @@ class LoginController
         $selectDescricao = $msgDescricoes[array_rand($msgDescricoes)];
 
         View::setArea('admin');
-
 
         $this->render('pages/login', [
             'titulo' => 'Login - Acesso ao Painel',

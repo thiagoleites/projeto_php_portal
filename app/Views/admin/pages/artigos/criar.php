@@ -14,8 +14,8 @@ View::start('content');
             </div>
 
             <header class="mb-8 bg-white py-5 px-6 rounded-lg shadow-sm">
-                <h1 class="text-3xl font-semibold text-slate-800"><?= $titulo ?></h1>
-                <p class="text-slate-600 mt-1"><?= $subtitulo ?></p>
+                <h1 class="text-3xl font-semibold text-slate-800">{{ $titulo }}</h1>
+                <p class="text-slate-600 mt-1">{{ $subtitulo}}</p>
             </header>
 
             <form class="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -104,5 +104,24 @@ View::start('content');
         </main>
 
 <?php
+View::script('
+        <script src="https://cdn.tiny.cloud/1/46nj6nnldc4n28zmx5yjqrl27bq3a0jdv6tj6t33588qsyd4/tinymce/8/tinymce.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@tinymce/tinymce-jquery/dist/tinymce-jquery.min.js"></script>
+        <script>
+        $("textarea#conteudo").tinymce({
+          height: 330,
+          api_key: "46nj6nnldc4n28zmx5yjqrl27bq3a0jdv6tj6t33588qsyd4",
+          menubar: false,
+          plugins: [
+            "advlist", "autolink", "lists", "link", "image", "charmap", "preview",
+            "anchor", "searchreplace", "visualblocks", "fullscreen",
+            "insertdatetime", "media", "table", "code", "help", "wordcount"
+          ],
+          toolbar: "undo redo | blocks | bold italic backcolor | " +
+            "alignleft aligncenter alignright alignjustify | " +
+            "bullist numlist outdent indent | image | removeformat | help"
+        });
+        </script>
+');
 View::end();
 ?>

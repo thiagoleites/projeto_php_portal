@@ -6,7 +6,7 @@ use Core\View;
 <head>
     <meta charset="UTF-UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Elegante</title>
+    <title>Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/heroicons/2.0.18/24/outline/heroicons.min.css" rel="stylesheet">
     <style>
@@ -30,17 +30,32 @@ use Core\View;
         ::-webkit-scrollbar-thumb:hover {
             background: #94a3b8; /* slate-400 */
         }
+
+        .redactor_box {
+            border: 1px solid #e5e7eb !important;
+            border-radius: 8px !important;
+        }
+        .redactor_editor {
+            height: 200px !important;
+            border-radius: 0 0 8px 8px;
+        }
+        .redactor_toolbar {
+            border-radius: 8px 8px 0 0;
+        }
     </style>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="/../base/public/redactor/redactor.css" rel="stylesheet">
 </head>
 <body class="bg-slate-100 text-slate-800">
     <div class="flex min-h-screen">
         <?php View::partial('admin/partials/sidebar'); ?>
         <?php View::section('content'); ?>
     </div>
-    <!-- JS Admin --> 
+    <!-- JS Admin -->
+    <script src="/../base/public/js/jquery.js"></script>
+    <script src="/../base/public/redactor/redactor.js"></script>
     <?php View::scripts(); ?>
 </body>
 </html>
