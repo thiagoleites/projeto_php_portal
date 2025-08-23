@@ -66,7 +66,7 @@
                         </div>
                     <?php endif; ?>
 
-                    <form action="/login" method="POST" class="space-y-6">
+                    <form action="/base/admin/login" method="POST" class="space-y-6">
                         <!-- **Campo de E-mail** -->
                         <div>
                             <label for="email" class="block text-sm font-medium text-gray-800 dark:text-gray-300">Endereço de e-mail</label>

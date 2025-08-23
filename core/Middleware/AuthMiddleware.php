@@ -22,7 +22,7 @@ class AuthMiddleware
     public function handle(): void
     {
         if (!Auth::check()) {
-            header('Location: /login');
+            header('Location: /base/admin/login');
             exit;
         }
     }

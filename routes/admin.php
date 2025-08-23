@@ -7,9 +7,10 @@ Router::setBasePath('/');
 
 // Rotas GET para o Admin
 Router::get('/admin', 'Admin\\LoginController@index'); // Dashboard padrão
-//Route::get('/login', \App\Controllers\Admin\LoginController@)
-//Router::get('/admin/dashboard', 'Admin\\DashboardController@index', [AuthMiddleware::class]);
-Router::get('/admin/dashboard', 'Admin\\DashboardController@index');
+Router::get('/admin/login', 'Admin\\AuthController@login'); // Página de login
+Router::post('/admin/login', 'Admin\\AuthController@authenticate'); // ação de login
+Router::get('/admin/dashboard', 'Admin\\DashboardController@index', [AuthMiddleware::class]);
+//Router::get('/admin/dashboard', 'Admin\\DashboardController@index');
 
 // Rotas Artigos
 Router::get('/admin/artigos', 'Admin\\PostController@index');
@@ -27,3 +28,6 @@ Router::get('/admin/categorias', 'Admin\\CategoriaController@index');
 Router::get('/admin/categorias/criar', 'Admin\\CategoriaController@create');
 
 Router::get('/admin/comentarios', 'Admin\\ComentarioController@index');
+
+// Direcionamento acesso negado
+Router::get('/acesso-negado', 'Admin\\AcessoControleController@negado');

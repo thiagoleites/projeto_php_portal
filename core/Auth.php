@@ -20,7 +20,7 @@ use App\Models\User;
 class Auth
 {
 
-    private static User $user;
+    private static array $user = [];
 
     public static function login(array $userData): void
     {

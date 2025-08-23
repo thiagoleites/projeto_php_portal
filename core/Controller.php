@@ -56,7 +56,7 @@ abstract class Controller
     protected function requireAuth(): void
     {
         if (!Auth::check()) {
-            $this->redirect('/base/login');
+            $this->redirect('/base/admin/login');
         }
     }
 

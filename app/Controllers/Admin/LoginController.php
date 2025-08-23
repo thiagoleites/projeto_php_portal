@@ -68,4 +68,9 @@ class LoginController extends Controller
             'msgDescricao' => $selectDescricao,
         ]);
     }
+
+    public function login()
+    {
+        var_dump($_POST);
+    }
 }

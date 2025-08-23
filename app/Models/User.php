@@ -54,7 +54,6 @@ class User extends Model
 
     public static function getAllUsers(int $limit = 10, int $offset = 0): array
     {
-//        return (new static)->findAll();
         return (new static())
             ->query()
             ->select()
@@ -67,6 +66,18 @@ class User extends Model
     {
         $instance = new static();
         return $instance->query()->select()->count('*');
+    }
+
+    public static function checkLogin(string $email, string $password): ?array
+    {
+        $user = (new static())
+            ->query()
+            ->select()
+            ->where('email', '=', $email)
+            ->where('is_active', '=', 1)
+            ->first();
+
+        return $user ?: null;
     }
 
 }

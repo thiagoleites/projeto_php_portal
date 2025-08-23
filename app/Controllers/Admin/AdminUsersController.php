@@ -1,10 +1,10 @@
 <?php
 /**
  * ---------------------------------------------------------------------
- * Project:     Sistema personalizado em PHP
- * Author:      Thiago Leite - Devt Digital
- * License:     Proprietary - Todos os direitos reservados
- * File:        AdminUsersController.php
+ * Project: Sistema personalizado em PHP
+ * Author: Thiago Leite - Devt Digital
+ * License: Proprietary - Todos os direitos reservados
+ * File: AdminUsersController.php
  * Description: Classe responsável pela construção de queries SQL
  * ---------------------------------------------------------------------
  * Copyright (c) 2025 Devt Digital
@@ -25,9 +25,6 @@ class AdminUsersController
 
         $allUsers = User::getAllUsers();
 
-//        var_dump($allUsers);
-//        die;
-
         View::setArea('admin');
         View::render('pages/usuarios/index', [
             'titulo' => 'Listagem de Usuários',
@@ -35,7 +32,6 @@ class AdminUsersController
             'allUsers' => $allUsers,
         ]);
     }
-
 
     public function create()
     {

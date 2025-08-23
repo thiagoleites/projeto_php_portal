@@ -16,6 +16,7 @@ declare(strict_types=1);
 
 namespace Core\Database;
 
+use Core\Exceptions\DatabaseException;
 use mysqli;
 use InvalidArgumentException;
 use RuntimeException;
@@ -107,6 +108,14 @@ class QueryBuilder
     {
         $placeholder = '?';
 
+        // Se a query ainda não tem WHERE, sempre força WHERE
+        if (stripos($this->query, 'WHERE') === false && $type !== 'OR') {
+            $type = 'WHERE';
+        } elseif ($type === 'WHERE') {
+            // se já existe WHERE e chamaram where(), vira AND
+            $type = 'AND';
+        }
+
         if (is_array($value) && in_array($operator, ['IN', 'NOT IN'])) {
             $placeholders = implode(', ', array_fill(0, count($value), '?'));
             $this->query .= " {$type} {$column} {$operator} ({$placeholders})";
@@ -172,7 +181,7 @@ class QueryBuilder
         error_log("Database error: " . $e->getMessage());
 
         // Você pode lançar uma exceção personalizada aqui se desejar
-        throw new DatabaseOperationException("Erro ao executar consulta no banco de dados");
+        throw new DatabaseException("Erro ao executar consulta no banco de dados");
     }
 
     private function extractWherePart(): string
