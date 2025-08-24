@@ -1,10 +1,10 @@
 <?php
 /**
  * ---------------------------------------------------------------------
- * Project:     Sistema personalizado em PHP
- * Author:      Thiago Leite - Devt Digital
- * License:     Proprietary - Todos os direitos reservados
- * File:        Categoria.php
+ * Project: Sistema personalizado em PHP
+ * Author: Thiago Leite - Devt Digital
+ * License: Proprietary - Todos os direitos reservados
+ * File: Categoria.php
  * Description: Classe responsável pela construção de queries SQL
  * ---------------------------------------------------------------------
  * Copyright (c) 2025 Devt Digital
@@ -41,8 +41,14 @@ class Categoria extends Model
         return (new static())->query()->select()->count('*');
     }
 
-    public static function getCategorias()
+    public static function getCategorias($items = 10): array
     {
-        return (new static)->findAll();
+        return (new static())
+            ->query()
+            ->select()
+            ->orderBy('id', 'DESC')
+            ->paginate($items);
+
+        // return $resultado['data']; onde resultado seria a query
     }
 }

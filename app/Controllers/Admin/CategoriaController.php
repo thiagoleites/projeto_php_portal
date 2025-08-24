@@ -1,10 +1,10 @@
 <?php
 /**
  * ---------------------------------------------------------------------
- * Project:     Sistema personalizado em PHP
- * Author:      Thiago Leite - Devt Digital
- * License:     Proprietary - Todos os direitos reservados
- * File:        CategoriaController.php
+ * Project: Sistema personalizado em PHP
+ * Author: Thiago Leite - Devt Digital
+ * License: Proprietary - Todos os direitos reservados
+ * File: CategoriaController.php
  * Description: Classe responsável pela construção de queries SQL
  * ---------------------------------------------------------------------
  * Copyright (c) 2025 Devt Digital
@@ -20,9 +20,9 @@ use Core\View;
 
 class CategoriaController
 {
-    public function index()
+    public function index(): void
     {
-        $categorias = Categoria::getCategorias();
+        $categorias = Categoria::getCategorias(15);
 
         View::setArea('admin');
         View::render('pages/categorias/index', [
@@ -32,7 +32,7 @@ class CategoriaController
         ]);
     }
 
-    public function create()
+    public function create(): void
     {
         View::setArea('admin');
         View::render('pages/categorias/criar', [

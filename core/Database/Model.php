@@ -1,10 +1,10 @@
 <?php
 /**
  * ---------------------------------------------------------------------
- * Project:     Sistema personalizado em PHP
- * Author:      Thiago Leite - Devt Digital
- * License:     Proprietary - Todos os direitos reservados
- * File:        Model.php
+ * Project: Sistema personalizado em PHP
+ * Author: Thiago Leite - Devt Digital
+ * License: Proprietary - Todos os direitos reservados
+ * File: Model.php
  * Description: Classe responsável pela construção de queries SQL
  * ---------------------------------------------------------------------
  * Copyright (c) 2025 Devt Digital

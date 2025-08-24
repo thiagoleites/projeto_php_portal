@@ -1,10 +1,10 @@
 <?php
 /**
  * ---------------------------------------------------------------------
- * Project:     Sistema personalizado em PHP
- * Author:      Thiago Leite - Devt Digital
- * License:     Proprietary - Todos os direitos reservados
- * File:        QueryBuilder.php
+ * Project: Sistema personalizado em PHP
+ * Author: Thiago Leite - Devt Digital
+ * License: Proprietary - Todos os direitos reservados
+ * File: QueryBuilder.php
  * Description: Classe responsável pela construção de queries SQL
  * ---------------------------------------------------------------------
  * Copyright (c) 2025 Devt Digital
@@ -25,10 +25,13 @@ use mysqli_stmt;
 
 class QueryBuilder
 {
-    protected $connection;
-    private $query;
-    private $bindings = [];
-    private $table;
+    protected mysqli $connection; // verificar tipagem se houver erros
+    private ?string $query = null;
+    private array $bindings = [];
+    private string $table;
+
+//    protected $limit;
+//    protected $offset;
 
 
     // TODO documentar todas as funções
@@ -145,6 +148,45 @@ class QueryBuilder
         return $results[0] ?? null;
     }
 
+    /**
+     * Determina a paginação na Query
+     *
+     * @param int $perPage
+     * @param int|null $page
+     * @return array
+     */
+    public function paginate(int $perPage = 10, ?int $page = null): array
+    {
+        $page = $page ?? (isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1);
+        if ($page < 1) $page = 1;
+
+        $offset = ($page - 1) * $perPage;
+
+        // Clona a query para não perder os WHERE já definidos
+        $dataQuery = clone $this;
+        $dataQuery->limit($perPage, $offset);
+
+        // Dados
+        $data = $dataQuery->get();
+
+        // Total
+        $total = $this->count();
+        $lastPage = (int)ceil($total / $perPage);
+
+        return [
+            "data" => $data,
+            "total" => $total,
+            "per_page" => $perPage,
+            "current_page" => $page,
+            "last_page" => $lastPage,
+        ];
+    }
+
+    /**
+     * Prepare statements para segurança
+     *
+     * @return mysqli_stmt
+     */
     private function prepareStatement(): mysqli_stmt
     {
         $stmt = $this->connection->prepare($this->query);
@@ -192,4 +234,5 @@ class QueryBuilder
 
         return '';
     }
+
 }

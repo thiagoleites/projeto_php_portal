@@ -1,11 +1,11 @@
 <?php
 /**
  * ---------------------------------------------------------------------
- * Project:       Sistema personalizado em PHP
- * Author:        Thiago Leite - Devt Digital
- * License:       Proprietary - Todos os direitos reservados
- * File:          Router.php
- * Description:   Classe responsável pelo roteamento de requisições
+ * Project: Sistema personalizado em PHP
+ * Author: Thiago Leite - Devt Digital
+ * License: Proprietary - Todos os direitos reservados
+ * File: Router.php
+ * Description: Classe responsável pelo roteamento de requisições
  * ---------------------------------------------------------------------
  * Copyright (c) 2025 Devt Digital
  * Thiago Leite <tls@devt.emp.br>
