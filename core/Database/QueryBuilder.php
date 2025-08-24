@@ -29,12 +29,8 @@ class QueryBuilder
     private ?string $query = null;
     private array $bindings = [];
     private string $table;
+    private $joins = [];
 
-//    protected $limit;
-//    protected $offset;
-
-
-    // TODO documentar todas as funções
 
     public function __construct(mysqli $connection, string $table)
     {
@@ -183,12 +179,48 @@ class QueryBuilder
     }
 
     /**
+     * Adiciona um JOIN à query.
+     *
+     * @param string $table         Tabela que será unida
+     * @param string $localColumn   Coluna da tabela base para o JOIN
+     * @param string $foreignColumn Coluna da tabela unida para o JOIN
+     * @param string $type          Tipo de JOIN: 'INNER', 'LEFT' ou 'RIGHT' (default: 'INNER')
+     * @return self
+     *
+     * @throws  InvalidArgumentException Se o tipo de JOIN for inválido
+     *
+     * Exemplo:
+     * $query->join('artigos',  'artigos.categoria_id', 'categorias.id', 'LEFT');
+     */
+    public function join(string $table, string $localColumn, string $foreignColumn, string $type = 'INNER'): self
+    {
+        $type = strtoupper($type);
+        if (!in_array($type, ['INNER', 'LEFT', 'RIGHT'])) {
+            throw  new \http\Exception\InvalidArgumentException("Tipo de JOIN inválido: {$type}}");
+        }
+
+        $this->joins[] = "{$type} JOIN {$table} ON {$foreignColumn} = {$localColumn}";
+        return $this;
+    }
+
+    // Monta a query no método get(), ou prepareStatement()
+    // Pode-se inserir joins na query.
+    private function applyJoins(): void
+    {
+        if (!empty($this->joins)) {
+            $this->query .= ' ' . implode(' ', $this->joins);
+        }
+    }
+
+    /**
      * Prepare statements para segurança
      *
      * @return mysqli_stmt
      */
     private function prepareStatement(): mysqli_stmt
     {
+        $this->applyJoins(); // Aplica os JOINS antes do prepare.
+
         $stmt = $this->connection->prepare($this->query);
         if (!$stmt) {
             throw new RuntimeException("Erro ao preparar query: " . $this->connection->error);

@@ -31,13 +31,13 @@ View::start('content');
         </a>
     </header>
 
-    <div class="bg-white p-6 md:p-8 rounded-xl border border-slate-200/80">
+    <div class="relative bg-white p-6 md:p-8 rounded-xl border border-slate-200/80">
         <div class="overflow-x-auto">
             <table class="w-full min-w-[600px] text-sm text-left text-slate-600">
                 <thead class="text-xs text-slate-500 uppercase bg-slate-50/50">
                 <tr>
                     <th scope="col" class="px-6 py-3 font-medium">Nome da Categoria</th>
-                    <th scope="col" class="px-6 py-3 font-medium">Slug</th>
+                    <th scope="col" class="px-6 py-3 font-medium">Descrição</th>
                     <th scope="col" class="px-6 py-3 font-medium text-center">Artigos</th>
                     <th scope="col" class="px-6 py-3 font-medium text-center">Ações</th>
                 </tr>
@@ -46,7 +46,7 @@ View::start('content');
                 <?php foreach ($categorias['data'] as $categoria) : ?>
                     <tr class="hover:bg-slate-50/30 transition-colors">
                         <td class="px-6 py-4 font-medium text-slate-800"><?= $categoria['name'] ?></td>
-                        <td class="px-6 py-4"><code>tecnologia</code></td>
+                        <td class="px-6 py-4"><code><?= $categoria['descricao'] ?></code></td>
                         <td class="px-6 py-4 text-center">
                             <a href="#" class="text-indigo-600 hover:underline">125</a>
                         </td>
@@ -60,48 +60,49 @@ View::start('content');
                 </tbody>
             </table>
         </div>
-        <!-- Paginação -->
-        <div class="mt-6 flex justify-end">
-            <nav aria-label="Page navigation">
-                <ul class="inline-flex items-center -space-x-px">
-
-                    <!-- Link Anterior -->
-                    <?php if ($categorias['current_page'] > 1): ?>
-                        <li>
-                            <a href="?pagina=<?= $categorias['current_page'] - 1 ?>"
-                               class="py-2 px-3 ml-0 leading-tight text-slate-500 bg-white rounded-l-lg border border-slate-300 hover:bg-slate-100 hover:text-slate-700 text-sm">
-                                Anterior
-                            </a>
-                        </li>
-                    <?php endif; ?>
-
-                    <!-- Números de páginas -->
-                    <?php for ($i = 1; $i <= $categorias['last_page']; $i++): ?>
-                        <li>
-                            <a href="?pagina=<?= $i ?>"
-                               class="py-2 px-3 leading-tight border border-slate-300 text-sm
-                              <?= $i == $categorias['current_page']
-                                       ? 'text-indigo-600 bg-indigo-50 hover:bg-indigo-100 hover:text-indigo-700'
-                                       : 'text-slate-500 bg-white hover:bg-slate-100 hover:text-slate-700' ?>">
-                                <?= $i ?>
-                            </a>
-                        </li>
-                    <?php endfor; ?>
-
-                    <!-- Link Próximo -->
-                    <?php if ($categorias['current_page'] < $categorias['last_page']): ?>
-                        <li>
-                            <a href="?pagina=<?= $categorias['current_page'] + 1 ?>"
-                               class="py-2 px-3 leading-tight text-slate-500 bg-white rounded-r-lg border border-slate-300 hover:bg-slate-100 hover:text-slate-700 text-sm">
-                                Próximo
-                            </a>
-                        </li>
-                    <?php endif; ?>
-
-                </ul>
-            </nav>
-        </div>
     </div>
+    <!-- Paginação -->
+    <div class="absolute mt-6 flex justify-end bottom-5 right-8">
+        <nav aria-label="Page navigation">
+            <ul class="inline-flex items-center -space-x-px">
+
+                <!-- Link Anterior -->
+                <?php if ($categorias['current_page'] > 1): ?>
+                    <li>
+                        <a href="?pagina=<?= $categorias['current_page'] - 1 ?>"
+                           class="py-2 px-3 ml-0 leading-tight text-slate-500 bg-white rounded-l-lg border border-slate-300 hover:bg-slate-100 hover:text-slate-700 text-sm">
+                            Anterior
+                        </a>
+                    </li>
+                <?php endif; ?>
+
+                <!-- Números de páginas -->
+                <?php for ($i = 1; $i <= $categorias['last_page']; $i++): ?>
+                    <li>
+                        <a href="?pagina=<?= $i ?>"
+                           class="py-2 px-3 leading-tight border border-slate-300 text-sm
+                              <?= $i == $categorias['current_page']
+                                   ? 'text-indigo-600 bg-indigo-50 hover:bg-indigo-100 hover:text-indigo-700'
+                                   : 'text-slate-500 bg-white hover:bg-slate-100 hover:text-slate-700' ?>">
+                            <?= $i ?>
+                        </a>
+                    </li>
+                <?php endfor; ?>
+
+                <!-- Link Próximo -->
+                <?php if ($categorias['current_page'] < $categorias['last_page']): ?>
+                    <li>
+                        <a href="?pagina=<?= $categorias['current_page'] + 1 ?>"
+                           class="py-2 px-3 leading-tight text-slate-500 bg-white rounded-r-lg border border-slate-300 hover:bg-slate-100 hover:text-slate-700 text-sm">
+                            Próximo
+                        </a>
+                    </li>
+                <?php endif; ?>
+
+            </ul>
+        </nav>
+    </div>
+    <!--    </div>-->
 </main>
 
 <?php
