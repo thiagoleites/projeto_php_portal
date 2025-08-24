@@ -44,6 +44,15 @@ class QueryBuilder
         return $this;
     }
 
+    /**
+     * Conta os registros de uma coluna especifíca.
+     *
+     * @param string $column    Nome da coluna para contar (Padrão '*')
+     * @return int              Total de registros encontrados
+     *
+     * Exemplo:
+     * $total = $query->count('artigos.id');
+     */
     public function count(string $column = '*'): int
     {
         // Se não tiver query, cria a base
