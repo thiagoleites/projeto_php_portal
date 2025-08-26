@@ -31,7 +31,8 @@ class Auth
     public static function logout(): void
     {
         session_destroy();
-        self::$user = null;
+//        self::$user = null;
+        self::$user = [];
     }
 
     public static function check(): bool

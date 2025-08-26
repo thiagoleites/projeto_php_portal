@@ -22,7 +22,7 @@ class CategoriaController
 {
     public function index(): void
     {
-        $categorias = Categoria::getCategorias(10);
+        $categorias = Categoria::getCategorias(15);
 
         View::setArea('admin');
         View::render('pages/categorias/index', [

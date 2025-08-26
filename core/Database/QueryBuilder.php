@@ -1,36 +1,26 @@
 <?php
-/**
- * ---------------------------------------------------------------------
- * Project: Sistema personalizado em PHP
- * Author: Thiago Leite - Devt Digital
- * License: Proprietary - Todos os direitos reservados
- * File: QueryBuilder.php
- * Description: Classe responsável pela construção de queries SQL
- * ---------------------------------------------------------------------
- * Copyright (c) 2025 Devt Digital
- * Thiago Leite <tls@devt.emp.br>
- * ---------------------------------------------------------------------
- */
-
 declare(strict_types=1);
 
 namespace Core\Database;
 
 use Core\Exceptions\DatabaseException;
 use mysqli;
-use InvalidArgumentException;
-use RuntimeException;
-use mysqli_sql_exception;
 use mysqli_stmt;
+use mysqli_sql_exception;
+use RuntimeException;
+use InvalidArgumentException;
 
 class QueryBuilder
 {
-    protected mysqli $connection; // verificar tipagem se houver erros
+    protected mysqli $connection;
     private ?string $query = null;
     private array $bindings = [];
     private string $table;
-    private $joins = [];
-
+    private array $joins = [];
+    private ?string $groupBy = null;
+    private ?string $orderBy = null;
+    private ?int $limit = null;
+    private ?int $offset = null;
 
     public function __construct(mysqli $connection, string $table)
     {
@@ -40,98 +30,84 @@ class QueryBuilder
 
     public function select(array $columns = ['*']): self
     {
-        $this->query = 'SELECT ' . implode(', ', $columns) . ' FROM ' . $this->table;
+        $columnsList = implode(', ', $columns);
+        $this->query = "SELECT {$columnsList} FROM {$this->table}";
         return $this;
-    }
-
-    /**
-     * Conta os registros de uma coluna especifíca.
-     *
-     * @param string $column    Nome da coluna para contar (Padrão '*')
-     * @return int              Total de registros encontrados
-     *
-     * Exemplo:
-     * $total = $query->count('artigos.id');
-     */
-    public function count(string $column = '*'): int
-    {
-        // Se não tiver query, cria a base
-        if ($this->query === null) {
-            $this->query = "SELECT COUNT({$column}) as total FROM {$this->table}";
-        } else {
-            $this->query = "SELECT COUNT({$column}) as total FROM {$this->table}" . $this->extractWherePart();
-        }
-
-        try {
-            $stmt = $this->prepareStatement();
-            $stmt->execute();
-            $result = $stmt->get_result();
-            $row = $result->fetch_assoc();
-            return (int)($row['total'] ?? 0);
-        } catch (mysqli_sql_exception $e) {
-            $this->handleException($e);
-            return 0;
-        }
     }
 
     public function where(string $column, string $operator, $value): self
     {
-        if (!in_array(strtoupper($operator), ['=', '!=', '<', '>', '<=', '>=', 'LIKE', 'NOT LIKE', 'IN', 'NOT IN'])) {
-            throw new InvalidArgumentException("Operador inválido: {$operator}");
-        }
-
-        $this->addCondition('WHERE', $column, $operator, $value);
-        return $this;
+        return $this->addCondition('WHERE', $column, $operator, $value);
     }
 
     public function andWhere(string $column, string $operator, $value): self
     {
-        $this->addCondition('AND', $column, $operator, $value);
-        return $this;
+        return $this->addCondition('AND', $column, $operator, $value);
     }
 
     public function orWhere(string $column, string $operator, $value): self
     {
-        $this->addCondition('OR', $column, $operator, $value);
+        return $this->addCondition('OR', $column, $operator, $value);
+    }
+
+    private function addCondition(string $type, string $column, string $operator, $value): self
+    {
+        $operator = strtoupper($operator);
+        $allowedOperators = ['=', '!=', '<', '>', '<=', '>=', 'LIKE', 'NOT LIKE', 'IN', 'NOT IN'];
+        if (!in_array($operator, $allowedOperators)) {
+            throw new InvalidArgumentException("Operador inválido: {$operator}");
+        }
+
+        $prefix = '';
+        if (stripos($this->query, 'WHERE') === false && $type !== 'OR') {
+            $prefix = 'WHERE';
+        } elseif ($type === 'WHERE') {
+            $prefix = 'AND';
+        } else {
+            $prefix = $type;
+        }
+
+        if (is_array($value) && in_array($operator, ['IN', 'NOT IN'])) {
+            $placeholders = implode(', ', array_fill(0, count($value), '?'));
+            $this->query .= " {$prefix} {$column} {$operator} ({$placeholders})";
+            $this->bindings = array_merge($this->bindings, $value);
+        } else {
+            $this->query .= " {$prefix} {$column} {$operator} ?";
+            $this->bindings[] = $value;
+        }
+
+        return $this;
+    }
+
+    public function join(string $table, string $localColumn, string $foreignColumn, string $type = 'INNER'): self
+    {
+        $type = strtoupper($type);
+        if (!in_array($type, ['INNER', 'LEFT', 'RIGHT'])) {
+            throw new InvalidArgumentException("Tipo de JOIN inválido: {$type}");
+        }
+
+        $this->joins[] = "{$type} JOIN {$table} ON {$localColumn} = {$foreignColumn}";
+        return $this;
+    }
+
+    public function groupBy(string $column): self
+    {
+        $this->groupBy = $column;
         return $this;
     }
 
     public function orderBy(string $column, string $direction = 'ASC'): self
     {
         $direction = strtoupper($direction) === 'DESC' ? 'DESC' : 'ASC';
-        $this->query .= " ORDER BY {$column} {$direction}";
+        $this->orderBy = "{$column} {$direction}";
         return $this;
     }
 
     public function limit(int $limit, ?int $offset = null): self
     {
-        $this->query .= " LIMIT {$limit}";
-        if ($offset !== null) {
-            $this->query .= " OFFSET {$offset}";
-        }
+        $this->limit = $limit;
+        $this->offset = $offset;
         return $this;
-    }
-
-    private function addCondition(string $type, string $column, string $operator, $value): void
-    {
-        $placeholder = '?';
-
-        // Se a query ainda não tem WHERE, sempre força WHERE
-        if (stripos($this->query, 'WHERE') === false && $type !== 'OR') {
-            $type = 'WHERE';
-        } elseif ($type === 'WHERE') {
-            // se já existe WHERE e chamaram where(), vira AND
-            $type = 'AND';
-        }
-
-        if (is_array($value) && in_array($operator, ['IN', 'NOT IN'])) {
-            $placeholders = implode(', ', array_fill(0, count($value), '?'));
-            $this->query .= " {$type} {$column} {$operator} ({$placeholders})";
-            $this->bindings = array_merge($this->bindings, $value);
-        } else {
-            $this->query .= " {$type} {$column} {$operator} {$placeholder}";
-            $this->bindings[] = $value;
-        }
     }
 
     public function get(): array
@@ -153,84 +129,67 @@ class QueryBuilder
         return $results[0] ?? null;
     }
 
-    /**
-     * Determina a paginação na Query
-     *
-     * @param int $perPage
-     * @param int|null $page
-     * @return array
-     */
+    public function count(): int
+    {
+        // Cria um clone para não modificar a query principal
+        $countQuery = clone $this;
+
+        // Remove o limite e offset da query de contagem
+        $countQuery->limit = null;
+        $countQuery->offset = null;
+        $countQuery->orderBy = null;
+
+        // Constrói a query de contagem a partir da query original
+        // Apenas substituímos a parte SELECT
+        $sql = $countQuery->buildCountQuery();
+
+        try {
+            $stmt = $this->connection->prepare($sql);
+            if (!$stmt) {
+                throw new RuntimeException("Erro ao preparar query de contagem: " . $this->connection->error);
+            }
+
+            // Binda os parâmetros da query original
+            if (!empty($this->bindings)) {
+                $types = $this->determineBindTypes($this->bindings);
+                $stmt->bind_param($types, ...$this->bindings);
+            }
+
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $row = $result->fetch_assoc();
+            return (int)($row['total'] ?? 0);
+        } catch (mysqli_sql_exception $e) {
+            $this->handleException($e);
+            return 0;
+        }
+    }
+
     public function paginate(int $perPage = 10, ?int $page = null): array
     {
         $page = $page ?? (isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1);
         if ($page < 1) $page = 1;
 
         $offset = ($page - 1) * $perPage;
+        $total = $this->count(); // Chama o método count() corrigido primeiro
 
-        // Clona a query para não perder os WHERE já definidos
         $dataQuery = clone $this;
         $dataQuery->limit($perPage, $offset);
 
-        // Dados
-        $data = $dataQuery->get();
-
-        // Total
-        $total = $this->count();
-        $lastPage = (int)ceil($total / $perPage);
-
         return [
-            "data" => $data,
+            "data" => $dataQuery->get(),
             "total" => $total,
             "per_page" => $perPage,
             "current_page" => $page,
-            "last_page" => $lastPage,
+            "last_page" => (int)ceil($total / $perPage),
         ];
     }
 
-    /**
-     * Adiciona um JOIN à query.
-     *
-     * @param string $table         Tabela que será unida
-     * @param string $localColumn   Coluna da tabela base para o JOIN
-     * @param string $foreignColumn Coluna da tabela unida para o JOIN
-     * @param string $type          Tipo de JOIN: 'INNER', 'LEFT' ou 'RIGHT' (default: 'INNER')
-     * @return self
-     *
-     * @throws  InvalidArgumentException Se o tipo de JOIN for inválido
-     *
-     * Exemplo:
-     * $query->join('artigos',  'artigos.categoria_id', 'categorias.id', 'LEFT');
-     */
-    public function join(string $table, string $localColumn, string $foreignColumn, string $type = 'INNER'): self
-    {
-        $type = strtoupper($type);
-        if (!in_array($type, ['INNER', 'LEFT', 'RIGHT'])) {
-            throw  new \http\Exception\InvalidArgumentException("Tipo de JOIN inválido: {$type}}");
-        }
-
-        $this->joins[] = "{$type} JOIN {$table} ON {$foreignColumn} = {$localColumn}";
-        return $this;
-    }
-
-    // Monta a query no método get(), ou prepareStatement()
-    // Pode-se inserir joins na query.
-    private function applyJoins(): void
-    {
-        if (!empty($this->joins)) {
-            $this->query .= ' ' . implode(' ', $this->joins);
-        }
-    }
-
-    /**
-     * Prepare statements para segurança
-     *
-     * @return mysqli_stmt
-     */
     private function prepareStatement(): mysqli_stmt
     {
-        $this->applyJoins(); // Aplica os JOINS antes do prepare.
+        $sql = $this->buildQuery();
 
-        $stmt = $this->connection->prepare($this->query);
+        $stmt = $this->connection->prepare($sql);
         if (!$stmt) {
             throw new RuntimeException("Erro ao preparar query: " . $this->connection->error);
         }
@@ -243,27 +202,64 @@ class QueryBuilder
         return $stmt;
     }
 
+    private function buildQuery(): string
+    {
+        $sql = $this->query;
+
+        if (!empty($this->joins)) {
+            $sql .= ' ' . implode(' ', $this->joins);
+        }
+
+        if (!empty($this->groupBy)) {
+            $sql .= " GROUP BY {$this->groupBy}";
+        }
+
+        if (!empty($this->orderBy)) {
+            $sql .= " ORDER BY {$this->orderBy}";
+        }
+
+        if (!empty($this->limit)) {
+            $sql .= " LIMIT {$this->limit}";
+            if (!empty($this->offset)) {
+                $sql .= " OFFSET {$this->offset}";
+            }
+        }
+
+        return $sql;
+    }
+
+    private function buildCountQuery(): string
+    {
+        $sql = "SELECT COUNT(DISTINCT {$this->table}.id) AS total FROM {$this->table}";
+
+        // Adiciona os JOINs existentes
+        if (!empty($this->joins)) {
+            $sql .= ' ' . implode(' ', $this->joins);
+        }
+
+        // Extrai a parte WHERE da query original
+        $wherePart = $this->extractWherePart();
+        if (!empty($wherePart)) {
+            $sql .= $wherePart;
+        }
+
+        return $sql;
+    }
+
     private function determineBindTypes(array $values): string
     {
         $types = '';
         foreach ($values as $value) {
-            if (is_int($value)) {
-                $types .= 'i';
-            } elseif (is_float($value)) {
-                $types .= 'd';
-            } else {
-                $types .= 's';
-            }
+            if (is_int($value)) $types .= 'i';
+            elseif (is_float($value)) $types .= 'd';
+            else $types .= 's';
         }
         return $types;
     }
 
     private function handleException(mysqli_sql_exception $e): void
     {
-        // Log do erro (implemente seu sistema de log)
         error_log("Database error: " . $e->getMessage());
-
-        // Você pode lançar uma exceção personalizada aqui se desejar
         throw new DatabaseException("Erro ao executar consulta no banco de dados");
     }
 
@@ -272,8 +268,6 @@ class QueryBuilder
         if (stripos($this->query, 'WHERE') !== false) {
             return ' ' . substr($this->query, stripos($this->query, 'WHERE'));
         }
-
         return '';
     }
-
 }

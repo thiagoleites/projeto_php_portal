@@ -10,6 +10,8 @@ Router::get('/admin', 'Admin\\LoginController@index'); // Dashboard padrão
 Router::get('/admin/login', 'Admin\\AuthController@login'); // Página de login
 Router::post('/admin/login', 'Admin\\AuthController@authenticate'); // ação de login
 Router::get('/admin/dashboard', 'Admin\\DashboardController@index', [AuthMiddleware::class]);
+
+Router::get('/admin/logout', 'Admin\\AuthController@logout', [AuthMiddleware::class]);
 //Router::get('/admin/dashboard', 'Admin\\DashboardController@index');
 
 // Rotas Artigos

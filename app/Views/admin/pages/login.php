@@ -12,6 +12,7 @@
             darkMode: 'class', // Habilita o dark mode baseado na classe 'dark'
         }
     </script>
+    <script src="https://js.hcaptcha.com/1/api.js" async defer></script>
     <style>
         body { font-family: 'Inter', sans-serif; }
         .bg-image { transition: background-image 0.5s ease-in-out; }
@@ -86,6 +87,10 @@
                                     <svg id="eye-slash-icon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 hidden" viewBox="0 0 20 20" fill="currentColor"><path d="M3.707 2.293a1 1 0 00-1.414 1.414l14 14a1 1 0 001.414-1.414l-1.473-1.473A10.014 10.014 0 0019.542 10C18.268 5.943 14.478 3 10 3a9.958 9.958 0 00-4.512 1.074L3.707 2.293zM10 12a2 2 0 110-4 2 2 0 010 4z" /><path d="M2 10a9.959 9.959 0 012.066-5.814l-.151.151a1 1 0 001.414 1.414l.151-.151A6.01 6.01 0 0110 8c.98 0 1.894.225 2.714.618l.158-.158a1 1 0 00-1.414-1.414l-.158.158A8.003 8.003 0 0010 6c-3.955 0-7.444 2.582-8.941 6.331A.999.999 0 001 13.331V10a1 1 0 00-1-1h-.5a1 1 0 00-1 1v.001a10.01 10.01 0 001.542 4.999l1.415-1.415A7.962 7.962 0 012 10z" /></svg>
                                 </button>
                             </div>
+                        </div>
+
+                        <div>
+                            <div class="h-captcha" data-sitekey="449cdb62-ad2c-4e54-b1a2-64927fb25ef4"></div>
                         </div>
 
                         <div>

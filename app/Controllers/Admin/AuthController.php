@@ -123,4 +123,9 @@ class AuthController extends Controller
         }
         
     }
+
+    public function logout(): void
+    {
+        Auth::logout();
+    }
 }

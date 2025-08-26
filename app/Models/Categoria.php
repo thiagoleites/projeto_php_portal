@@ -43,12 +43,18 @@ class Categoria extends Model
 
     public static function getCategorias($items = 10): array
     {
-        return (new static())
+        $qb = (new static())
             ->query()
-            ->select()
-            ->orderBy('id', 'DESC')
-            ->paginate($items);
+            ->select([
+                'categories.id',
+                'categories.name',
+                'categories.descricao',
+                'COUNT(artigos.id) AS total_artigos'
+            ])
+            ->join('artigos', 'categories.id', 'artigos.categoria_id', 'LEFT')
+            ->groupBy('categories.id')
+            ->orderBy('categories.id', 'ASC');
 
-        // return $resultado['data']; onde resultado seria a query
+        return $qb->paginate($items);
     }
 }
