@@ -16,7 +16,6 @@ $isActive = function ($path) use ($url) {
             <img src="<?= Helpers::URL_BASE['public'] ?>/images/admin-panel-logo.png" alt="" class="h-14 w-auto">
         </a>
     </div>
-    h
     <!-- bg-slate-700  -->
     <nav class="space-y-2">
         <a href="<?= Helpers::URL_BASE['admin'] ?>/dashboard"

@@ -7,7 +7,7 @@
  * File: UserController.php
  * Description: Classe responsável pela construção de queries SQL
  * ---------------------------------------------------------------------
- * Copyright (c) 2025 Devt Digital
+ * Copyright © 2025 Devt Digital
  * Thiago Leite <tls@devt.emp.br>
  * ---------------------------------------------------------------------
  */

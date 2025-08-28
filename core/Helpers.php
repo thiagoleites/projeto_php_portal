@@ -60,10 +60,35 @@ class Helpers
         return '';
     }
 
-    public static function debug()
+    public static function debug(): void
     {
         ini_set('display_errors', 1);
         ini_set('display_startup_errors', 1);
         error_reporting(E_ALL);
+    }
+
+    public static function recursive($value): ?array
+    {
+        $result = [];
+        foreach ((array) $value as $item) {
+            if (is_array($item)) {
+                $result[] = array_merge($result, self::recursive($item));
+            }
+        }
+        return $result;
+    }
+
+    public static function session(string $key, $value = null): mixed
+    {
+        if ($value !== null) {
+            $_SESSION[$key] = $value;
+            return true;
+        } elseif (isset($_SESSION[$key])) {
+            $result = $_SESSION[$key];
+            unset($_SESSION[$key]);
+            return $result;
+        }
+
+        return null;
     }
 }
