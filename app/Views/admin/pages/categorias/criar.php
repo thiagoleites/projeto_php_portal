@@ -1,4 +1,6 @@
 <?php
+
+use Core\Helpers;
 use Core\View;
 
 View::extend('layouts/main');
@@ -21,21 +23,22 @@ View::start('content');
             </header>
 
             <div class="bg-white p-6 md:p-8 rounded-xl border border-slate-200/80 w-full mx-auto">
-                <form class="space-y-6">
+<!--                /base/admin/categorias/criar-->
+                <form action="<?= Helpers::URL_BASE['admin'] ?>/categorias/criar" class="space-y-6" enctype="multipart/form-data" method="post">
                     <div>
                         <label for="nome_categoria" class="block text-sm font-medium text-slate-700 mb-1">Nome da Categoria</label>
-                        <input type="text" name="nome_categoria" id="nome_categoria" class="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 placeholder:text-slate-400" placeholder="Ex: Novidades em IA" oninput="generateSlug(this.value)">
+                        <input type="text" name="name" id="nome_categoria" class="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 placeholder:text-slate-400" placeholder="Ex: Novidades em IA" oninput="generateSlug(this.value)">
                     </div>
 
                     <div>
                         <label for="slug_categoria" class="block text-sm font-medium text-slate-700 mb-1">Slug</label>
-                        <input type="text" name="slug_categoria" id="slug_categoria" class="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 placeholder:text-slate-400 bg-slate-50" placeholder="Ex: novidades-em-ia" readonly>
+                        <input type="text" name="slug" id="slug_categoria" class="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 placeholder:text-slate-400 bg-slate-50" placeholder="Ex: novidades-em-ia" readonly>
                         <p class="mt-1 text-xs text-slate-500">Será gerado automaticamente a partir do nome. Pode ser editado se necessário.</p>
                     </div>
                     
                     <div>
                         <label for="descricao_categoria" class="block text-sm font-medium text-slate-700 mb-1">Descrição (Opcional)</label>
-                        <textarea name="descricao_categoria" id="descricao_categoria" rows="4" class="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 placeholder:text-slate-400" placeholder="Uma breve descrição sobre a categoria..."></textarea>
+                        <textarea name="descricao" id="descricao_categoria" rows="4" class="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 placeholder:text-slate-400" placeholder="Uma breve descrição sobre a categoria..."></textarea>
                     </div>
 
                      <div>

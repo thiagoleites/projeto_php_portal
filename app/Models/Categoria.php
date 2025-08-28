@@ -57,4 +57,11 @@ class Categoria extends Model
 
         return $qb->paginate($items);
     }
+
+    public static function addCategoria(array $data): array
+    {
+        $qb = (new static())
+            ->create($data);
+        return $qb;
+    }
 }

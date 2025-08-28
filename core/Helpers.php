@@ -45,9 +45,10 @@ class Helpers
     public const URL_BASE = [
         'protocol'  => 'http',
         'host'      => 'localhost',
-        'admin'     => '/base/admin/',
-        'base'      => '/base/',
-        'web'       => '/base/site/',
+        'admin'     => '/base/admin',
+        'base'      => '/base',
+        'web'       => '/base/site',
+        'public'    => '/base/public',
     ];
 
     public static function getBaseUri(): string

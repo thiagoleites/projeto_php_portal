@@ -43,6 +43,8 @@ class CategoriaController
 
     public function store()
     {
-        
+        View::setArea('admin');
+        $data = $_POST;
+        var_dump($data);
     }
 }

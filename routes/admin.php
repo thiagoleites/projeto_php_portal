@@ -28,6 +28,7 @@ Router::post('/admin/usuarios/{id}/atualizar', 'Admin\\AdminUsersController@upda
 
 Router::get('/admin/categorias', 'Admin\\CategoriaController@index');
 Router::get('/admin/categorias/criar', 'Admin\\CategoriaController@create');
+Router::post('/admin/categorias/criar', 'Admin\\CategoriaController@store');
 
 Router::get('/admin/comentarios', 'Admin\\ComentarioController@index');
 
