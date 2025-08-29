@@ -1,5 +1,6 @@
 <?php
 use Core\View;
+use Core\Helpers;
 
 View::extend('layouts/main');
 View::start('content');
