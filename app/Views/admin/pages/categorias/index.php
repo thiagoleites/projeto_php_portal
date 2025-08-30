@@ -5,6 +5,16 @@ use Core\Helpers;
 
 View::extend('layouts/main');
 View::start('content');
+
+
+/** @var array<int, array{
+ *     id: int,
+ *     name: string,
+ *     descricao: string,
+ *     total_artigos: int
+ * }> $categorias
+ */
+
 ?>
 
 <!-- Sistema de Notificações para mensagens de sessão -->
@@ -99,9 +109,9 @@ endif; ?>
                             <a href="#" class="text-indigo-600 hover:underline"><?= $categoria['total_artigos'] ?></a>
                         </td>
                         <td class="px-6 py-4 text-center space-x-2">
-                            <a href="categoria-form.html?id=1"
+                            <a href="categoria-form.html?id=<?= $categoria['id']?>"
                                class="text-indigo-600 hover:text-indigo-800 font-medium">Editar</a>
-                            <button class="text-red-600 hover:text-red-800 font-medium">Excluir</button>
+                            <a class="text-red-600 hover:text-red-800 font-medium" data-id="<?= $categoria['id']?>">Excluir</a>
                         </td>
                     </tr>
                 <?php endforeach; ?>
