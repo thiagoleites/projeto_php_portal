@@ -60,9 +60,21 @@ class Categoria extends Model
 
     public static function addCategoria(array $data): int
     {
-        $qb = (new static())
-            ->create($data);
-        return $qb;
+        if (isset($data['categoria_pai']) && empty($data['categoria_pai'])) {
+            $data['categoria_pai'] = null;
+        }
+
+//        $qb = (new static())
+//            ->query()
+//            ->create($data)
+//            ->into('categories');
+//
+//        return $qb->execute();
+        try {
+            return (new static())->create($data);
+        } catch (\Exception $e) {
+            throw new \Exception("Erro ao inserir categoria: " . $e->getMessage());
+        }
     }
 
     /**

@@ -96,7 +96,7 @@ class CategoriaController extends Controller
             $regras = [
                 'name' => 'required|min:3|max:255',
                 'descricao' => 'max:500',
-                'categoria_pai' => 'numeric'
+                'categoria_pai' => 'nullable|numeric|exists:categorias,id'
             ];
 
             $errors = $this->validateAjaxData($dados, $regras);
@@ -104,6 +104,10 @@ class CategoriaController extends Controller
             if (!empty($errors)) {
                 $this->ajaxValidationError($errors);
                 return;
+            }
+
+            if (empty($dados['categoria_pai'])) {
+                $dados['categoria_pai'] = null;
             }
 
             // Insere no banco
@@ -118,6 +122,90 @@ class CategoriaController extends Controller
         } catch (Exception $e) {
             $this->ajaxError('Erro ao criar categoria: ' . $e->getMessage());
         }
+    }
+
+// Adicione este método para validação
+    protected function validateAjaxData(array $data, array $rules): array
+    {
+        $errors = [];
+
+        foreach ($rules as $field => $ruleString) {
+            $rulesArray = explode('|', $ruleString);
+
+            foreach ($rulesArray as $rule) {
+                if ($rule === 'required') {
+                    if (!isset($data[$field]) || empty(trim($data[$field] ?? ''))) {
+                        $errors[$field][] = "O campo {$field} é obrigatório";
+                    }
+                }
+
+                if (strpos($rule, 'min:') === 0) {
+                    $min = (int)str_replace('min:', '', $rule);
+                    if (isset($data[$field]) && strlen(trim($data[$field])) < $min) {
+                        $errors[$field][] = "O campo {$field} deve ter pelo menos {$min} caracteres";
+                    }
+                }
+
+                if (strpos($rule, 'max:') === 0) {
+                    $max = (int)str_replace('max:', '', $rule);
+                    if (isset($data[$field]) && strlen(trim($data[$field])) > $max) {
+                        $errors[$field][] = "O campo {$field} não pode ter mais que {$max} caracteres";
+                    }
+                }
+
+                if ($rule === 'numeric') {
+                    if (isset($data[$field]) && !empty($data[$field]) && !is_numeric($data[$field])) {
+                        $errors[$field][] = "O campo {$field} deve ser um número";
+                    }
+                }
+
+                if (strpos($rule, 'unique:') === 0) {
+                    $parts = explode(',', str_replace('unique:', '', $rule));
+                    $table = $parts[0];
+                    $column = $parts[1];
+
+                    if (isset($data[$field]) && !empty($data[$field])) {
+                        $exists = $this->checkUnique($table, $column, $data[$field]);
+                        if ($exists) {
+                            $errors[$field][] = "Este {$field} já está em uso";
+                        }
+                    }
+                }
+
+                if (strpos($rule, 'exists:') === 0) {
+                    $parts = explode(',', str_replace('exists:', '', $rule));
+                    $table = $parts[0];
+                    $column = $parts[1];
+
+                    if (isset($data[$field]) && !empty($data[$field])) {
+                        $exists = $this->checkExists($table, $column, $data[$field]);
+                        if (!$exists) {
+                            $errors[$field][] = "O valor selecionado para {$field} é inválido";
+                        }
+                    }
+                }
+            }
+        }
+
+        return $errors;
+    }
+
+    private function checkUnique(string $table, string $column, $value): bool
+    {
+        // Implemente a verificação de unicidade no banco
+        $db = \Core\Database\DB::getInstance();
+        $stmt = $db->prepare("SELECT COUNT(*) FROM {$table} WHERE {$column} = :value");
+        $stmt->execute([':value' => $value]);
+        return $stmt->fetchColumn() > 0;
+    }
+
+    private function checkExists(string $table, string $column, $value): bool
+    {
+        // Implemente a verificação de existência no banco
+        $db = \Core\Database\DB::getInstance();
+        $stmt = $db->prepare("SELECT COUNT(*) FROM {$table} WHERE {$column} = :value");
+        $stmt->execute([':value' => $value]);
+        return $stmt->fetchColumn() > 0;
     }
 
     private function handleStoreNormal(): void

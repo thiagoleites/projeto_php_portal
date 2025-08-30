@@ -35,6 +35,7 @@ View::start('content');
                     <input type="text" name="name" id="nome_categoria"
                            class="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 placeholder:text-slate-400"
                            placeholder="Ex: Novidades em IA" oninput="generateSlug(this.value)">
+                    <div id="name-error" class="mt-1 text-sm text-red-600 hidden"></div>
                 </div>
 
                 <div>
@@ -42,6 +43,7 @@ View::start('content');
                     <input type="text" name="short_link" id="slug_categoria"
                            class="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 placeholder:text-slate-400 bg-slate-50"
                            placeholder="Ex: novidades-em-ia" readonly>
+                    <div id="short_link-error" class="mt-1 text-sm text-red-600 hidden"></div>
                     <p class="mt-1 text-xs text-slate-500">Será gerado automaticamente a partir do nome. Pode ser editado se
                         necessário.</p>
                 </div>
@@ -52,6 +54,7 @@ View::start('content');
                     <textarea name="descricao" id="descricao_categoria" rows="4"
                               class="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 placeholder:text-slate-400"
                               placeholder="Uma breve descrição sobre a categoria..."></textarea>
+                    <div id="descricao-error" class="mt-1 text-sm text-red-600 hidden"></div>
                 </div>
 
                 <div>
@@ -64,6 +67,7 @@ View::start('content');
                             <option value="<?= $categoria['id'] ?>"><?= htmlspecialchars($categoria['name']) ?></option>
                         <?php endforeach; ?>
                     </select>
+                    <div id="categoria_pai-error" class="mt-1 text-sm text-red-600 hidden"></div>
                     <p class="mt-1 text-xs text-slate-500">Para criar hierarquias de categorias.</p>
                 </div>
 
@@ -103,6 +107,41 @@ function generateSlug(text) {
         .replace(/(^-|-$)+/g, '');
     
     document.getElementById('slug_categoria').value = slug;
+}
+
+// Limpar erros anteriores
+function clearErrors() {
+    // Limpar mensagens de erro
+    document.querySelectorAll('[id$="-error"]').forEach(el => {
+        el.classList.add('hidden');
+        el.textContent = '';
+    });
+    
+    // Remover classes de erro dos inputs
+    document.querySelectorAll('.border-red-500').forEach(el => {
+        el.classList.remove('border-red-500', 'focus:border-red-500', 'focus:ring-red-500');
+    });
+}
+
+// Mostrar erros específicos por campo
+function showFieldErrors(errors) {
+    clearErrors();
+    
+    Object.keys(errors).forEach(field => {
+        const errorElement = document.getElementById(`${field}-error`);
+        const inputElement = document.querySelector(`[name="${field}"]`);
+        
+        if (errorElement && inputElement) {
+            // Mostrar todas as mensagens de erro para o campo
+            errorElement.textContent = Array.isArray(errors[field]) 
+                ? errors[field].join(', ') 
+                : errors[field];
+            errorElement.classList.remove('hidden');
+            
+            // Adicionar classes de erro ao input
+            inputElement.classList.add('border-red-500', 'focus:border-red-500', 'focus:ring-red-500');
+        }
+    });
 }
 
 // Sistema de notificações
@@ -145,10 +184,33 @@ function showNotification(type, message) {
     }, 5000);
 }
 
+// Resetar botão de submit
+function resetButton() {
+    $('#loadingSpinner').addClass('hidden');
+    $('#submitText').text('Salvar Categoria');
+    $('#sendCategoria').prop('disabled', false);
+}
+
 // Interceptar o envio do formulário
 $(document).ready(function() {
+    // Adicionar evento para limpar erro quando o usuário começar a digitar
+    document.querySelectorAll('input, textarea, select').forEach(input => {
+        input.addEventListener('input', function() {
+            const fieldName = this.getAttribute('name');
+            const errorElement = document.getElementById(`${fieldName}-error`);
+            
+            if (errorElement) {
+                errorElement.classList.add('hidden');
+                errorElement.textContent = '';
+                this.classList.remove('border-red-500', 'focus:border-red-500', 'focus:ring-red-500');
+            }
+        });
+    });
+    
     $('#categoriaForm').on('submit', function(e) {
         e.preventDefault();
+        
+        clearErrors(); // Limpa erros anteriores
         
         // Mostrar loading
         $('#loadingSpinner').removeClass('hidden');
@@ -157,6 +219,12 @@ $(document).ready(function() {
         
         // Coletar dados do formulário
         const formData = new FormData(this);
+        
+        // Converter categoria_pai vazio para null
+        const categoriaPai = formData.get('categoria_pai');
+        if (categoriaPai === '') {
+            formData.set('categoria_pai', '');
+        }
         
         // Enviar via AJAX
         $.ajax({
@@ -167,6 +235,8 @@ $(document).ready(function() {
             contentType: false,
             dataType: 'json',
             success: function(response) {
+                console.log('Response:', response); // Para debug
+                
                 if (response.success) {
                     showNotification('success', response.message);
                     
@@ -175,28 +245,30 @@ $(document).ready(function() {
                         window.location.href = response.data.redirect;
                     }, 2000);
                 } else {
-                    showNotification('error', response.message);
-                    resetButton();
+                    // Mostrar notificação geral
+                    showNotification('error', response.message || 'Erro ao salvar categoria');
                     
-                    // Mostrar erros de validação se existirem
+                    // Mostrar erros de validação específicos por campo
                     if (response.errors) {
-                        Object.keys(response.errors).forEach(field => {
-                            const errorElement = $(`#${field}-error`);
-                            const inputElement = $(`[name="${field}"]`);
-                            
-                            if (errorElement.length) {
-                                errorElement.text(response.errors[field][0]).removeClass('hidden');
-                                inputElement.addClass('border-red-500');
-                            }
-                        });
+                        showFieldErrors(response.errors);
                     }
+                    
+                    resetButton();
                 }
             },
             error: function(xhr, status, error) {
+                console.error('AJAX Error:', xhr.responseJSON); // Para debug
+                
                 let errorMessage = 'Erro na requisição';
                 
                 if (xhr.responseJSON && xhr.responseJSON.message) {
                     errorMessage = xhr.responseJSON.message;
+                }
+                
+                // Tentar extrair erros de validação se existirem
+                if (xhr.responseJSON && xhr.responseJSON.errors) {
+                    showFieldErrors(xhr.responseJSON.errors);
+                    errorMessage = 'Por favor, corrija os erros no formulário';
                 }
                 
                 showNotification('error', errorMessage);
@@ -204,15 +276,34 @@ $(document).ready(function() {
             }
         });
     });
-    
-    function resetButton() {
-        $('#loadingSpinner').addClass('hidden');
-        $('#submitText').text('Salvar Categoria');
-        $('#sendCategoria').prop('disabled', false);
-    }
 });
 </script>
+<style>
+.border-red-500 {
+    border-color: #ef4444 !important;
+}
+
+.focus\:border-red-500:focus {
+    border-color: #ef4444 !important;
+}
+
+.focus\:ring-red-500:focus {
+    --tw-ring-color: rgba(239, 68, 68, 0.5) !important;
+}
+
+.text-red-600 {
+    color: #dc2626 !important;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.3s ease-out;
+}
+</style>
 SCRIPT
 );
 View::end();
-?>
