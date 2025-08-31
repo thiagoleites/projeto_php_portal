@@ -41,6 +41,12 @@ class Categoria extends Model
         return (new static())->query()->select()->count('*');
     }
 
+    /**
+     * Busca uma categoria pelo ID
+     *
+     * @param int $id ID da categoria
+     * @return array{id: int, name: string, descricao: string, short_link: string, categoria_pai: int|null, created_at: string, updated_at: string}|null
+     */
     public static function getCategorias($items = 10): array
     {
         $qb = (new static())

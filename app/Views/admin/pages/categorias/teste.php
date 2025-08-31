@@ -75,10 +75,10 @@ View::start('content');
             <!-- Informações da categoria -->
             <div class="bg-slate-50 p-4 rounded-lg mb-6">
                 <h3 class="font-semibold text-slate-800 mb-2">Informações da Categoria</h3>
-                <p><strong>Nome:</strong> <?= htmlspecialchars($categoria['name'], ENT_QUOTES) ?? '' ?></p>
-                <p><strong>Slug:</strong> <?= htmlspecialchars($categoria['short_link'] ?? '', ENT_QUOTES)  ?></p>
+                <p><strong>Nome:</strong> <?= htmlspecialchars($categoria['name']) ?></p>
+                <p><strong>Slug:</strong> <?= htmlspecialchars($categoria['short_link']) ?></p>
                 <?php if (!empty($categoria['descricao'])): ?>
-                    <p><strong>Descrição:</strong> <?= htmlspecialchars($categoria['descricao'], ENT_QUOTES) ?></p>
+                    <p><strong>Descrição:</strong> <?= htmlspecialchars($categoria['descricao']) ?></p>
                 <?php endif; ?>
             </div>
 

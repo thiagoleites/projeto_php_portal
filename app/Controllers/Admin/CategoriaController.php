@@ -14,6 +14,7 @@
 
 namespace App\Controllers\Admin;
 
+use App\Models\Artigo;
 use App\Models\Categoria;
 use Core\Controller;
 use Core\Helpers;
@@ -100,7 +101,7 @@ class CategoriaController extends Controller
         }
 
         if ($this->isAjaxRequest()) {
-            $this->handUpdateAjax($id);
+            $this->handleUpdateAjax($id);
             return;
         }
 
@@ -144,7 +145,7 @@ class CategoriaController extends Controller
         }
     }
 
-    public function handleUpdateAjax(int $id): void
+    private function handleUpdateAjax(int $id): void
     {
         try {
             $dados = $this->getRequestData();
@@ -380,10 +381,16 @@ class CategoriaController extends Controller
         $this->redirect(Helpers::URL_BASE["admin"] . '/categorias');
     }
 
-// Adicione também um método para confirmar a exclusão
+    /**
+     * Deletar registro com confirmação
+     * @param int $id
+     * @return void
+     */
     public function confirmDelete(int $id): void
     {
+
         try {
+
             $categoria = Categoria::getCategoriaById($id);
 
             if (!$categoria) {
@@ -393,9 +400,8 @@ class CategoriaController extends Controller
             }
 
             // Verificar se existem artigos ou subcategorias
-            $artigosCount = (new Categoria())
-                ->query()
-                ->select()
+            $artigosCount = (new Artigo())
+                ->query()->select()
                 ->where('categoria_id', '=', $id)
                 ->count();
 
@@ -404,6 +410,7 @@ class CategoriaController extends Controller
                 ->select()
                 ->where('categoria_pai', '=', $id)
                 ->count();
+
 
             View::setArea('admin');
             View::render('pages/categorias/confirmar-exclusao', [

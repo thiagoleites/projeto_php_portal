@@ -83,7 +83,6 @@ use Core\View;
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link href="/../base/public/redactor/redactor.css" rel="stylesheet">
 </head>
 <body class="bg-slate-100 text-slate-800">
 <div class="flex min-h-screen">
@@ -91,8 +90,8 @@ use Core\View;
     <?php View::section('content'); ?>
 </div>
 <!-- JS Admin -->
+<script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
 <script src="/../base/public/js/jquery.js"></script>
-<script src="/../base/public/redactor/redactor.js"></script>
 <?php View::scripts(); ?>
 </body>
 </html>

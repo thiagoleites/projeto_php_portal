@@ -22,9 +22,9 @@ Router::get('/admin/artigos/criar', 'Admin\\PostController@create');
 Router::get('/admin/usuarios', 'Admin\\AdminUsersController@index'); // apenas admin pode acessar
 Router::get('/admin/usuarios/criar', 'Admin\\AdminUsersController@create'); // apenas admin pode acessar
 Router::get('/admin/usuarios/{id}/editar', 'Admin\\AdminUsersController@edit');
-Router::post('/admin/categorias/editar/{id}', 'CategoriaController@update');
-Router::post('/admin/categorias/excluir/{id}', 'CategoriaController@delete');
-Router::get('/admin/categorias/confirmar-exclusao/{id}', 'CategoriaController@confirmDelete');
+Router::post('/admin/categorias/editar/{id}', 'Admin\\CategoriaController@update');
+Router::post('/admin/categorias/excluir/{id}', 'Admin\\CategoriaController@delete');
+Router::get('/admin/categorias/confirmar-exclusao/{id}', 'Admin\\CategoriaController@confirmDelete');
 
 // Rotas POST para o Admin
 Router::post('/admin/usuarios/{id}/atualizar', 'Admin\\AdminUsersController@update');
@@ -38,3 +38,8 @@ Router::get('/admin/comentarios', 'Admin\\ComentarioController@index');
 
 // Direcionamento acesso negado
 Router::get('/acesso-negado', 'Admin\\AcessoControleController@negado');
+
+
+Router::get('/admin/hello/{name}', function($name) {
+    echo "Olá, " . htmlspecialchars($name) . "!";
+});
