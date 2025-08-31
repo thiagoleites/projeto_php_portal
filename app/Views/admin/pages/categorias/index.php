@@ -109,9 +109,21 @@ endif; ?>
                             <a href="#" class="text-indigo-600 hover:underline"><?= $categoria['total_artigos'] ?></a>
                         </td>
                         <td class="px-6 py-4 text-center space-x-2">
-                            <a href="categoria-form.html?id=<?= $categoria['id']?>"
-                               class="text-indigo-600 hover:text-indigo-800 font-medium cursor pointer">Editar</a>
-                            <a class="text-red-600 hover:text-red-800 font-medium cursor pointer" data-id="<?= $categoria['id']?>">Excluir</a>
+                            <a href="<?= Helpers::URL_BASE['admin'] ?>/categorias/editar/<?= $categoria['id'] ?>"
+                               class="text-indigo-600 hover:text-indigo-900">Editar</a>
+                            <!--                            <a href="-->
+                            <?php //= Helpers::URL_BASE['admin'] ?><!--/categorias/confirmar-exclusao/-->
+                            <?php //= $categoria['id'] ?><!--"-->
+                            <!--                               class="text-red-600 hover:text-red-800 font-medium cursor pointer"-->
+                            <!--                               data-id="-->
+                            <?php //= $categoria['id'] ?><!--">Excluir</a>-->
+                            <?php if ($categoria['total_artigos'] == 0): ?>
+                                <a href="<?= Helpers::URL_BASE['admin'] ?>/categorias/confirmar-exclusao/<?= $categoria['id'] ?>"
+                                   class="text-red-600 hover:text-red-900">Excluir</a>
+                            <?php else: ?>
+                                <span class="text-slate-400 cursor-not-allowed"
+                                      title="Não pode ser excluída (possui artigos)">Excluir</span>
+                            <?php endif; ?>
                         </td>
                     </tr>
                 <?php endforeach; ?>
@@ -173,6 +185,7 @@ setTimeout(() => {
     });
 }, 5000);
 </script>
-SCRIPT);
+SCRIPT
+);
 View::end();
 ?>

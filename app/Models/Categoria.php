@@ -231,6 +231,14 @@ class Categoria extends Model
     {
         return (new static())->find($id);
     }
+
+    /**
+     * Função para atualizar uma categoria
+     * @param int $id
+     * @param array $data
+     * @return bool
+     * @throws \Exception
+     */
     public static function updateCategoria(int $id, array &$data): bool
     {
         if (isset($data['categoria_pai']) && empty($data['categoria_pai'])) {
@@ -242,6 +250,45 @@ class Categoria extends Model
             return (new static())->update($id, $data);
         } catch (\Exception $e) {
             throw new \Exception("Erro ao atualizar categoria: " . $e->getMessage());
+        }
+    }
+
+    /**
+     * Função para deletar uma nova categoria
+     * @param int $id
+     * @return bool
+     * @throws \Exception
+     */
+    public static function deleteCategoria(int $id): bool
+    {
+        try {
+            // Verificar se a categoria tem artigos associados
+            $artigosCount = (new static())
+                ->query()
+                ->select()
+                ->where('categoria_id', '=', $id)
+                ->count();
+
+            if ($artigosCount > 0) {
+                throw new Exception("Não é possível excluir a categoria pois existem artigos associados a ela.");
+            }
+
+            // Verificar se a categoria tem subcategorias
+            $subcategoriasCount = (new static())
+                ->query()
+                ->select()
+                ->where('categoria_pai', '=', $id)
+                ->count();
+
+            if ($subcategoriasCount > 0) {
+                throw new Exception("Não é possível excluir a categoria pois existem subcategorias associadas a ela.");
+            }
+
+            // Deletar a categoria
+            return (new static())->delete($id);
+
+        } catch (\Exception $e) {
+            throw new \Exception("Erro ao excluir categoria: " . $e->getMessage());
         }
     }
 }

@@ -22,6 +22,9 @@ Router::get('/admin/artigos/criar', 'Admin\\PostController@create');
 Router::get('/admin/usuarios', 'Admin\\AdminUsersController@index'); // apenas admin pode acessar
 Router::get('/admin/usuarios/criar', 'Admin\\AdminUsersController@create'); // apenas admin pode acessar
 Router::get('/admin/usuarios/{id}/editar', 'Admin\\AdminUsersController@edit');
+Router::post('/admin/categorias/editar/{id}', 'CategoriaController@update');
+Router::post('/admin/categorias/excluir/{id}', 'CategoriaController@delete');
+Router::get('/admin/categorias/confirmar-exclusao/{id}', 'CategoriaController@confirmDelete');
 
 // Rotas POST para o Admin
 Router::post('/admin/usuarios/{id}/atualizar', 'Admin\\AdminUsersController@update');

@@ -326,4 +326,97 @@ class CategoriaController extends Controller
             $this->redirect(Helpers::URL_BASE["admin"] . '/categorias/criar');
         }
     }
+
+    // No controller CategoriaController.php
+    public function delete(int $id): void
+    {
+        $this->setCorsHeaders();
+
+        if ($this->isPreflightRequest()) {
+            exit;
+        }
+
+        if ($this->isAjaxRequest()) {
+            $this->handleDeleteAjax($id);
+            return;
+        }
+
+        $this->handleDeleteNormal($id);
+    }
+
+    private function handleDeleteAjax(int $id): void
+    {
+        try {
+            $sucesso = Categoria::deleteCategoria($id);
+
+            if ($sucesso) {
+                $this->ajaxSuccess([
+                    'id' => $id,
+                    'redirect' => Helpers::URL_BASE["admin"] . '/categorias'
+                ], 'Categoria excluída com sucesso!', 200);
+            } else {
+                $this->ajaxError('Erro ao excluir categoria');
+            }
+
+        } catch (Exception $e) {
+            $this->ajaxError($e->getMessage());
+        }
+    }
+
+    private function handleDeleteNormal(int $id): void
+    {
+        try {
+            $sucesso = Categoria::deleteCategoria($id);
+
+            if ($sucesso) {
+                Helpers::session('sucesso', 'Categoria excluída com sucesso');
+            } else {
+                Helpers::session('erro', 'Erro ao excluir categoria');
+            }
+        } catch (Exception $e) {
+            Helpers::session('erro', $e->getMessage());
+        }
+
+        $this->redirect(Helpers::URL_BASE["admin"] . '/categorias');
+    }
+
+// Adicione também um método para confirmar a exclusão
+    public function confirmDelete(int $id): void
+    {
+        try {
+            $categoria = Categoria::getCategoriaById($id);
+
+            if (!$categoria) {
+                Helpers::session('erro', 'Categoria não encontrada');
+                $this->redirect(Helpers::URL_BASE["admin"] . '/categorias');
+                return;
+            }
+
+            // Verificar se existem artigos ou subcategorias
+            $artigosCount = (new Categoria())
+                ->query()
+                ->select()
+                ->where('categoria_id', '=', $id)
+                ->count();
+
+            $subcategoriasCount = (new Categoria())
+                ->query()
+                ->select()
+                ->where('categoria_pai', '=', $id)
+                ->count();
+
+            View::setArea('admin');
+            View::render('pages/categorias/confirmar-exclusao', [
+                'titulo' => 'Confirmar Exclusão',
+                'subtitulo' => 'Tem certeza que deseja excluir esta categoria?',
+                'categoria' => $categoria,
+                'artigosCount' => $artigosCount,
+                'subcategoriasCount' => $subcategoriasCount
+            ]);
+
+        } catch (Exception $e) {
+            Helpers::session('erro', 'Erro ao carregar categoria: ' . $e->getMessage());
+            $this->redirect(Helpers::URL_BASE["admin"] . '/categorias');
+        }
+    }
 }
