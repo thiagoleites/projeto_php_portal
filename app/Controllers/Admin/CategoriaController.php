@@ -16,7 +16,9 @@ namespace App\Controllers\Admin;
 
 use App\Models\Artigo;
 use App\Models\Categoria;
+use App\Models\GenericModel;
 use Core\Controller;
+use Core\Database\Connection;
 use Core\Helpers;
 use Core\View;
 use Exception;
@@ -284,24 +286,54 @@ class CategoriaController extends Controller
         return $errors;
     }
 
+    /**
+     * Verifica unicidade no banco
+     * @param string $table
+     * @param string $column
+     * @param $value
+     * @return bool
+     */
     private function checkUnique(string $table, string $column, $value): bool
     {
-        // Implemente a verificação de unicidade no banco
-        $db = \Core\Database\DB::getInstance();
-        $stmt = $db->prepare("SELECT COUNT(*) FROM {$table} WHERE {$column} = :value");
-        $stmt->execute([':value' => $value]);
-        return $stmt->fetchColumn() > 0;
+
+        try {
+            $count = (new GenericModel($table))
+                ->query()
+                ->select(['COUNT(*) as total'])
+                ->where($column, '=', $value)
+                ->first()['total'] ?? 0;
+            return $count > 0;
+        } catch (Exception $e) {
+            error_log("Erro ao verificar unicidade: " . $e->getMessage());
+            return false;
+        }
     }
 
+    /**
+     * Verifica a existencia da instancia
+     * @param string $table
+     * @param string $column
+     * @param $value
+     * @return bool
+     */
     private function checkExists(string $table, string $column, $value): bool
     {
-        // Implemente a verificação de existência no banco
-        $db = \Core\Database\DB::getInstance();
-        $stmt = $db->prepare("SELECT COUNT(*) FROM {$table} WHERE {$column} = :value");
-        $stmt->execute([':value' => $value]);
-        return $stmt->fetchColumn() > 0;
+        try {
+            $count = (new GenericModel($table))
+                ->query()
+                ->select(['COUNT(*) as total'])
+                ->where($column, '=', $value)
+                ->first()['total'] ?? 0;
+            return $count > 0;
+        } catch (Exception $e) {
+            error_log("Erro ao verificar unicidade: " . $e->getMessage());
+            return false;
+        }
     }
 
+    /**
+     * @return void
+     */
     private function handleStoreNormal(): void
     {
         View::setArea('admin');
@@ -328,7 +360,11 @@ class CategoriaController extends Controller
         }
     }
 
-    // No controller CategoriaController.php
+    /**
+     * Deleta ação de categoria
+     * @param int $id
+     * @return void
+     */
     public function delete(int $id): void
     {
         $this->setCorsHeaders();
@@ -343,6 +379,22 @@ class CategoriaController extends Controller
         }
 
         $this->handleDeleteNormal($id);
+    }
+
+    /**
+     * Ação com Ajax
+     * @param int $id
+     * @return void
+     */
+    public function deleteAjax(int $id): void
+    {
+        $this->setCorsHeaders();
+
+        if ($this->isPreflightRequest()) {
+            exit;
+        }
+
+        $this->handleDeleteAjax($id);
     }
 
     private function handleDeleteAjax(int $id): void

@@ -269,14 +269,14 @@ class Categoria extends Model
     {
         try {
             // Verificar se a categoria tem artigos associados
-            $artigosCount = (new static())
+            $artigosCount = (new Artigo())
                 ->query()
                 ->select()
                 ->where('categoria_id', '=', $id)
                 ->count();
 
             if ($artigosCount > 0) {
-                throw new Exception("Não é possível excluir a categoria pois existem artigos associados a ela.");
+                throw new \Exception("Não é possível excluir a categoria pois existem artigos associados a ela.");
             }
 
             // Verificar se a categoria tem subcategorias
@@ -287,7 +287,7 @@ class Categoria extends Model
                 ->count();
 
             if ($subcategoriasCount > 0) {
-                throw new Exception("Não é possível excluir a categoria pois existem subcategorias associadas a ela.");
+                throw new \Exception("Não é possível excluir a categoria pois existem subcategorias associadas a ela.");
             }
 
             // Deletar a categoria
