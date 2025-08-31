@@ -105,7 +105,7 @@ class CategoriaController extends Controller
             return;
         }
 
-        $this->handleUpdateNormal();
+        $this->handleUpdateNormal($id);
     }
 
     private function handleStoreAjax(): void
@@ -175,7 +175,7 @@ class CategoriaController extends Controller
                     'id' => $id,
                     'name' => $dados['name'],
                     'redirect' => Helpers::URL_BASE["admin"] . '/categorias'
-                ], 'Categoria criada com sucesso!', 200);
+                ], 'Categoria atualizada com sucesso!', 200);
             } else {
                 $this->ajaxError('Erro ao atualizar categoria');
             }
@@ -401,7 +401,8 @@ class CategoriaController extends Controller
 
             // Verificar se existem artigos ou subcategorias
             $artigosCount = (new Artigo())
-                ->query()->select()
+                ->query()
+                ->select()
                 ->where('categoria_id', '=', $id)
                 ->count();
 
