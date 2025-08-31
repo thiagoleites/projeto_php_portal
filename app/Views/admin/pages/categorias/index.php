@@ -110,8 +110,8 @@ endif; ?>
                         </td>
                         <td class="px-6 py-4 text-center space-x-2">
                             <a href="categoria-form.html?id=<?= $categoria['id']?>"
-                               class="text-indigo-600 hover:text-indigo-800 font-medium">Editar</a>
-                            <a class="text-red-600 hover:text-red-800 font-medium" data-id="<?= $categoria['id']?>">Excluir</a>
+                               class="text-indigo-600 hover:text-indigo-800 font-medium cursor pointer">Editar</a>
+                            <a class="text-red-600 hover:text-red-800 font-medium cursor pointer" data-id="<?= $categoria['id']?>">Excluir</a>
                         </td>
                     </tr>
                 <?php endforeach; ?>

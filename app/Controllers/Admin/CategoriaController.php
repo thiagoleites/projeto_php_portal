@@ -46,31 +46,35 @@ class CategoriaController extends Controller
         ]);
     }
 
+    public function edit(Categoria $id): void
+    {
+        try {
+            $categoria = Categoria::getCategoriaById($id);
+            if (!$categoria) {
+                Helpers::session('erro', 'Categoria não encontrada');
+                $this->redirect(Helpers::URL_BASE['admin'] . '/categorias');
+                return;
+            }
+            $categorias = Categoria::getCategorias(100);
+            View::setArea('admin');
+            View::render('pages/categorias/editar', [
+                'titulo' => 'Editar Categoria',
+                'subtitulo' => 'Altere os dados da Categoria',
+                'categoria' => $categoria,
+                'categorias' => $categorias
+            ]);
+
+        } catch (Exception $e) {
+            Helpers::session('erro', 'Erro ao carregar categoria: ' . $e->getMessage());
+            $this->redirect(Helpers::URL_BASE['admin'] . '/categorias');
+        }
+
+
+    }
+
     public function store(): void
     {
         View::setArea('admin');
-//        $regras = [
-//            'categoria_pai' => FILTER_VALIDATE_INT,
-//            'name'          => FILTER_SANITIZE_SPECIAL_CHARS,
-//            'descricao'     => FILTER_SANITIZE_SPECIAL_CHARS,
-//        ];
-//        $dados = filter_input_array(INPUT_POST, $regras);
-//
-//        if (!$dados || empty($dados['name'])) {
-//            Helpers::session('erro', 'O nome da categoria é obrigatório');
-//            header('Location: ' . Helpers::URL_BASE["admin"] . '/categorias/criar');
-//            exit;
-//        }
-//
-//        try {
-//            Categoria::addCategoria($dados);
-//            Helpers::session('sucesso', 'Categoria cadastrada com sucesso');
-//            header('Location: ' . Helpers::URL_BASE["admin"] . '/categorias');
-//        } catch (Exception $e) {
-//            Helpers::session('erro', 'Erro ao adicionar categoria '. $e->getMessage());
-//            header('Location: ' . Helpers::URL_BASE["admin"] . '/categorias/criar');
-//            exit();
-//        }
 
         $this->setCorsHeaders();
 
@@ -85,6 +89,22 @@ class CategoriaController extends Controller
 
         $this->handleStoreNormal();
 
+    }
+
+    public function update(int $id): void
+    {
+        $this->setCorsHeaders();
+
+        if ($this->isPreflightRequest()) {
+            exit;
+        }
+
+        if ($this->isAjaxRequest()) {
+            $this->handUpdateAjax($id);
+            return;
+        }
+
+        $this->handleUpdateNormal();
     }
 
     private function handleStoreAjax(): void
@@ -124,7 +144,80 @@ class CategoriaController extends Controller
         }
     }
 
-// Adicione este método para validação
+    public function handleUpdateAjax(int $id): void
+    {
+        try {
+            $dados = $this->getRequestData();
+
+            // Validaçãoi (adicionar unique excluindo o registro atual)
+            $regras = [
+                'name' => 'required|min:3|max:255',
+                'short_link' => 'required|min:3|max:255|unique:categorias,short_link,' . $id,
+                'descricao' => 'max:500',
+                'categoria_pai' => 'nullable|numeric|exists:categorias,id'
+            ];
+
+            $errors = $this->validateAjaxData($dados, $regras);
+
+            if (!empty($errors)) {
+                $this->ajaxValidationError($errors);
+                return;
+            }
+
+            if (empty($dados['categoria_pai'])) {
+                $dados['categoria_pai'] = null;
+            }
+            $sucesso = Categoria::addCategoriaComSlug($id, $dados);
+
+            if ($sucesso) {
+                $this->ajaxSuccess([
+                    'id' => $id,
+                    'name' => $dados['name'],
+                    'redirect' => Helpers::URL_BASE["admin"] . '/categorias'
+                ], 'Categoria criada com sucesso!', 200);
+            } else {
+                $this->ajaxError('Erro ao atualizar categoria');
+            }
+
+        } catch (Exception $e) {
+            $this->ajaxError('Erro ao carregar categoria: ' . $e->getMessage());
+        }
+    }
+
+    private function handleUpdateNormal(int $id): void
+    {
+        View::setArea('admin');
+        $regras = [
+            'categoria_pai' => FILTER_VALIDATE_INT,
+            'name' => FILTER_SANITIZE_SPECIAL_CHARS,
+            'short_link' => FILTER_SANITIZE_SPECIAL_CHARS,
+            'descricao' => FILTER_SANITIZE_SPECIAL_CHARS,
+        ];
+
+        $dados = filter_input_array(INPUT_POST, $regras);
+
+        if (!$dados || empty($dados['name'])) {
+            Helpers::session('erro', 'O nome da categoria é obrigatório');
+            $this->redirect(Helpers::URL_BASE["admin"] . '/categorias/editar/' . $id);
+        }
+
+        try {
+            $sucesso = Categoria::updateCategoriaComSlug($id, $dados);
+
+            if ($sucesso) {
+                Helpers::session('sucesso', 'Categoria atualizada com sucesso');
+                $this->redirect(Helpers::URL_BASE["admin"] . '/categorias');
+            } else {
+                Helpers::session('erro', 'Erro ao atualizar categoria');
+                $this->redirect(Helpers::URL_BASE["admin"] . '/categorias/editar/' . $id);
+            }
+        } catch (Exception $e) {
+            Helpers::session('erro', 'Erro ao atualizar categoria: ' . $e->getMessage());
+            $this->redirect(Helpers::URL_BASE["admin"] . '/categorias/editar/' . $id);
+        }
+    }
+
+    // Adicione este método para validação
     protected function validateAjaxData(array $data, array $rules): array
     {
         $errors = [];

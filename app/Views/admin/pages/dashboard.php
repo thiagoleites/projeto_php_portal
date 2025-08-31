@@ -33,7 +33,7 @@ View::start('content');
                         </div>
                         <p class="text-3xl font-bold text-slate-800">{{ $totalArtigos }}</p>
                     </div>
-                    <a href="<?= \Core\Helpers::URL_BASE['admin'] ?>artigos" class="text-sm text-indigo-600 hover:text-indigo-800 font-medium mt-4 inline-block">Ver todos →</a>
+                    <a href="<?= \Core\Helpers::URL_BASE['admin'] ?>/artigos" class="text-sm text-indigo-600 hover:text-indigo-800 font-medium mt-4 inline-block">Ver todos →</a>
                 </div>
 
                 <div class="bg-white p-6 rounded-xl border border-slate-200/80 flex flex-col justify-between hover:border-green-300 transition-colors">
@@ -46,7 +46,7 @@ View::start('content');
                         </div>
                         <p class="text-3xl font-bold text-slate-800">{{ $totalUsuarios }}</p>
                     </div>
-                     <a href="<?= \Core\Helpers::URL_BASE['admin'] ?>usuarios" class="text-sm text-green-600 hover:text-green-800 font-medium mt-4 inline-block">Gerenciar usuários →</a>
+                     <a href="<?= \Core\Helpers::URL_BASE['admin'] ?>/usuarios" class="text-sm text-green-600 hover:text-green-800 font-medium mt-4 inline-block">Gerenciar usuários →</a>
                 </div>
 
 
@@ -60,7 +60,7 @@ View::start('content');
                         </div>
                         <p class="text-3xl font-bold text-slate-800">{{ $totalCategorias }}</p>
                     </div>
-                    <a href="<?= \Core\Helpers::URL_BASE['admin'] ?>categorias" class="text-sm text-amber-600 hover:text-amber-800 font-medium mt-4 inline-block">Ver categorias →</a>
+                    <a href="<?= \Core\Helpers::URL_BASE['admin'] ?>/categorias" class="text-sm text-amber-600 hover:text-amber-800 font-medium mt-4 inline-block">Ver categorias →</a>
                 </div>
 
                 <div class="bg-white p-6 rounded-xl border border-slate-200/80 flex flex-col justify-between hover:border-sky-300 transition-colors">

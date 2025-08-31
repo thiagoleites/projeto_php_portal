@@ -64,12 +64,6 @@ class Categoria extends Model
             $data['categoria_pai'] = null;
         }
 
-//        $qb = (new static())
-//            ->query()
-//            ->create($data)
-//            ->into('categories');
-//
-//        return $qb->execute();
         try {
             return (new static())->create($data);
         } catch (\Exception $e) {
@@ -216,6 +210,7 @@ class Categoria extends Model
      * @param int $id ID da categoria
      * @param array $dados Dados atualizados
      * @return bool True se atualizado com sucesso
+     * @throws \Exception
      */
     public static function updateCategoriaComSlug(int $id, array $dados): bool
     {
@@ -230,5 +225,23 @@ class Categoria extends Model
         }
 
         return self::updateCategoria($id, $dados);
+    }
+
+    public static function getCategoriaById(int $id): ?array
+    {
+        return (new static())->find($id);
+    }
+    public static function updateCategoria(int $id, array &$data): bool
+    {
+        if (isset($data['categoria_pai']) && empty($data['categoria_pai'])) {
+            $data['categoria_pai'] = null;
+        }
+        $data['updated_at'] = date('Y-m-d H:i:s'); // atualizar data de modificação
+
+        try {
+            return (new static())->update($id, $data);
+        } catch (\Exception $e) {
+            throw new \Exception("Erro ao atualizar categoria: " . $e->getMessage());
+        }
     }
 }
