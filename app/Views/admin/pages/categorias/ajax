@@ -1,0 +1,40 @@
+// No arquivo index.php da listagem, adicione este script para deletar via ajax
+$(document).ready(function() {
+    // Deletar via AJAX
+    $(document).on('click', '.btn-delete-ajax', function(e) {
+        e.preventDefault();
+
+        const id = $(this).data('id');
+        const url = $(this).data('url');
+        const nome = $(this).data('nome');
+
+        if (confirm(`Tem certeza que deseja excluir a categoria "${nome}"?`)) {
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: {
+                    _method: 'DELETE'
+                },
+                dataType: 'json',
+                success: function(response) {
+                    if (response.success) {
+                        showNotification('success', response.message);
+                        // Recarregar a página após 1 segundo
+                        setTimeout(() => {
+                            location.reload();
+                        }, 1000);
+                    } else {
+                        showNotification('error', response.message);
+                    }
+                },
+                error: function(xhr) {
+                    let message = 'Erro ao excluir categoria';
+                    if (xhr.responseJSON && xhr.responseJSON.message) {
+                        message = xhr.responseJSON.message;
+                    }
+                    showNotification('error', message);
+                }
+            });
+        }
+    });
+});
