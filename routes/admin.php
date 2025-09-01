@@ -22,6 +22,7 @@ Router::get('/admin/artigos/criar', 'Admin\\PostController@create');
 Router::get('/admin/usuarios', 'Admin\\AdminUsersController@index'); // apenas admin pode acessar
 Router::get('/admin/usuarios/criar', 'Admin\\AdminUsersController@create'); // apenas admin pode acessar
 Router::get('/admin/usuarios/{id}/editar', 'Admin\\AdminUsersController@edit');
+Router::get('/admin/categorias/editar/{id}', 'Admin\\CategoriaController@edit');
 Router::post('/admin/categorias/editar/{id}', 'Admin\\CategoriaController@update');
 Router::post('/admin/categorias/excluir/{id}', 'Admin\\CategoriaController@delete');
 //Router::delete('/admin/categorias/excluir/{id}', 'Admin\\CategoriaController@deleteAjax');

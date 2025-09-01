@@ -49,7 +49,7 @@ class CategoriaController extends Controller
         ]);
     }
 
-    public function edit(Categoria $id): void
+    public function edit(int $id): void
     {
         try {
             $categoria = Categoria::getCategoriaById($id);
@@ -152,6 +152,8 @@ class CategoriaController extends Controller
         try {
             $dados = $this->getRequestData();
 
+            unset($dados['_method']); // Correção provisória para editar catgegoria
+
             // Validaçãoi (adicionar unique excluindo o registro atual)
             $regras = [
                 'name' => 'required|min:3|max:255',
@@ -170,7 +172,7 @@ class CategoriaController extends Controller
             if (empty($dados['categoria_pai'])) {
                 $dados['categoria_pai'] = null;
             }
-            $sucesso = Categoria::addCategoriaComSlug($id, $dados);
+            $sucesso = Categoria::updateCategoriaComSlug($id, $dados);
 
             if ($sucesso) {
                 $this->ajaxSuccess([

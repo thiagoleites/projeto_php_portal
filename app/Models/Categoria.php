@@ -15,6 +15,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Core\Database\Connection;
 use Core\Database\Model;
 
 class Categoria extends Model
@@ -26,6 +27,11 @@ class Categoria extends Model
     {
         // Construtor model
         parent::__construct();
+    }
+
+    public function __toString(): string
+    {
+        return (string)($this->name ?? '');
     }
 
     public function storeCategory(array $data): array
@@ -182,17 +188,35 @@ class Categoria extends Model
      */
     public static function slugExists(string $slug, ?int $currentId = null): bool
     {
-        $db = self::getDb();
+//        $db = self::getDb();
+//        $db = Connection::getInstance();
+//
+//        if ($currentId) {
+//            $stmt = $db->prepare("SELECT COUNT(*) FROM categorias WHERE short_link = :slug AND id != :id");
+//            $stmt->execute([':slug' => $slug, ':id' => $currentId]);
+//        } else {
+//            $stmt = $db->prepare("SELECT COUNT(*) FROM categorias WHERE short_link = :slug");
+//            $stmt->execute([':slug' => $slug]);
+//        }
+//
+//        return $stmt->fetchColumn() > 0;
+        try {
+            $query = (new static())
+                ->query()
+                ->select(['COUNT(*) as total'])
+                ->where('short_link', '=', $slug);
 
-        if ($currentId) {
-            $stmt = $db->prepare("SELECT COUNT(*) FROM categorias WHERE short_link = :slug AND id != :id");
-            $stmt->execute([':slug' => $slug, ':id' => $currentId]);
-        } else {
-            $stmt = $db->prepare("SELECT COUNT(*) FROM categorias WHERE short_link = :slug");
-            $stmt->execute([':slug' => $slug]);
+            if ($currentId) {
+                $query->where('id', '!=', $currentId);
+            }
+
+            $result = $query->first();
+            return ($result['total'] ?? 0) > 0;
+
+        } catch (Exception $e) {
+            error_log("Erro ao verificar slug: " . $e->getMessage());
+            return false;
         }
-
-        return $stmt->fetchColumn() > 0;
     }
 
     /**
@@ -222,7 +246,8 @@ class Categoria extends Model
     {
         // Se o nome foi alterado, gerar novo slug
         if (!empty($dados['name'])) {
-            $categoriaAtual = self::find($id);
+//            $categoriaAtual = self::find($id);
+            $categoriaAtual = (new static())->find($id);
 
             if ($categoriaAtual && $categoriaAtual['name'] !== $dados['name']) {
                 $baseSlug = self::generateSlug($dados['name']);
