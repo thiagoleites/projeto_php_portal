@@ -17,6 +17,7 @@ namespace App\Models;
 
 use Core\Database\Connection;
 use Core\Database\Model;
+use Exception;
 
 class Categoria extends Model
 {
@@ -188,18 +189,6 @@ class Categoria extends Model
      */
     public static function slugExists(string $slug, ?int $currentId = null): bool
     {
-//        $db = self::getDb();
-//        $db = Connection::getInstance();
-//
-//        if ($currentId) {
-//            $stmt = $db->prepare("SELECT COUNT(*) FROM categorias WHERE short_link = :slug AND id != :id");
-//            $stmt->execute([':slug' => $slug, ':id' => $currentId]);
-//        } else {
-//            $stmt = $db->prepare("SELECT COUNT(*) FROM categorias WHERE short_link = :slug");
-//            $stmt->execute([':slug' => $slug]);
-//        }
-//
-//        return $stmt->fetchColumn() > 0;
         try {
             $query = (new static())
                 ->query()
@@ -213,7 +202,7 @@ class Categoria extends Model
             $result = $query->first();
             return ($result['total'] ?? 0) > 0;
 
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             error_log("Erro ao verificar slug: " . $e->getMessage());
             return false;
         }
@@ -223,6 +212,7 @@ class Categoria extends Model
      * Adiciona uma categoria com slug automático
      * @param array $dados Dados da categoria
      * @return int ID da categoria inserida
+     * @throws Exception
      */
     public static function addCategoriaComSlug(array $dados): int
     {
