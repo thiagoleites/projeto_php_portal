@@ -20,6 +20,7 @@ use Core\Middleware\AuthMiddleware;
 use Core\View;
 use App\Models\User;
 use Core\Auth;
+use JetBrains\PhpStorm\NoReturn;
 
 class AuthController extends Controller
 {
@@ -88,7 +89,8 @@ class AuthController extends Controller
         }
     }
 
-    public function authenticate()
+    #[NoReturn]
+    public function authenticate(): void
     {
         // Inicializar sessão se não estiver ativa
         if (session_status() === PHP_SESSION_NONE) {
