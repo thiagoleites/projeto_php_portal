@@ -12,7 +12,7 @@
             darkMode: 'class', // Habilita o dark mode baseado na classe 'dark'
         }
     </script>
-    <script src="https://js.hcaptcha.com/1/api.js" async defer></script>
+<!--    <script src="https://js.hcaptcha.com/1/api.js" async defer></script>-->
     <style>
         body { font-family: 'Inter', sans-serif; }
         .bg-image { transition: background-image 0.5s ease-in-out; }
@@ -89,9 +89,9 @@
                             </div>
                         </div>
 
-                        <div>
-                            <div class="h-captcha" data-sitekey="449cdb62-ad2c-4e54-b1a2-64927fb25ef4"></div>
-                        </div>
+<!--                        <div>-->
+<!--                            <div class="h-captcha" data-sitekey="449cdb62-ad2c-4e54-b1a2-64927fb25ef4"></div>-->
+<!--                        </div>-->
 
                         <div>
                             <button type="submit"
