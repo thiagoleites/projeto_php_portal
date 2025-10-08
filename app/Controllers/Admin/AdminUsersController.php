@@ -20,7 +20,7 @@ use Core\View;
 
 class AdminUsersController
 {
-    public function index()
+    public function index(): void
     {
 
         $allUsers = User::getAllUsers();
