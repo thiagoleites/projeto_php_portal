@@ -1,0 +1,34 @@
+name: 🚀 Deploy Automático PHP Puro
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📦 Obter código do repositório
+        uses: actions/checkout@v4
+
+      - name: 🔐 Configurar chave SSH
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: 🚀 Enviar arquivos para a VPS
+        run: |
+          echo "🔄 Enviando arquivos PHP para a VPS..."
+          rsync -avz --delete \
+            --exclude=".git" \
+            --exclude=".github" \
+            --exclude="README.md" \
+            ./ ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:${{ secrets.VPS_PATH }}
+          echo "✅ Arquivos atualizados com sucesso!"
+
+      - name: 🔄 Reiniciar serviço web (opcional)
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} "sudo systemctl restart nginx || sudo systemctl restart apache2 || true"
+          echo "🌐 Servidor reiniciado!"
