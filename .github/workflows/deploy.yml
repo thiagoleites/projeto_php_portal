@@ -36,4 +36,4 @@ jobs:
 
       - name: 🔄 Reiniciar servidor (opcional)
         run: |
-          ssh ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} "sudo systemctl restart nginx || sudo systemctl restart apache2 || true"
+          ssh ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} "sudo systemctl restart apache2 || true"
