@@ -10,13 +10,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: 📦 Obter código do repositório
+      - name: 📦 Obter código
         uses: actions/checkout@v4
 
-      - name: 🔐 Configurar chave SSH
+      - name: 🔐 Configurar SSH
         uses: webfactory/ssh-agent@v0.9.0
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: 🧩 Adicionar host VPS ao known_hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -H ${{ secrets.VPS_HOST }} >> ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
 
       - name: 🚀 Enviar arquivos para a VPS
         run: |
@@ -28,7 +34,6 @@ jobs:
             ./ ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:${{ secrets.VPS_PATH }}
           echo "✅ Arquivos atualizados com sucesso!"
 
-      - name: 🔄 Reiniciar serviço web (opcional)
+      - name: 🔄 Reiniciar servidor (opcional)
         run: |
-          ssh -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} "sudo systemctl restart nginx || sudo systemctl restart apache2 || true"
-          echo "🌐 Servidor reiniciado!"
+          ssh ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} "sudo systemctl restart nginx || sudo systemctl restart apache2 || true"
