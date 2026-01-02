@@ -1,13 +1,4 @@
 <?php
-/**
- * Autoloader para carregar classes automaticamente
- * 
- * @package Core
- * @author Thiago Leite <tls@devt.emp.br>
- */
-//  * @license Proprietary - Todos os direitos reservados
-//  * @version 1.0
-//  * @since 2025-01-01
 
 spl_autoload_register(function ($class) {
     $namespaces = [
