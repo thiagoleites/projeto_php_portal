@@ -1,16 +1,4 @@
 <?php
-/**
- * ---------------------------------------------------------------------
- * Project: Sistema personalizado em PHP
- * Author: Thiago Leite - Devt Digital
- * License: Proprietary - Todos os direitos reservados
- * File: Model.php
- * Description: Classe responsável pela construção de queries SQL
- * ---------------------------------------------------------------------
- * Copyright (c) 2025 Devt Digital
- * Thiago Leite <tls@devt.emp.br>
- * ---------------------------------------------------------------------
- */
 
 declare(strict_types=1);
 
@@ -53,6 +41,13 @@ abstract class Model {
     }
 
     // SELECT
+
+    /**
+     * Retorna resultado através da query com ID como referência
+     *
+     * @param $id
+     * @return array|null
+     */
     public function find($id): ?array {
         return $this->query()
             ->select()
