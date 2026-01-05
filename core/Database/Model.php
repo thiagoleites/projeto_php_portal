@@ -26,6 +26,7 @@ abstract class Model {
             throw new ConnectionException("Falha ao conectar ao banco de dados.", [], $e);
         }
     }
+
     /**
      * Retorna uma instância de QueryBuilder para construir consultas SQL
      * 
@@ -40,8 +41,6 @@ abstract class Model {
         return new QueryBuilder($this->connection, $this->table);
     }
 
-    // SELECT
-
     /**
      * Retorna resultado através da query com ID como referência
      *
@@ -54,6 +53,20 @@ abstract class Model {
             ->where($this->primaryKey, '=', $id)
             ->first();
     }
+
+    /**
+     * Retorna uma lista de registro com base em condições, ordenação e paginação.
+     *
+     * Este método permite monta consultas dinâmicas, aplicando filtros (`where`),
+     * ordenação(`orderBy`) e controle de paginação (`limit` e `offset`),
+     * retornando todos os registros que atendem aos critérios informados.
+     *
+     * @param array $conditions
+     * @param array $order
+     * @param int|null $limit
+     * @param int|null $offset
+     * @return array
+     */
 
     public function findAll(array $conditions = [], array $order = [], ?int $limit = null, ?int $offset = null): array {
         $query = $this->query()->select();
@@ -74,7 +87,18 @@ abstract class Model {
         return $query->get();
     }
 
-    // INSERIR
+    /**
+     * Insere um novo registro na tabela associada ao repositório.
+     *
+     * Este método cria dinamicamente umna instrução INSERT com base
+     * nos dados fornecidos, utilizando prepared statements para
+     * evitar SQL Injection. A operação é executada dentro de uma
+     * transação, garantindo integridade dos dados.
+     *
+     * @param array $data
+     * @return int
+     * @throws Throwable
+     */
     public function create(array $data): int {
         $this->beginTransaction();
         
