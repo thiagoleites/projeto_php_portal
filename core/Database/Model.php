@@ -90,7 +90,7 @@ abstract class Model {
     /**
      * Insere um novo registro na tabela associada ao repositório.
      *
-     * Este método cria dinamicamente umna instrução INSERT com base
+     * Este método cria dinamicamente uma instrução INSERT com base
      * nos dados fornecidos, utilizando prepared statements para
      * evitar SQL Injection. A operação é executada dentro de uma
      * transação, garantindo integridade dos dados.
@@ -128,7 +128,17 @@ abstract class Model {
         }
     }
 
-    // ATUALIZAR
+    /**
+     * Atualiza o registro associado a um ID de identificação
+     *
+     * Este método atualiza de forma dinâmica com a instrução UPDATE
+     * os dados fornecidos com base num ID, o registro retorna true.
+     *
+     * @param $id
+     * @param array $data
+     * @return bool
+     * @throws Throwable
+     */
     public function update($id, array $data): bool {
         $this->beginTransaction();
         
@@ -158,7 +168,15 @@ abstract class Model {
         }
     }
 
-    // DELETAR
+    /**
+     * Remove o registro associado a um ID de identificação
+     *
+     * Este método remove todos os dados do banco com base no ID fornecido.
+     *
+     * @param $id
+     * @return bool
+     * @throws Throwable
+     */
     public function delete($id): bool {
         $this->beginTransaction();
         
