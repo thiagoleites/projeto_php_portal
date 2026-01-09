@@ -16,6 +16,11 @@ class Auth
         self::$user = $userData;
     }
 
+    /**
+     * Função para deslogar e remover sessão no sistema
+     *
+     * @return void
+     */
     public static function logout(): void
     {
         session_destroy();
