@@ -1,18 +1,4 @@
 <?php
-
-/**
- * ---------------------------------------------------------------------
- * Project: Sistema personalizado em PHP
- * Author: Thiago Leite - Devt Digital
- * License: Proprietary - Todos os direitos reservados
- *
- * Description: Classe responsável pela construção de queries SQL
- * ---------------------------------------------------------------------
- * Copyright © 2025 Devt Digital
- * Thiago Leite <tls@devt.emp.br>
- * ---------------------------------------------------------------------
- */
-
 namespace Core\Enums;
 
 enum UserRole: int
