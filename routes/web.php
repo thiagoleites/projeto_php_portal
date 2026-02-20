@@ -1,4 +1,13 @@
 <?php
+/**
+ * ===============================================
+ * TEMPORARY COMMIT MARKER
+ * Branch: lint_tests
+ * Date: 2026-02-18
+ * Description: Temporary header for CI validation.
+ * ===============================================
+ */
+
 
 use Core\Router;
 use Core\Middleware\{AuthMiddleware, AdminMiddleware};
