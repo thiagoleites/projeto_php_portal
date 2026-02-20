@@ -2,21 +2,26 @@ name: Daily Single PHP Header Cleanup
 
 on:
   schedule:
-    - cron: '0 16 * * *' # 13h Brasil
+    - cron: "0 16 * * *" # 13h Brasil (UTC-3) -> 16h UTC
   workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   cleanup:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repository
+      - name: Checkout cleanup-automation branch
         uses: actions/checkout@v4
+        with:
+          ref: cleanup-automation
+          fetch-depth: 0
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.2'
+          php-version: "8.2"
 
       - name: Remove one header per day
         run: php scripts/remove_one_header_per_day.php
@@ -27,9 +32,9 @@ jobs:
           git config user.email "thiagoleites@gmail.com"
 
           if [[ -n "$(git status --porcelain)" ]]; then
-            git add .
+            git add -A
             git commit -m "chore: remove php header from one file"
-            git push
+            git push origin cleanup-automation
           else
             echo "No changes to commit"
           fi
