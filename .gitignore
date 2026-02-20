@@ -2,3 +2,5 @@ backup-files.php
 .idea/
 .DS_Store
 models/tableSQL
+
+insert_maker.sh
