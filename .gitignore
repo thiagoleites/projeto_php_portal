@@ -4,3 +4,4 @@ backup-files.php
 models/tableSQL
 
 insert_maker.sh
+remove_maker.sh
