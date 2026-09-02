@@ -1,10 +1,3 @@
-## Aviso de Licença
-Este projeto é proprietário e todo o código fonte aqui disponível está sob
-licença "All Rights Reserved".  
-O repositório é aberto apenas para consulta/visualização.  
-Não é permitido usar, copiar, redistribuir ou modificar o código sem
-autorização expressa do autor.
-
 # 🚀 PHP Base Project - Devt Digital
 
 [![PHP Version](https://img.shields.io/badge/PHP-8.1+-8892BF?style=flat-square&logo=php&logoColor=white)](https://www.php.net/)
